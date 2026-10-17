@@ -1,6 +1,6 @@
 # Verification record
 
-Verified locally on October 16, 2026. This project has no hosted deployment or external service integration.
+Initial local verification: October 16, 2026. The original tests below covered the local prototype; the GitHub Pages publication checks are recorded separately below.
 
 ## Checks performed
 
@@ -31,3 +31,9 @@ If Playwright and its browsers are already installed in the project, simply run 
 ## Limits
 
 The **local prototype workflows were verified end to end**. Real order submission, email, payment, booking inventory, hosted deployment and provider error handling were not run because those services are not implemented. Chrome was tested; Safari, Firefox, real-device testing and a formal screen-reader/accessibility audit remain unperformed. No claims are made about real availability, capacity, pricing, dietary suitability or photographic accuracy.
+
+## GitHub Pages preparation
+
+The publishing change adds a dedicated GitHub Actions workflow, a validated base-path handoff from the workflow to the HTML build, and module-relative gallery image URLs. The local server can mount the same build at the repository path. The header now says “WEBSITE PREVIEW” because a public preview is not private. Layouts, prices and draft-only behavior are unchanged.
+
+Six automated test groups pass, including actual builds at `/` and `/Garden_Business_Website/` with every emitted page link and asset resolved to a real output file. Browser checks exercise all seven pages and complete draft flows under the repository path, with the opened gallery image decoded and checked explicitly. The real hosted result is checked after deployment; its workflow record is available in the repository’s Actions tab.

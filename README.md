@@ -1,8 +1,8 @@
-# Rosewood Gardens — local website concept
+# Rosewood Gardens — website prototype
 
 An independent, seven-page garden venue and hospitality website. **Rosewood Gardens is a provisional name.** All business descriptions, team profiles, capacities, rates and photographs are illustrative. The motto is “In Touch with Nature.”
 
-The repository is initialized independently on `main`. No personal-website files were reused. Nothing is registered with Sites or published. The preview server binds only to `127.0.0.1`; the site makes no external requests. Robots metadata is included for the prototype, but is not an access-control mechanism.
+The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages, matching the personal website’s hosting method. The site uses local assets and no third-party requests. The public website remains clearly labeled as a prototype; `noindex` metadata is retained and is not access control.
 
 ## Run locally
 
@@ -14,6 +14,23 @@ npm run preview
 ```
 
 Open http://127.0.0.1:4173. Stop the server with Ctrl+C. Rebuild after editing source; refreshing the browser loads the new build. `npm run dev` is an alias for the preview server and also expects `dist/` to have been built. `dist/` is generated and ignored by Git.
+
+## Publishing
+
+- Repository: https://github.com/benjaminMuhoya/Garden_Business_Website
+- Website: https://benjaminmuhoya.github.io/Garden_Business_Website/
+- Workflow: `.github/workflows/deploy.yml`
+
+Pushing a commit to `main` runs the tests, builds the site using the base path supplied by GitHub Pages, uploads `dist/`, and deploys it. No GitHub credentials are stored in the source. The local Git remote is `origin`; normal updates use `git push origin main` after review and testing.
+
+Local builds default to `/`. To preview the hosted path locally:
+
+```sh
+BASE_PATH=/Garden_Business_Website/ npm run build
+BASE_PATH=/Garden_Business_Website/ PORT=4174 npm run preview
+```
+
+Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. No real orders, bookings, email or payments are enabled by publication.
 
 ## Pages
 
@@ -52,4 +69,4 @@ npm run build
 
 `tests/domain.test.mjs` covers malformed basket data, subtotals and counts, occupancy pricing, meal multiplication, date errors, and date boundaries. Browser integration checks are described in `VERIFICATION.md`; the reproducible browser script is `tests/browser.cjs`. It requires Playwright and an installed Chrome browser and is optional for running the site. See the environment-variable example in `VERIFICATION.md`.
 
-Before any real publication, complete `CONTENT-CHECKLIST.md`, replace the photographs and team placeholders, approve content/brand, choose providers, and implement/test the real server workflows. No payment or booking provider has been selected.
+Before accepting real orders or bookings, complete `CONTENT-CHECKLIST.md`, replace the photographs and team placeholders, approve content/brand, choose providers, and implement/test the real server workflows. No payment or booking provider has been selected.

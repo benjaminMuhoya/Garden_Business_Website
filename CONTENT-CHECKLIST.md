@@ -1,6 +1,6 @@
 # Owner information needed next
 
-All existing values are placeholders. Complete and approve these before publication.
+All existing values are placeholders. The public prototype is for review. Complete and approve these before presenting the site as the final business website or taking real orders/bookings.
 
 - [ ] **Business name and identity:** approved name, logo, motto punctuation, colors and preferred typefaces.
 - [ ] **Origin story:** who founded the venue, when, why, and which details can be published.

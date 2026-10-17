@@ -1,6 +1,8 @@
 import {mkdir, cp, writeFile, rm, stat} from 'node:fs/promises';
 import {renderPage, pageKeys} from '../src/templates.js';
 import {content} from '../src/content.js';
+import {normalizeBasePath, applyBasePath} from './hosting.mjs';
+const basePath = normalizeBasePath(process.env.BASE_PATH);
 for (const group of [content.menu, content.rooms]) {
   const ids = group.map(x => x.id);
   if (new Set(ids).size !== ids.length || ids.some(id => !/^[a-z0-9-]+$/.test(id))) throw new Error('Invalid or duplicate content IDs');
@@ -13,6 +15,7 @@ await rm('dist',{recursive:true,force:true});
 await mkdir('dist',{recursive:true});
 for(const file of ['app.js','domain.js','styles.css']) await cp(`src/${file}`,`dist/${file}`);
 await cp('src/assets','dist/assets',{recursive:true});
-for(const key of pageKeys){const dir=key==='home'?'dist':`dist/${key}`;await mkdir(dir,{recursive:true});await writeFile(`${dir}/index.html`,renderPage(key));}
+for(const key of pageKeys){const dir=key==='home'?'dist':`dist/${key}`;await mkdir(dir,{recursive:true});await writeFile(`${dir}/index.html`,applyBasePath(renderPage(key), basePath));}
+await writeFile('dist/.nojekyll', '');
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
-console.log(`Built ${pageKeys.length} pages with local assets in dist/. No deployment performed.`);
+console.log(`Built ${pageKeys.length} pages with local assets in dist/ for ${basePath}. No deployment performed.`);

@@ -1,6 +1,6 @@
 # Inspiration photography
 
-These downloaded Unsplash photographs are local visual placeholders. They do **not** represent the actual business, staff, rooms, menu, facilities or events. Replace with owner-approved photos before publication and record final rights/credits. Some food slots deliberately reuse imagery as a scaffold.
+These downloaded Unsplash photographs are local visual placeholders. They do **not** represent the actual business, staff, rooms, menu, facilities or events. Replace with owner-approved photos before presenting these slots as the actual business and record final rights/credits. Some food slots deliberately reuse imagery as a scaffold.
 
 | Local file | Original image source |
 | --- | --- |

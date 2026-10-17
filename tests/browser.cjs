@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
 const path=require('node:path');
 const out=process.env.QA_OUTPUT_DIR || 'work/qa';
-const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
+const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '');
 (async()=>{
  await fs.mkdir(out,{recursive:true});
  const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH}: {})});
@@ -16,7 +16,7 @@ const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  for(const width of [1440,768,390,320]){
    await page.setViewportSize({width,height:1000});
    for(const route of routes){
-    await page.goto(base+route);await page.locator('h1').waitFor();
+    const response=await page.goto(base+route);assert.equal(response.status(),200,route);await page.locator('h1').waitFor();
     assert.equal(await page.locator('h1').count(),1,route+' one h1');
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${route} overflow ${width}`);
     const badImages=await page.locator('img[src]').evaluateAll(imgs=>imgs.filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src));assert.deepEqual(badImages,[],`${route} images`);
@@ -51,7 +51,7 @@ const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  await page.getByLabel('Departure',{exact:true}).fill('2030-06-12');await page.getByRole('combobox',{name:/Guests/}).selectOption('1');await page.getByLabel('Bed only',{exact:false}).check();await page.getByLabel('Lunch',{exact:false}).uncheck();await page.getByLabel('Dinner',{exact:false}).uncheck();await page.getByRole('button',{name:'Plan this stay'}).nth(1).click();assert.match(await page.locator('#stay-summary').textContent(),/\$250/);
  await page.getByRole('button',{name:'Review booking draft'}).click();assert.match(await page.locator('#draft-text').textContent(),/Terrace Suite/);assert.match(await page.locator('#draft-text').textContent(),/Sample total: \$250 USD/);
  console.log('PASS: two-person meal-inclusive pricing, invalid dates, room CTA, single-person bed-only price and booking draft.');
- await page.goto(base+'/gallery/');await page.getByRole('button',{name:'Rooms',exact:true}).click();assert.equal(await page.locator('.gallery-item:visible').count(),1);await page.getByRole('button',{name:'View Stay a little longer'}).click();assert.equal(await page.locator('#lightbox').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('#lightbox').isVisible(),false);
+ await page.goto(base+'/gallery/');await page.getByRole('button',{name:'Rooms',exact:true}).click();assert.equal(await page.locator('.gallery-item:visible').count(),1);await page.getByRole('button',{name:'View Stay a little longer'}).click();assert.equal(await page.locator('#lightbox').isVisible(),true);await page.locator('#lightbox-image').evaluate(img=>img.decode());assert.equal(await page.locator('#lightbox-image').evaluate(img=>img.naturalWidth>0),true);assert.ok((await page.locator('#lightbox-image').getAttribute('src')).startsWith(base+'/assets/'));await page.keyboard.press('Escape');assert.equal(await page.locator('#lightbox').isVisible(),false);
  assert.deepEqual(errors,[]);assert.deepEqual(badResponses,[]);assert.deepEqual(external,[]);
  console.log('PASS: gallery filters and keyboard modal dismissal; no console errors, HTTP errors or external requests.');
  await browser.close();
