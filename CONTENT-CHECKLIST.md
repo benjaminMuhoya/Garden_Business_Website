@@ -1,8 +1,9 @@
 # Owner information needed next
 
-All existing values are placeholders. The public prototype is for review. Complete and approve these before presenting the site as the final business website or taking real orders/bookings.
+The business name and motto are owner-provided; other business details remain placeholders. The public prototype is for review. Complete and approve these before presenting the site as the final business website or taking real orders/bookings.
 
-- [ ] **Business name and identity:** approved name, logo, motto punctuation, colors and preferred typefaces.
+- [x] **Business name and motto:** Jotham Gardens — Your Nature Haven for Food, Drinks & Events.
+- [ ] **Visual identity:** approved logo, colors and preferred typefaces.
 - [ ] **Origin story:** who founded the venue, when, why, and which details can be published.
 - [ ] **Location and contact:** address, map location, phone, email, opening hours, social links and inquiry recipient.
 - [ ] **Venue and facilities:** occasion types, actual seated/standing capacities, room layouts, venue hire prices, inclusions, parking, accessibility, toilets, power, Wi-Fi, noise restrictions and wet-weather plan.

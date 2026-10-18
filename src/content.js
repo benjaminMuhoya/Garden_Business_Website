@@ -1,9 +1,9 @@
-// All business details are illustrative. Replace and approve before publication.
+// Business name and motto are owner-provided. Other business details remain illustrative.
 export const content = {
-  brand: 'Rosewood Gardens',
-  motto: 'In Touch with Nature.',
+  brand: 'Jotham Gardens',
+  motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'USD',
-  origin: 'It begins with a simple idea: the best moments happen when we slow down. Imagined around a love of gardens, good food and thoughtful hospitality, Rosewood is a place to gather, celebrate and feel a little closer to nature.',
+  origin: 'It begins with a simple idea: the best moments happen when we slow down. Imagined around a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
   originNote: 'A draft story for a place with a story of its own. Replace with the owner’s history.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
   facilities: [

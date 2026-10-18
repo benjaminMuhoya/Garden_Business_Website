@@ -1,6 +1,6 @@
-# Rosewood Gardens — website prototype
+# Jotham Gardens — website prototype
 
-An independent, seven-page garden venue and hospitality website. **Rosewood Gardens is a provisional name.** All business descriptions, team profiles, capacities, rates and photographs are illustrative. The motto is “In Touch with Nature.”
+An independent, seven-page garden venue and hospitality website. **Jotham Gardens is the owner-provided business name.** All business descriptions, team profiles, capacities, rates and photographs are illustrative. The motto is “Your Nature Haven for Food, Drinks & Events.”
 
 The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages, matching the personal website’s hosting method. The site uses local assets and no third-party requests. The public website remains clearly labeled as a prototype; `noindex` metadata is retained and is not access control.
 
@@ -44,8 +44,8 @@ Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` ag
 
 ## Edit the content
 
-- `src/content.js`: provisional brand, story, venue capacity, facilities, menu, room rates, meal prices, team profiles and gallery entries. Identifiers such as menu `id` values connect controls to basket lines; preserve unique identifiers when replacing items.
-- `src/templates.js`: page structure, form labels, supporting copy, navigation and footer. The wordmark is currently composed in HTML/SVG and must also be changed here when approving a final brand.
+- `src/content.js`: business name, motto, draft story, venue capacity, facilities, menu, room rates, meal prices, team profiles and gallery entries. Identifiers such as menu `id` values connect controls to basket lines; preserve unique identifiers when replacing items.
+- `src/templates.js`: page structure, form labels, supporting copy, navigation and footer. The wordmark is currently composed in HTML/SVG and uses the approved Jotham Gardens name.
 - `src/styles.css`: shared colors, typography, layout, responsive breakpoints and component styling.
 - `src/assets/`: local inspiration photographs and rose SVG. See `ASSETS.md` before replacing/publishing imagery.
 - `src/domain.js`: bounded cart quantities and pricing calculations, shared by the real browser caller and unit tests.
