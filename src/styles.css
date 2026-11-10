@@ -1798,3 +1798,67 @@ footer {
     max-height:none
   }
 }
+
+/* Mobile homepage: keep hero title and CTAs in normal document flow.
+   Prevent the action buttons from covering the welcome heading. */
+@media (max-width:640px) {
+  .hero {
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    overflow:visible;
+  }
+  .hero-image {
+    position:relative;
+    inset:auto;
+    flex:none;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+  }
+  .hero-shade { display:none; }
+  .hero-content {
+    position:relative;
+    inset:auto;
+    flex:none;
+    width:calc(100% - 40px);
+    margin-inline:auto;
+    padding:28px 0 0;
+  }
+  .hero h1 {
+    font-size:clamp(46px,13vw,70px);
+    line-height:1.02;
+    overflow-wrap:break-word;
+    margin-bottom:20px;
+  }
+  .hero-actions {
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    gap:12px;
+    width:100%;
+    max-width:none;
+    margin:20px 0 0;
+  }
+  .hero-actions .button {
+    width:100%;
+    min-height:50px;
+    white-space:normal;
+  }
+  .hero-bottom {
+    position:relative;
+    inset:auto;
+    flex:none;
+    width:calc(100% - 40px);
+    margin-inline:auto;
+    padding:20px 0 28px;
+  }
+  .welcome {
+    position:relative;
+    clear:both;
+    padding-top:48px;
+  }
+}
