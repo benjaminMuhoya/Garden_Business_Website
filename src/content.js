@@ -3,13 +3,13 @@ export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'USD',
-  origin: 'It begins with a simple idea: the best moments happen when we slow down. Imagined around a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
-  originNote: 'A draft story for a place with a story of its own. Replace with the owner’s history.',
+  origin: 'It begins with a simple idea: the best moments happen when we slow down. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
+  originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
   facilities: [
-    { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'garden', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. Sample capacity: up to 120 guests.' },
-    { name: 'The covered pavilion', label: 'A LITTLE SHELTER, A LOT OF CHARM', image: 'venue', description: 'An airy setting for dining and conversation, with a covered layout imagined for smaller events. Sample capacity: 60 seated.' },
-    { name: 'The dining terrace', label: 'TIME TO SAVOUR', image: 'terrace', description: 'An inviting place for seasonal plates, a slow breakfast or a table shared with friends. Sample capacity: 32 seated.' },
+    { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'garden', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },
+    { name: 'The covered pavilion', label: 'A LITTLE SHELTER, A LOT OF CHARM', image: 'venue', description: 'An airy setting for dining and conversation, with a covered layout for smaller events. ' },
+    { name: 'The dining terrace', label: 'TIME TO SAVOUR', image: 'terrace', description: 'An inviting place for seasonal plates, a slow breakfast or a table shared with friends. ' },
     { name: 'The quiet corners', label: 'ROOM TO EXHALE', image: 'flowers', description: 'Shaded garden seating and tucked-away spots for reading, reflection and unhurried conversation.' }
   ],
   menu: [
