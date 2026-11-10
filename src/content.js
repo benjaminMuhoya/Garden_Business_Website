@@ -2,7 +2,7 @@
 export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
-  currency: 'USD',
+  currency: 'KES',
   origin: 'It begins with a simple idea: the best moments happen when we slow down. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
   originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
@@ -294,10 +294,10 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Garden Room', subtitle: 'A peaceful place to begin and end the day.', image: 'Luxury_bed_and_house', single: 85, double: 115, bed: 'One queen bed', details: 'Garden outlook · Private bathroom · Reading corner' },
-    { id: 'terrace', name: 'Terrace Suite', subtitle: 'A little more space. A little longer to linger.', image: 'Full_Board', single: 125, double: 155, bed: 'One king bed', details: 'Private terrace · Sitting area · Private bathroom' }
+    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 2500, double: 3000, bed: 'Bed and breakfast included', details: 'For one or two guests' },
+    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 4500, double: 5000, bed: 'Bed and breakfast included', details: 'For one or two guests' }
   ],
-  meals: { breakfast: 12, lunch: 18, dinner: 25 },
+  meals: { breakfast: 0, lunch: 18, dinner: 25 },
   team: [
     { name: 'Alex Morgan', role: 'Your host', initials: 'AM', description: 'A warm welcome, thoughtful details and a love of bringing people together.' },
     { name: 'Jamie Ellis', role: 'Head of the kitchen', initials: 'JE', description: 'Seasonal ingredients and generous plates, made for moments worth sharing.' },
