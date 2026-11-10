@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import {content} from '../src/content.js';
 import {sanitizeCart,cartSummary,stayQuote} from '../src/domain.js';
 test('cart trusts only known item identifiers and bounded integer quantities',()=>{
- assert.deepEqual(sanitizeCart({salad:2,soup:-1,chicken:1.5,tea:21,unknown:3},content.menu),{salad:2});
+ assert.deepEqual(sanitizeCart({beef1:2,soup:-1,kienyeji1:1.5,lemontea:21,unknown:3},content.menu),{beef1:2});
  assert.deepEqual(sanitizeCart(null,content.menu),{});
- const summary=cartSummary({salad:2,tea:1},content.menu);
- assert.equal(summary.total,34);assert.equal(summary.count,3);assert.equal(summary.lines.length,2);
+ const summary=cartSummary({beef1:2,lemontea:1},content.menu);
+ assert.equal(summary.total,2900);assert.equal(summary.count,3);assert.equal(summary.lines.length,2);
 });
 const base={room:'garden',guests:'2',arrival:'2030-06-10',departure:'2030-06-12',board:'breakfast',lunch:true,dinner:true};
 test('stay prices room occupancy and every selected meal per guest per night',()=>{
