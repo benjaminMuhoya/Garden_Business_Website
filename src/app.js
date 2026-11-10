@@ -79,7 +79,7 @@ if($('#booking-form')) {
     form.elements.departure.setCustomValidity('');
     const q=quote();
     if(q.error){$('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><p>${escape(q.error)}</p>`;return;}
-    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR SAMPLE STAY</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Room · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${[['Breakfast',q.breakfast],['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Sample total</span><strong>${cash(q.total)}</strong></div><p class="small">USD · Taxes and fees not determined. Availability requires confirmation.</p>`;
+    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR SAMPLE STAY</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Bed & breakfast · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${[['Breakfast',q.breakfast],['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Sample total</span><strong>${cash(q.total)}</strong></div><p class="small">KSh · Breakfast included. Availability and any additional fees require confirmation.</p>`;
   }
   form.addEventListener('input',renderQuote);form.addEventListener('change',()=>{hideDraft();renderQuote();});
   $$('.choose-room').forEach(button=>button.addEventListener('click',()=>{form.elements.room.value=button.dataset.room;hideDraft();renderQuote();$('#plan-stay').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});form.elements.arrival.focus({preventScroll:true});}));
@@ -87,7 +87,7 @@ if($('#booking-form')) {
     event.preventDefault();const q=quote();
     if(q.error){form.elements.departure.setCustomValidity(q.error);form.reportValidity();return;}
     const data=input();
-    showDraft(`BOOKING INQUIRY DRAFT\n\nName: ${data.name}\nEmail: ${data.email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nBoard: ${data.board==='breakfast'?'Bed & breakfast':'Bed only'}\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${cash(q.breakfast)}\nLunch: ${cash(q.lunch)}\nDinner: ${cash(q.dinner)}\nSample total: ${cash(q.total)} USD\nTaxes and fees not determined.\n\nAvailability has not been checked. No room is held.`);
+    showDraft(`BOOKING INQUIRY DRAFT\n\nName: ${data.name}\nEmail: ${data.email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nBoard: Bed & breakfast included\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${cash(q.breakfast)}\nLunch: ${cash(q.lunch)}\nDinner: ${cash(q.dinner)}\nSample total: ${cash(q.total)}\nTaxes and fees not determined.\n\nAvailability has not been checked. No room is held.`);
   });renderQuote();
 }
 $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
