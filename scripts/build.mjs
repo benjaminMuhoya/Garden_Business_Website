@@ -9,8 +9,9 @@ for (const group of [content.menu, content.rooms]) {
 }
 const rates = [...content.menu.map(x => x.price), ...content.rooms.flatMap(x => [x.single, x.double]), ...Object.values(content.meals)];
 if (rates.some(rate => !Number.isFinite(rate) || rate < 0)) throw new Error('Invalid sample price');
-const assets = new Set(['garden', 'flowers', 'venue', 'food', 'room', ...[...content.facilities, ...content.menu, ...content.rooms, ...content.gallery].map(x => x.image)]);
-for(const asset of assets) if((await stat(`src/assets/${asset === 'Children gallery' ? 'Children gallery.JPG' : asset + '.jpg'}`)).size<1000) throw new Error('Missing asset '+asset);
+const assets = new Set(['garden', 'flowers', 'venue', 'food', 'room', ...[...content.facilities, ...content.menu, ...content.rooms, ...content.team, ...content.gallery].map(x => x.image).filter(Boolean)]);
+const assetFile = asset => ({'Children gallery':'Children gallery.JPG',Jane_host:'Jane_host.png'}[asset] || `${asset}.jpg`);
+for(const asset of assets) if((await stat(`src/assets/${assetFile(asset)}`)).size<1000) throw new Error('Missing asset '+asset);
 await rm('dist',{recursive:true,force:true});
 await mkdir('dist',{recursive:true});
 for(const file of ['app.js','domain.js','styles.css']) await cp(`src/${file}`,`dist/${file}`);

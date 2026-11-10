@@ -5,7 +5,7 @@ import {normalizeBasePath} from './hosting.mjs';
 const root = resolve('dist');
 const basePath = normalizeBasePath(process.env.BASE_PATH);
 const port = Number(process.env.PORT || 4173);
-const types = {'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json'};
+const types = {'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.json':'application/json'};
 const server = http.createServer(async(req,res)=>{
   try {
     const url = new URL(req.url, 'http://localhost');

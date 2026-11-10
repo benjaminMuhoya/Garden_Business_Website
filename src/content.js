@@ -1,10 +1,10 @@
-// Business name and motto are owner-provided. Other business details remain illustrative.
+// Business identity and host story are owner-provided; other details may remain illustrative.
 export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'KES',
-  origin: 'It begins with a simple idea: the best moments happen when we slow down. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
-  originNote: 'A place to slow down, connect and enjoy the gardens.',
+  origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. After 30 years as a teacher and raising my three children, I retired and devoted myself full-time to running this garden. I named it Jotham Gardens in memory of my late father, Jotham Ngaina. Today, we welcome you here to share good food, celebrate and spend meaningful time together.',
+  originNote: 'My hope is that every visit gives us time to slow down, connect and enjoy one another’s company.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
   facilities: [
     { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'Garden_gallery', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },
@@ -299,9 +299,7 @@ export const content = {
   ],
   meals: { breakfast: 0, lunch: 18, dinner: 25 },
   team: [
-    { name: 'Alex Morgan', role: 'Your host', initials: 'AM', description: 'A warm welcome, thoughtful details and a love of bringing people together.' },
-    { name: 'Jamie Ellis', role: 'Head of the kitchen', initials: 'JE', description: 'Seasonal ingredients and generous plates, made for moments worth sharing.' },
-    { name: 'Sam Rivers', role: 'Garden & grounds', initials: 'SR', description: 'Caring for the green spaces that make every visit feel a little slower.' }
+    { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'I am a mother of three and spent 30 years as a teacher. In retirement, I now devote my time to running Jotham Gardens, which I named in loving memory of my late father, Jotham Ngaina.' }
   ],
   gallery: [
     { image: 'Garden_gallery', title: 'A path to somewhere peaceful', category: 'Gardens' },

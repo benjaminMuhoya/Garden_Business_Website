@@ -43,8 +43,26 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.doesNotMatch(homeText,/A little closer to what matters|However you find us|make it your moment|Wake up somewhere softer|Made for you/);
   assert.equal((homeText.match(/Some places invite you/g)||[]).length,1);
   assert.match(homeText,/Welcome to\s+Jotham Gardens/i);
+  assert.match(homeText,/best moments happen when we slow down to appreciate not only our surroundings, but also the people around us/i);
+  assert.match(homeText,/Jotham Ngaina/);
   assert.match(homeText,/Rooted in nature\./);
   assert.equal(await page.locator('footer').getByText("Let’s plan something beautiful",{exact:false}).count(),0);
+  assert.equal(await page.getByRole('link',{name:'Meet the Host',exact:true}).count(),1);
+
+  await page.goto(base+'/team/');
+  const hostText=await page.locator('main').innerText();
+  assert.match(hostText,/Jane/);
+  assert.match(hostText,/mother of three/i);
+  assert.match(hostText,/30 years as a teacher/i);
+  assert.match(hostText,/Jotham Ngaina/);
+  assert.doesNotMatch(hostText,/Alex Morgan|Jamie Ellis|Sam Rivers/);
+  const hostPhoto=page.locator('.host-portrait');
+  assert.equal(await hostPhoto.count(),1);
+  assert.match(await hostPhoto.getAttribute('src'),/\/assets\/Jane_host\.png$/);
+  assert.equal(await hostPhoto.evaluate(image=>image.naturalWidth===1600&&image.naturalHeight===1600),true);
+  console.log('PASS: Jane is the sole host with the owner-provided story and portrait.');
+
+  await page.goto(base+'/');
   const options=page.getByRole('button',{name:'Options',exact:true});
   await options.click();
   assert.equal(await options.getAttribute('aria-expanded'),'true');

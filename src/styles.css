@@ -932,56 +932,41 @@ legend {
 }
 .team-grid {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:34px;
+  grid-template-columns:1fr;
+  max-width:1100px;
+  margin-inline:auto;
   padding:5px 0 65px
 }
-.portrait {
-  position:relative;
-  overflow:hidden;
-  aspect-ratio:4/5;
-  background:#e5e4dc;
-  margin-bottom:27px;
+.team-card-host {
   display:grid;
-  place-items:center
+  grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);
+  align-items:stretch;
+  background:#eef0e7
 }
-.portrait svg {
-  height:90%;
-  width:90%;
-  fill:#c2c9bb
+.team-card-host .host-portrait {
+  height:100%;
+  min-height:520px;
+  object-position:center center
 }
-.team-card:nth-child(2) .portrait {
-  background:#e9dfdb
+.team-card-copy {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:clamp(35px,6vw,76px)
 }
-.team-card:nth-child(2) .portrait svg {
-  fill:#d0b7b1
-}
-.team-card:nth-child(3) .portrait {
-  background:#e4e2d7
-}
-.team-card:nth-child(3) .portrait svg {
-  fill:#c4bca9
-}
-.portrait span {
-  position:absolute;
-  bottom:22px;
-  background:var(--cream);
-  font-size:8px;
-  letter-spacing:1.8px;
-  padding:6px 10px
-}
-.team-card>.eyebrow {
+.team-card-copy>.eyebrow {
   font-size:10px;
   color:var(--rose);
   margin-bottom:10px
 }
-.team-card h2 {
-  font-size:33px;
-  margin-bottom:16px
+.team-card-copy h2 {
+  font-size:clamp(40px,5vw,64px);
+  margin-bottom:20px
 }
-.team-card>p:not(.eyebrow) {
+.team-card-copy>p:not(.eyebrow) {
   color:var(--muted);
-  font-size:13px
+  font-size:15px;
+  line-height:1.8
 }
 .team-quote {
   border-top:1px solid var(--line);
@@ -1330,8 +1315,13 @@ footer {
   .team-grid {
     gap:22px
   }
-  .team-card h2 {
-    font-size:28px
+  .team-card-host {
+    grid-template-columns:1fr
+  }
+  .team-card-host .host-portrait {
+    height:auto;
+    min-height:0;
+    aspect-ratio:1/1
   }
   .team-quote p {
     font-size:30px
@@ -1600,15 +1590,10 @@ footer {
   }
   .team-grid {
     grid-template-columns:1fr;
-    gap:32px;
     padding-bottom:40px
   }
-  .portrait {
-    aspect-ratio:4/4;
-    max-height:410px
-  }
-  .team-card h2 {
-    font-size:33px
+  .team-card-copy {
+    padding:30px 24px 38px
   }
   .team-quote {
     padding:35px 0 55px
