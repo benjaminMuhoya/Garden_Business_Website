@@ -24,7 +24,7 @@ test('real build resolves every page link and asset for project hosting and loca
         const path = `dist/${relative}${relative === '' || relative.endsWith('/') ? 'index.html' : ''}`;
         assert.ok((await stat(path)).isFile(), path);
       }
-      assert.match(html, /WEBSITE PREVIEW/);
+      assert.doesNotMatch(html, /WEBSITE PREVIEW|PRIVATE CONCEPT|interactive prototype/i);
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
     }
   }
