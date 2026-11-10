@@ -1735,3 +1735,18 @@ footer {
 .menu-photo-panel{height:210px;overflow:hidden;background:#e5e2d7}
 .menu-photo-panel img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.87);transition:transform .3s ease}
 @media(max-width:640px){.menu-photo-strip{gap:5px;margin-bottom:22px}.menu-photo-panel{height:115px}}
+
+/* Preserve full owner photographs on the homepage and in the gallery. */
+.hero{background:#1c3027}
+.hero-image{object-fit:contain;object-position:center center}
+.experience-card{background:#263c30}
+.experience-card>img{width:100%;height:100%;object-fit:contain;object-position:center}
+.experience-card:hover>img{transform:none}
+.details-photo{background:#f1f0e9}
+.details-photo img{width:100%;height:auto;max-height:560px;object-fit:contain}
+.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 22px;align-items:start}
+.gallery-item,.gallery-item:nth-child(n){grid-column:auto;padding:0}
+.gallery-open{background:#f1f0e9;overflow:visible}
+.gallery-open img,.gallery-item:nth-child(n) img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;transition:none}
+.gallery-open:hover img{transform:none}
+@media(max-width:640px){.hero{height:auto;min-height:0;display:block;padding-top:0}.hero-image{position:relative;inset:auto;width:100%;height:auto;object-fit:contain}.hero-shade{background:linear-gradient(0deg,rgba(7,27,15,.7),transparent 65%)}.hero-content{position:absolute;inset:0 auto auto 0;width:100%;padding-top:30px}.hero-bottom{position:absolute;bottom:12px;left:0;right:0}.gallery-grid{grid-template-columns:1fr;gap:22px}.details-photo img{max-height:none}}
