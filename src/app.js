@@ -40,6 +40,7 @@ $('#reservation-form')?.addEventListener('submit',event=>{
 $('#reservation-form [name="date"]')?.addEventListener('input',event=>event.target.setCustomValidity(''));
 
 if($('.page-menu')) {
+  const menuCash = value => `KSh ${Number(value).toLocaleString('en-KE')}`;
   let cart={};
   try {cart=sanitizeCart(JSON.parse(localStorage.getItem('rosewood-cart-v1') || '{}'),content.menu);}catch{}
   function renderCart() {
@@ -47,8 +48,8 @@ if($('.page-menu')) {
     $$('[data-count]').forEach(output=>{output.textContent=cart[output.dataset.count] || 0;});
     $$('[data-qty]').forEach(button=>{const qty=cart[button.dataset.id]||0;button.disabled=Number(button.dataset.qty)<0?qty===0:qty>=20;});
     $('#cart-count').textContent=summary.count;
-    $('#cart-total').textContent=cash(summary.total);
-    $('#cart-lines').innerHTML=summary.lines.length?summary.lines.map(line=>`<div class="cart-line"><div><strong>${escape(line.name)}</strong><span>${line.quantity} × ${cash(line.price)}</span></div><strong>${cash(line.total)}</strong></div>`).join(''):'<p class="empty-basket">A little something delicious?<br>Add a dish to start your draft.</p>';
+    $('#cart-total').textContent=menuCash(summary.total);
+    $('#cart-lines').innerHTML=summary.lines.length?summary.lines.map(line=>`<div class="cart-line"><div><strong>${escape(line.name)}</strong><span>${line.quantity} × ${menuCash(line.price)}</span></div><strong>${menuCash(line.total)}</strong></div>`).join(''):'<p class="empty-basket">A little something delicious?<br>Add a dish to start your draft.</p>';
     $('#order-button').disabled=!summary.count; $('#clear-cart').disabled=!summary.count;
     try{localStorage.setItem('rosewood-cart-v1',JSON.stringify(cart));}catch{}
   }
@@ -66,7 +67,7 @@ if($('.page-menu')) {
   $('#order-form').addEventListener('submit',event=>{
     event.preventDefault();const summary=cartSummary(cart,content.menu);if(!summary.count)return;
     const data=Object.fromEntries(new FormData(event.currentTarget));
-    showDraft(`ORDER DRAFT\n\nName: ${data.name}\n\n${summary.lines.map(line=>`${line.quantity} × ${line.name}: ${cash(line.total)}`).join('\n')}\n\nSample subtotal: ${cash(summary.total)} USD\nTaxes, service and delivery not determined.\nNotes: ${data.notes || 'None'}\n\nAllergens and dietary requests need confirmation before a real order.`);
+    showDraft(`ORDER DRAFT\n\nName: ${data.name}\n\n${summary.lines.map(line=>`${line.quantity} × ${line.name}: ${menuCash(line.total)}`).join('\n')}\n\nSubtotal: ${menuCash(summary.total)}\nTaxes, service and delivery not determined.\nNotes: ${data.notes || 'None'}\n\nAllergens and dietary requests need confirmation before a real order.`);
   });renderCart();
 }
 
