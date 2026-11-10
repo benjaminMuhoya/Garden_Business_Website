@@ -1726,3 +1726,6 @@ footer {
 .page-menu .chip.active {background:#173e2b;border-color:#173e2b}
 .page-menu .quantity button:hover {background:#e9ede4}
 @media(max-width:640px){.page-menu .menu-grid{grid-template-columns:1fr}.page-menu .menu-card>img{height:195px}.page-menu .menu-copy{padding:18px}.page-menu .item-heading h2{font-size:22px}}
+
+/* Owner photography in menu cards */
+.menu-card .menu-photo {display:block;width:100%;height:170px;object-fit:cover;border-radius:12px 12px 0 0;}
