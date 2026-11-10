@@ -1710,3 +1710,19 @@ footer {
     animation:none!important
   }
 }
+
+/* Jotham menu: understated green, black and gold */
+.page-menu {--green:#173e2b;--forest:#102b20;--cream:#f8f7f1;--paper:#fffefa;--rose:#ad8440;--rose-pale:#f2eadb;--ink:#172a20;--line:#d8d6c8;background:#f8f7f1}
+.page-menu .page-intro {padding-bottom:15px}
+.page-menu .page-intro h1 {font-size:clamp(42px,5vw,70px);margin-bottom:12px}
+.page-menu .page-intro .lead {font-size:13px;margin-bottom:15px}
+.page-menu .menu-grid {gap:18px}
+.page-menu .menu-card {border:1px solid #dedccf;border-radius:3px;overflow:hidden;box-shadow:0 2px 12px #142c1c09}
+.page-menu .menu-card>img {height:170px;object-fit:cover}
+.page-menu .menu-copy {padding:22px}
+.page-menu .item-heading h2 {font-size:23px;margin-bottom:12px}
+.page-menu .item-heading strong {color:#8b672d;font-size:13px}
+.page-menu .order-panel {background:#e9ede4;border-top:3px solid #ad8440}
+.page-menu .chip.active {background:#173e2b;border-color:#173e2b}
+.page-menu .quantity button:hover {background:#e9ede4}
+@media(max-width:640px){.page-menu .menu-grid{grid-template-columns:1fr}.page-menu .menu-card>img{height:195px}.page-menu .menu-copy{padding:18px}.page-menu .item-heading h2{font-size:22px}}
