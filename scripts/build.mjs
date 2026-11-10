@@ -18,5 +18,6 @@ for(const file of ['app.js','domain.js','styles.css']) await cp(`src/${file}`,`d
 await cp('src/assets','dist/assets',{recursive:true});
 for(const key of pageKeys){const dir=key==='home'?'dist':`dist/${key}`;await mkdir(dir,{recursive:true});await writeFile(`${dir}/index.html`,applyBasePath(renderPage(key), basePath));}
 await writeFile('dist/.nojekyll', '');
+await writeFile('dist/CNAME', 'JothamGardens.com\n');
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
 console.log(`Built ${pageKeys.length} pages with local assets in dist/ for ${basePath}. No deployment performed.`);
