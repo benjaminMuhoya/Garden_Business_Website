@@ -1729,3 +1729,9 @@ footer {
 
 /* Owner photography in menu cards */
 .menu-card .menu-photo {display:block;width:100%;height:170px;object-fit:cover;border-radius:12px 12px 0 0;}
+
+/* Menu photography: one atmospheric strip, never repeated in individual dish cards. */
+.menu-photo-strip{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:8px;margin:0 0 30px;overflow:hidden;border-radius:6px}
+.menu-photo-panel{height:210px;overflow:hidden;background:#e5e2d7}
+.menu-photo-panel img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.87);transition:transform .3s ease}
+@media(max-width:640px){.menu-photo-strip{gap:5px;margin-bottom:22px}.menu-photo-panel{height:115px}}
