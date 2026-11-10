@@ -61,9 +61,13 @@ if($('.page-menu')) {
   }));
   $('#clear-cart').addEventListener('click',()=>{cart={};hideDraft();renderCart();announce('Basket emptied.');});
   $$('[data-menu-filter]').forEach(button=>button.addEventListener('click',()=>{
+    const category=button.dataset.menuFilter;
     $$('[data-menu-filter]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
-    $('[data-category]').forEach(card=>{card.hidden=button.dataset.menuFilter!=='All'&&card.dataset.category!==button.dataset.menuFilter;});
-    $('[data-menu-photo]').forEach(panel=>{panel.hidden=panel.dataset.menuPhoto!==button.dataset.menuFilter;});
+    $$('[data-category]').forEach(card=>{card.hidden=category!=='All'&&card.dataset.category!==category;});
+    $$('[data-menu-photo]').forEach(panel=>{panel.hidden=panel.dataset.menuPhoto!==category;});
+    $('.menu-stage').dataset.menuView=category;
+    $('#menu-view-title').textContent=category;
+    announce(`${category} menu selected.`);
   }));
   $('#order-form').addEventListener('submit',event=>{
     event.preventDefault();const summary=cartSummary(cart,content.menu);if(!summary.count)return;
