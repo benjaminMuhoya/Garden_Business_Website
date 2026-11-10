@@ -3,8 +3,8 @@ export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'KES',
-  origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. After 30 years as a teacher and raising my three children, I retired and devoted myself full-time to running this garden. I named it Jotham Gardens in memory of my late father, Jotham Ngaina. Today, we welcome you here to share good food, celebrate and spend meaningful time together.',
-  originNote: 'My hope is that every visit gives us time to slow down, connect and enjoy one another’s company.',
+  origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
+  originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
   facilities: [
     { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'Garden_gallery', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },

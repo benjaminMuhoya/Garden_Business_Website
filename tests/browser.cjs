@@ -44,10 +44,17 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.equal((homeText.match(/Some places invite you/g)||[]).length,1);
   assert.match(homeText,/Welcome to\s+Jotham Gardens/i);
   assert.match(homeText,/best moments happen when we slow down to appreciate not only our surroundings, but also the people around us/i);
-  assert.match(homeText,/Jotham Ngaina/);
+  assert.doesNotMatch(homeText,/Jotham Ngaina|30 years as a teacher|mother of three/i);
   assert.match(homeText,/Rooted in nature\./);
   assert.equal(await page.locator('footer').getByText("Let’s plan something beautiful",{exact:false}).count(),0);
   assert.equal(await page.getByRole('link',{name:'Meet the Host',exact:true}).count(),1);
+  const [heroImageBox,heroContentBox,heroBottomBox]=await Promise.all([
+    page.locator('.hero-image').boundingBox(),
+    page.locator('.hero-content').boundingBox(),
+    page.locator('.hero-bottom').boundingBox()
+  ]);
+  assert.equal(heroContentBox.y>=heroImageBox.y+heroImageBox.height-1,true,'mobile hero content follows image');
+  assert.equal(heroBottomBox.y>=heroContentBox.y+heroContentBox.height-1,true,'mobile explore link follows hero content');
 
   await page.goto(base+'/team/');
   const hostText=await page.locator('main').innerText();
@@ -71,7 +78,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await options.click();
   await page.getByRole('navigation').getByRole('link',{name:'Menu',exact:true}).click();
   await page.waitForURL('**/menu/');
-  console.log('PASS: requested homepage copy, footer removal, Options navigation and keyboard dismissal.');
+  console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
   assert.equal(await page.locator('.menu-card').count(),31);
   assert.equal(await page.locator('.menu-card:visible').count(),31);
