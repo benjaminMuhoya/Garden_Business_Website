@@ -7,10 +7,10 @@ export const content = {
   originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
   facilities: [
-    { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'garden', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },
-    { name: 'The covered pavilion', label: 'A LITTLE SHELTER, A LOT OF CHARM', image: 'venue', description: 'An airy setting for dining and conversation, with a covered layout for smaller events. ' },
+    { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'Garden_gallery', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },
+    { name: 'The covered pavilion', label: 'A LITTLE SHELTER, A LOT OF CHARM', image: 'night_set_up_catering', description: 'An airy setting for dining and conversation, with a covered layout for smaller events. ' },
     { name: 'The dining terrace', label: 'TIME TO SAVOUR', image: 'terrace', description: 'An inviting place for seasonal plates, a slow breakfast or a table shared with friends. ' },
-    { name: 'The quiet corners', label: 'ROOM TO EXHALE', image: 'flowers', description: 'Shaded garden seating and tucked-away spots for reading, reflection and unhurried conversation.' }
+    { name: 'The quiet corners', label: 'ROOM TO EXHALE', image: 'Flowers', description: 'Shaded garden seating and tucked-away spots for reading, reflection and unhurried conversation.' }
   ],
   menu: [
       {
@@ -18,7 +18,7 @@ export const content = {
           "name": "Beef · 1 kg",
           "category": "Meats",
           "price": 1400,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -27,7 +27,7 @@ export const content = {
           "name": "Beef · ½ kg",
           "category": "Meats",
           "price": 800,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -36,7 +36,7 @@ export const content = {
           "name": "Full Kienyeji Chicken",
           "category": "Meats",
           "price": 1800,
-          "image": "food",
+          "image": "Chicken",
           "description": "",
           "tag": ""
       },
@@ -45,7 +45,7 @@ export const content = {
           "name": "Full Broiler Chicken",
           "category": "Meats",
           "price": 1500,
-          "image": "food",
+          "image": "Chicken",
           "description": "",
           "tag": ""
       },
@@ -54,7 +54,7 @@ export const content = {
           "name": "½ Kienyeji Chicken",
           "category": "Meats",
           "price": 1000,
-          "image": "food",
+          "image": "Chicken",
           "description": "",
           "tag": ""
       },
@@ -63,7 +63,7 @@ export const content = {
           "name": "½ Broiler Chicken",
           "category": "Meats",
           "price": 800,
-          "image": "food",
+          "image": "Chicken",
           "description": "",
           "tag": ""
       },
@@ -72,7 +72,7 @@ export const content = {
           "name": "Mutton · 1 kg",
           "category": "Meats",
           "price": 1500,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -81,7 +81,7 @@ export const content = {
           "name": "Mutton · ½ kg",
           "category": "Meats",
           "price": 1100,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -99,7 +99,7 @@ export const content = {
           "name": "Pork · 1 kg",
           "category": "Meats",
           "price": 1300,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -108,7 +108,7 @@ export const content = {
           "name": "Pork · ½ kg",
           "category": "Meats",
           "price": 650,
-          "image": "food",
+          "image": "Meats",
           "description": "",
           "tag": ""
       },
@@ -126,7 +126,7 @@ export const content = {
           "name": "Roast · plate",
           "category": "Sides",
           "price": 250,
-          "image": "food",
+          "image": "Roast_potato",
           "description": "",
           "tag": ""
       },
@@ -135,7 +135,7 @@ export const content = {
           "name": "Roast · plate (confirm)",
           "category": "Sides",
           "price": 300,
-          "image": "food",
+          "image": "Roast_potato",
           "description": "",
           "tag": ""
       },
@@ -294,8 +294,8 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Garden Room', subtitle: 'A peaceful place to begin and end the day.', image: 'room', single: 85, double: 115, bed: 'One queen bed', details: 'Garden outlook · Private bathroom · Reading corner' },
-    { id: 'terrace', name: 'Terrace Suite', subtitle: 'A little more space. A little longer to linger.', image: 'room', single: 125, double: 155, bed: 'One king bed', details: 'Private terrace · Sitting area · Private bathroom' }
+    { id: 'garden', name: 'Garden Room', subtitle: 'A peaceful place to begin and end the day.', image: 'Luxury_bed_and_house', single: 85, double: 115, bed: 'One queen bed', details: 'Garden outlook · Private bathroom · Reading corner' },
+    { id: 'terrace', name: 'Terrace Suite', subtitle: 'A little more space. A little longer to linger.', image: 'Full_Board', single: 125, double: 155, bed: 'One king bed', details: 'Private terrace · Sitting area · Private bathroom' }
   ],
   meals: { breakfast: 12, lunch: 18, dinner: 25 },
   team: [
@@ -304,12 +304,13 @@ export const content = {
     { name: 'Sam Rivers', role: 'Garden & grounds', initials: 'SR', description: 'Caring for the green spaces that make every visit feel a little slower.' }
   ],
   gallery: [
-    { image: 'garden', title: 'A path to somewhere peaceful', category: 'Gardens' },
-    { image: 'venue', title: 'A setting for your story', category: 'Celebrations' },
-    { image: 'food', title: 'Fresh from the kitchen', category: 'Dining' },
-    { image: 'flowers', title: 'Nature in the details', category: 'Gardens' },
-    { image: 'room', title: 'Stay a little longer', category: 'Rooms' },
-    { image: 'terrace', title: 'Gather around the table', category: 'Dining' },
-    { image: 'dessert', title: 'The sweetest ending', category: 'Dining' }
+    { image: 'Garden_gallery', title: 'A path to somewhere peaceful', category: 'Gardens' },
+    { image: 'bonfire_dinner', title: 'A setting for your story', category: 'Celebrations' },
+    { image: 'Meats', title: 'Fresh from the kitchen', category: 'Dining' },
+    { image: 'Flowers', title: 'Nature in the details', category: 'Gardens' },
+    { image: 'Luxury_bed_and_house', title: 'Stay a little longer', category: 'Rooms' },
+    { image: 'night_set_up_catering', title: 'Gather around the table', category: 'Dining' },
+    { image: 'dessert', title: 'The sweetest ending', category: 'Dining' },
+    { image: 'Children gallery', title: 'Family moments', category: 'Gardens' }
   ]
 };
