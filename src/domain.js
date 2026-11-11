@@ -5,6 +5,7 @@ export function sanitizeCart(raw, menu) {
   const safe = {};
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return safe;
   for (const item of menu) {
+    if (item.orderable === false || !Number.isFinite(item.price)) continue;
     const qty = raw[item.id];
     if (Number.isInteger(qty) && qty > 0 && qty <= 20) safe[item.id] = qty;
   }

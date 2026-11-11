@@ -26,7 +26,7 @@ test('real build resolves every page link and asset for project hosting and loca
       }
       assert.doesNotMatch(html, /WEBSITE PREVIEW|PRIVATE CONCEPT|interactive prototype/i);
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
-      assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|Plan an inquiry|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
+      assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
       assert.match(html, /© 2026 Jotham Garden and Restaurant/);
       if (key === 'home') {
         assert.match(html, /Slow moments/);
@@ -43,6 +43,12 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="email"[^>]*type="email"/);
         assert.doesNotMatch(html, /name="email"[^>]*required/);
         assert.match(html, /name="emailCopy"/);
+      }
+      if (key === 'menu') {
+        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
+        for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350']) assert.ok(html.includes(price), price);
+        assert.match(html, /0724767617/);
+        assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
       if (key === 'facilities') assert.equal((html.match(/class="facility-card"/g) || []).length, 9);
       if (key === 'accommodation') {

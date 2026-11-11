@@ -3,7 +3,7 @@ export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'KES',
-  origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
+  origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of nature, joyful gatherings, good food and unforgettable moments, Jotham Gardens is a place to meet, connect and share beautiful moments close to nature.',
   originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
   facilities: [
@@ -136,15 +136,6 @@ export const content = {
           "tag": ""
       },
       {
-          "id": "roast300",
-          "name": "Roast · plate (confirm)",
-          "category": "Sides",
-          "price": 300,
-          "image": "Roast_potato",
-          "description": "",
-          "tag": ""
-      },
-      {
           "id": "bananas",
           "name": "Roast Bananas · plate",
           "category": "Sides",
@@ -154,21 +145,57 @@ export const content = {
           "tag": ""
       },
       {
+          "id": "roast300",
+          "name": "Any Side Plate (Large)",
+          "category": "Sides",
+          "price": 350,
+          "image": "Roast_potato",
+          "description": "Choose from the available accompaniments.",
+          "tag": ""
+      },
+      {
           "id": "halfbreakfast",
           "name": "Half Breakfast",
           "category": "Breakfast",
-          "price": 800,
+          "price": 700,
+          "image": "food",
+          "description": "",
+          "tag": ""
+      },
+      {
+          "id": "fullbreakfast",
+          "name": "Full Breakfast",
+          "category": "Breakfast",
+          "price": 1100,
           "image": "food",
           "description": "",
           "tag": ""
       },
       {
           "id": "omelette",
-          "name": "Omelette",
+          "name": "Freshly Made Omelette",
           "category": "Breakfast",
           "price": 150,
           "image": "food",
           "description": "",
+          "tag": ""
+      },
+      {
+          "id": "breakfastcoffee",
+          "name": "Freshly Made Coffee",
+          "category": "Breakfast",
+          "price": 200,
+          "image": "food",
+          "description": "Black or with milk.",
+          "tag": ""
+      },
+      {
+          "id": "breakfastchai",
+          "name": "Chai with Milk (Mixed Tea)",
+          "category": "Breakfast",
+          "price": 150,
+          "image": "food",
+          "description": "Ask to have a tea bag instead.",
           "tag": ""
       },
       {
@@ -289,12 +316,95 @@ export const content = {
           "tag": ""
       },
       {
+          "id": "seasonaljuice",
+          "name": "Fresh Seasonal Juice",
+          "category": "Cold Drinks",
+          "price": 300,
+          "image": "food",
+          "description": "Pineapple, mango, watermelon or tropical mix. Ask for the fruit of the season.",
+          "tag": ""
+      },
+      {
+          "id": "wine-shots",
+          "name": "Wine Shots",
+          "category": "Alcoholic Drinks",
+          "price": null,
+          "priceLabel": "Ask what’s available",
+          "orderable": false,
+          "image": "food",
+          "description": "Selection and prices vary by brand.",
+          "tag": ""
+      },
+      {
+          "id": "whisky-shots",
+          "name": "Whisky Shots",
+          "category": "Alcoholic Drinks",
+          "price": null,
+          "priceLabel": "Ask what’s available",
+          "orderable": false,
+          "image": "food",
+          "description": "Selection and prices vary by brand.",
+          "tag": ""
+      },
+      {
+          "id": "gin-shots",
+          "name": "Gin Shots",
+          "category": "Alcoholic Drinks",
+          "price": null,
+          "priceLabel": "Ask what’s available",
+          "orderable": false,
+          "image": "food",
+          "description": "Selection and prices vary by brand.",
+          "tag": ""
+      },
+      {
+          "id": "vodka-shots",
+          "name": "Vodka Shots",
+          "category": "Alcoholic Drinks",
+          "price": null,
+          "priceLabel": "Ask what’s available",
+          "orderable": false,
+          "image": "food",
+          "description": "Selection and prices vary by brand.",
+          "tag": ""
+      },
+      {
+          "id": "cocktails",
+          "name": "Cocktails",
+          "category": "Alcoholic Drinks",
+          "price": 650,
+          "image": "food",
+          "description": "Moscow Mule, Gin and Tonic, Rum and Coke, Fireball, Long Island Iced Tea or Whiskey Sour.",
+          "tag": ""
+      },
+      {
+          "id": "beer",
+          "name": "Beer",
+          "category": "Alcoholic Drinks",
+          "price": 300,
+          "image": "food",
+          "description": "Tusker, White Cap, Heineken, Guinness or Pilsner. Ask what is available.",
+          "tag": ""
+      },
+      {
           "id": "mbuzi",
           "name": "Full Mbuzi · up to 20 people",
           "category": "Groups & Events",
           "price": 25000,
           "image": "venue",
           "description": "",
+          "tag": ""
+      },
+      {
+          "id": "customgroup",
+          "name": "Custom Group & Event Offers",
+          "category": "Groups & Events",
+          "price": null,
+          "priceLabel": "Plan an inquiry",
+          "orderable": false,
+          "href": "/reserve/",
+          "image": "venue",
+          "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call 0724767617.",
           "tag": ""
       }
   ],
@@ -304,7 +414,7 @@ export const content = {
   ],
   meals: { lunch: 18, dinner: 25 },
   team: [
-    { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'Welcome to our garden. I am a mother of three and a retired teacher with 30 years of experience. I now devote my time to running Jotham Gardens, which I named in loving memory of my late father, Jotham Ngaina.' }
+    { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'Welcome to our garden, named in memory of my late father, Jotham Ngaina—a humble coffee farmer and lifelong mentor. I am a mother of three and a retired teacher, now fully devoted to Jotham Gardens. I spend much of my time tending the flowers and caring for the details that help every guest leave smiling and looking forward to returning.' }
   ],
   gallery: [
     { image: 'Garden_gallery', title: 'A path to somewhere peaceful', category: 'Gardens' },

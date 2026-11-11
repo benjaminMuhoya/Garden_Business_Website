@@ -1700,6 +1700,8 @@ footer {
 .page-menu .menu-copy {padding:22px}
 .page-menu .item-heading h2 {font-size:23px;margin-bottom:12px}
 .page-menu .item-heading strong {color:#8b672d;font-size:13px}
+.page-menu .menu-card-info {background:#fffaf3}
+.menu-inquiry-link {display:inline-block;color:var(--green);font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .page-menu .quantity button:hover {background:#fff}
 .page-menu .order-panel {background:#fff;border-top:3px solid #ad8440;box-shadow:0 10px 30px #06170d24}
 .menu-notes {color:#fff;background:#102b20;margin-top:18px;padding:18px 20px;border-left:2px solid #c69b50}

@@ -67,7 +67,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const hostText=await page.locator('main').innerText();
   assert.match(hostText,/Jane/);
   assert.match(hostText,/mother of three/i);
-  assert.match(hostText,/30 years of experience/i);
+  assert.match(hostText,/retired teacher/i);
   assert.match(hostText,/Jotham Ngaina/);
   assert.doesNotMatch(hostText,/Alex Morgan|Jamie Ellis|Sam Rivers/);
   const hostPhoto=page.locator('.host-portrait');
@@ -87,10 +87,10 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.waitForURL('**/menu/');
   console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
-  assert.equal(await page.locator('.menu-card').count(),31);
-  assert.equal(await page.locator('.menu-card:visible').count(),31);
+  assert.equal(await page.locator('.menu-card').count(),42);
+  assert.equal(await page.locator('.menu-card:visible').count(),42);
   assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'All');
-  const categoryCounts={Meats:11,Sides:4,Breakfast:2,Snacks:5,'Hot Drinks':6,'Cold Drinks':2,'Groups & Events':1};
+  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':6,'Groups & Events':2};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);
@@ -105,6 +105,15 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
     }
   }
   await page.getByRole('button',{name:'All',exact:true}).click();
+  assert.equal(await page.locator('.menu-card-info').count(),5);
+  assert.equal(await page.locator('.menu-card-info .quantity').count(),0);
+  assert.match(await page.locator('.menu-card').filter({hasText:'Freshly Made Coffee'}).innerText(),/KSh 200/);
+  assert.match(await page.locator('.menu-card').filter({hasText:'Chai with Milk'}).innerText(),/KSh 150/);
+  assert.match(await page.locator('.menu-card').filter({hasText:'Cocktails'}).innerText(),/KSh 650/);
+  assert.match(await page.locator('.menu-card').filter({hasText:'Beer'}).innerText(),/KSh 300/);
+  const sideNames=await page.locator('.menu-card[data-category="Sides"] h2').allTextContents();
+  assert.equal(sideNames.at(-1),'Any Side Plate (Large)');
+  assert.match(await page.locator('.menu-card').filter({hasText:'Custom Group & Event Offers'}).innerText(),/0724767617/);
   await page.getByRole('button',{name:'Add one Beef · 1 kg',exact:true}).click({clickCount:2});
   await page.getByRole('button',{name:'Add one Fries · plate',exact:true}).click();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 3,050');
