@@ -299,8 +299,8 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 2500, double: 3000, bed: 'Breakfast available on request at an additional charge', details: 'For one or two guests' },
-    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 4500, double: 5000, bed: 'Breakfast available on request at an additional charge', details: 'For one or two guests' }
+    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
+    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
   ],
   meals: { lunch: 18, dinner: 25 },
   team: [

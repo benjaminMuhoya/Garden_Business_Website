@@ -8,10 +8,12 @@ test('cart trusts only known item identifiers and bounded integer quantities',()
  const summary=cartSummary({beef1:2,lemontea:1},content.menu);
  assert.equal(summary.total,2900);assert.equal(summary.count,3);assert.equal(summary.lines.length,2);
 });
-const base={room:'garden',guests:'2',arrival:'2030-06-10',departure:'2030-06-12',breakfast:true,lunch:true,dinner:true};
-test('stay marks optional breakfast without adding an unknown charge and respects room occupancy',()=>{
- assert.deepEqual(stayQuote(base,content,'2030-06-01'),{room:'Rooms at the Garden',guests:2,nights:2,rate:3000,roomTotal:6000,breakfastRequested:true,lunch:72,dinner:100,total:6172});
- assert.equal(stayQuote({...base,room:'terrace',guests:'1',breakfast:false,lunch:false,dinner:false},content,'2030-06-01').total,9000);
+const base={room:'garden',guests:'2',arrival:'2030-06-10',departure:'2030-06-12',lunch:true,dinner:true};
+test('stay includes breakfast and respects the corrected single and double room rates',()=>{
+ assert.deepEqual(stayQuote(base,content,'2030-06-01'),{room:'Rooms at the Garden',guests:2,nights:2,rate:2800,roomTotal:5600,breakfastIncluded:true,lunch:72,dinner:100,total:5772});
+ assert.equal(stayQuote({...base,room:'terrace',guests:'1',lunch:false,dinner:false},content,'2030-06-01').total,7000);
+ assert.equal(content.rooms.find(room=>room.id==='garden').single,1500);
+ assert.equal(content.rooms.find(room=>room.id==='terrace').double,5000);
 });
 test('stay rejects invalid dates, past arrivals, unsupported occupancy and long stays',()=>{
  for(const change of [{arrival:'2030-02-30'},{departure:'2030-06-09'},{departure:'2030-06-10'},{departure:'2030-08-10'},{guests:'3'},{room:'unknown'},{arrival:'2020-06-01'}]) assert.ok(stayQuote({...base,...change},content,'2030-06-01').error,JSON.stringify(change));

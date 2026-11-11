@@ -8,7 +8,7 @@ Latest verification: November 10, 2026.
 - `npm run build`: generated all seven pages and their local assets successfully.
 - Hosting tests built the site at both `/` and `/Garden_Business_Website/`, then verified that every emitted page link and asset resolves to a generated file.
 - Content assertions verify the requested homepage, event, facilities, accommodation, host and footer text; nine facilities; a capacity of up to 1,000 guests; and removal of the unwanted prototype phrases, arrows and circled card numbers.
-- Domain tests verify cart sanitization and totals, room pricing, optional breakfast handling, invalid dates, occupancy limits and stay-length boundaries.
+- Domain tests verify cart sanitization and totals, corrected single/double room pricing, included breakfast, invalid dates, occupancy limits and stay-length boundaries.
 - Generated-form assertions verify that phone numbers are required while email addresses remain optional on event, food and accommodation forms. The updated browser test also checks that email becomes required for copy delivery and that phone numbers reach submission payloads.
 - The opening photograph uses full-container cover sizing and a subtle responsive pan-and-zoom animation. Existing reduced-motion CSS disables the animation for visitors who request reduced motion.
 - The shared rose accent is the accessible bright raspberry pink `#D81B60`. Header-only wordmark rules enlarge the top logo responsively while footer dimensions remain unchanged.
@@ -24,5 +24,4 @@ FormSubmit requires the venue owner to click its activation message before live 
 ## Limits
 
 - The site submits requests but does not process payments or automatically confirm inventory, room availability or event availability.
-- The optional breakfast price was not supplied, so the website marks it as an extra charge and excludes it from the estimate until the venue confirms the amount.
 - Live email delivery is not end-to-end verified until FormSubmit is activated and a real submission is confirmed in the venue inbox.

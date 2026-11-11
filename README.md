@@ -38,7 +38,7 @@ Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` ag
 - `/reserve/`: event information, occasion types, capacity, and a working inquiry form.
 - `/facilities/`: nine venue facilities with concise descriptions.
 - `/menu/`: category filtering, quantity controls, a persistent basket, order submission and invoice download.
-- `/accommodation/`: room rates, date-based estimates, optional breakfast and booking submission.
+- `/accommodation/`: room rates with breakfast included, date-based estimates and booking submission.
 - `/team/`: editable example profiles and explicit headshot placeholders.
 - `/gallery/`: seven inspiration slots, category filtering, accessible native image dialog.
 
@@ -56,7 +56,7 @@ Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` ag
 
 Cart quantities (only) persist in the current browser under `rosewood-cart-v1`. Unknown item IDs and invalid quantities are discarded; each dish is limited to 20. Names, phone numbers, emails and notes are not written to browser storage. Every order, booking and inquiry requires a customer phone number. Email is optional and becomes required only when the customer asks for an emailed invoice or copy. Successful submissions can also be downloaded as text confirmations.
 
-Room rates are per room per night and depend on one or two guests. Breakfast is optional and its extra charge is confirmed by the venue, so it is not included in the website estimate. Date arithmetic uses whole calendar days, avoiding daylight-saving hour differences. Stays are limited to 1–30 nights. The site sends order and inquiry details but does not process payment or automatically confirm inventory or availability.
+Room rates are per room per night and depend on one or two guests. Breakfast is included in every accommodation rate. Date arithmetic uses whole calendar days, avoiding daylight-saving hour differences. Stays are limited to 1–30 nights. The site sends order and inquiry details but does not process payment or automatically confirm inventory or availability.
 
 Native labels, field validation, focus indicators, a skip link, responsive navigation, live summaries, descriptive image alternatives and reduced-motion support are included. Team images are abstract placeholders, not portraits of real employees.
 

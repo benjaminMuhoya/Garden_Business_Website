@@ -9,7 +9,7 @@ The business name, motto and current venue details are owner-provided. Confirm t
 - [ ] **Venue and facilities:** occasion types, actual seated/standing capacities, room layouts, venue hire prices, inclusions, parking, accessibility, toilets, power, Wi-Fi, noise restrictions and wet-weather plan.
 - [ ] **Policies:** reservations, deposits, cancellations, refunds, event conduct, privacy, cookies, food/allergens, children/pets, check-in/check-out, taxes and service charges.
 - [ ] **Menu and prices:** final categories, dish names, descriptions, portion sizes, currency, prices, ingredients/allergens, verified dietary labels, availability, service times and fulfilment methods.
-- [ ] **Accommodation:** room names/types, number of each type, bed configurations, amenities, single/double occupancy prices, breakfast/lunch/dinner pricing, seasonal rates, minimum stays and inventory rules.
+- [ ] **Accommodation:** room names/types, number of each type, bed configurations, amenities, confirmed single/double occupancy prices with breakfast included, seasonal rates, minimum stays and inventory rules.
 - [ ] **Team:** real names, roles, approved biographies, headshots and publication consent.
 - [ ] **Photographs:** high-resolution garden, venue, facilities, food, rooms, events and team images; ownership/usage permissions, captions, preferred crops and alt text. Replace all inspiration imagery.
 - [ ] **Providers:** preferred ordering, booking/inventory, payment and email providers; required integrations, account ownership and operational staff workflow.

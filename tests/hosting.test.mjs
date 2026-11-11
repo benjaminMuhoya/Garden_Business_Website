@@ -26,7 +26,7 @@ test('real build resolves every page link and asset for project hosting and loca
       }
       assert.doesNotMatch(html, /WEBSITE PREVIEW|PRIVATE CONCEPT|interactive prototype/i);
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
-      assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|Plan an inquiry|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE|breakfast included/i);
+      assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|Plan an inquiry|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
       assert.match(html, /© 2026 Jotham Garden and Restaurant/);
       if (key === 'home') {
         assert.match(html, /Slow moments/);
@@ -45,7 +45,11 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="emailCopy"/);
       }
       if (key === 'facilities') assert.equal((html.match(/class="facility-card"/g) || []).length, 9);
-      if (key === 'accommodation') assert.match(html, /Breakfast is available on request for an additional charge/);
+      if (key === 'accommodation') {
+        assert.match(html, /Breakfast included/);
+        for (const price of ['1,500','2,800','3,500','5,000']) assert.match(html, new RegExp(`KES\\s*${price}`));
+        assert.doesNotMatch(html, /extra charge|name="breakfast"/i);
+      }
       if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);
     }
     const css = await readFile('dist/styles.css', 'utf8');

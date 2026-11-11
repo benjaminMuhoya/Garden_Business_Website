@@ -153,13 +153,12 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByRole('combobox',{name:/Guests/}).selectOption('2');
   await page.getByLabel('Arrival',{exact:true}).fill('2030-06-10');
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-12');
-  assert.match(await page.locator('#stay-summary').textContent(),/KES\s*6,000/);
+  assert.match(await page.locator('#stay-summary').textContent(),/KES\s*5,600/);
   await page.getByLabel('Your name').fill('Test Guest');
   await page.getByLabel('Phone number').fill('+254 722 222 222');
-  await page.getByLabel('Add breakfast (extra charge)').check();
   await page.getByRole('button',{name:'Send booking request'}).click();
-  assert.match(await page.locator('#draft-text').textContent(),/Estimated total: KES\s*6,000/);
-  assert.match(await page.locator('#draft-text').textContent(),/Breakfast: Requested — extra charge/);
+  assert.match(await page.locator('#draft-text').textContent(),/Estimated total: KES\s*5,600/);
+  assert.match(await page.locator('#draft-text').textContent(),/Breakfast: Included/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Accommodation booking');
   assert.equal(submissions.at(-1).Phone,'+254 722 222 222');
   assert.equal('_cc' in submissions.at(-1),false);
@@ -170,7 +169,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-12');
   await page.getByRole('combobox',{name:/Guests/}).selectOption('1');
   await page.getByRole('button',{name:'Plan this stay'}).nth(1).click();
-  assert.match(await page.locator('#stay-summary').textContent(),/KES\s*9,000/);
+  assert.match(await page.locator('#stay-summary').textContent(),/KES\s*7,000/);
   console.log('PASS: current KSh accommodation pricing, invalid dates and room selection.');
 
   await page.goto(base+'/gallery/');

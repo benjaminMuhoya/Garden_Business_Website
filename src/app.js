@@ -119,13 +119,13 @@ if($('.page-menu')) {
 
 if($('#booking-form')) {
   const form=$('#booking-form');
-  function input(){const data=Object.fromEntries(new FormData(form));return {...data,breakfast:!!data.breakfast,lunch:!!data.lunch,dinner:!!data.dinner};}
+  function input(){const data=Object.fromEntries(new FormData(form));return {...data,lunch:!!data.lunch,dinner:!!data.dinner};}
   function quote(){return stayQuote(input(),content);}
   function renderQuote(){
     form.elements.departure.setCustomValidity('');
     const q=quote();
     if(q.error){$('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><p>${escape(q.error)}</p>`;return;}
-    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Room · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${q.breakfastRequested?'<div class="summary-line"><span>Breakfast requested</span><strong>Extra charge</strong></div>':''}${[['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Estimated total</span><strong>${cash(q.total)}</strong></div><p class="small">Breakfast is optional and its charge is not included in this estimate. Availability and final charges require confirmation.</p>`;
+    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Room with breakfast · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${[['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Estimated total</span><strong>${cash(q.total)}</strong></div><p class="small">Breakfast is included. Availability and final charges require confirmation.</p>`;
   }
   form.addEventListener('input',renderQuote);form.addEventListener('change',()=>{hideDraft();renderQuote();});
   $$('.choose-room').forEach(button=>button.addEventListener('click',()=>{form.elements.room.value=button.dataset.room;hideDraft();renderQuote();$('#plan-stay').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});form.elements.arrival.focus({preventScroll:true});}));
@@ -133,10 +133,9 @@ if($('#booking-form')) {
     event.preventDefault();const q=quote();
     if(q.error){form.elements.departure.setCustomValidity(q.error);form.reportValidity();return;}
     const data=input();
-    const breakfast=q.breakfastRequested?'Requested — extra charge':'Not requested';
     const email=data.email || 'Not provided';
-    const receipt=`BOOKING INVOICE\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${breakfast}\nEstimated total: ${cash(q.total)}\n\nThe venue will confirm availability and final charges.`;
-    await submitRequest(event.currentTarget,'Accommodation booking',{Name:data.name,Phone:data.phone,Email:email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:breakfast,'Estimated total':cash(q.total)},receipt);
+    const receipt=`BOOKING INVOICE\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nRoom with breakfast: ${cash(q.roomTotal)}\nBreakfast: Included\nEstimated total: ${cash(q.total)}\n\nThe venue will confirm availability and final charges.`;
+    await submitRequest(event.currentTarget,'Accommodation booking',{Name:data.name,Phone:data.phone,Email:email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:'Included','Estimated total':cash(q.total)},receipt);
   });renderQuote();
 }
 $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{

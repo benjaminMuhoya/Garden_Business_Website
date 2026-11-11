@@ -37,5 +37,5 @@ export function stayQuote(input, content, today = localToday()) {
   const roomTotal = rate * nights;
   const lunch = input.lunch ? content.meals.lunch * guests * nights : 0;
   const dinner = input.dinner ? content.meals.dinner * guests * nights : 0;
-  return { room: room.name, guests, nights, rate, roomTotal, breakfastRequested: Boolean(input.breakfast), lunch, dinner, total: roomTotal + lunch + dinner };
+  return { room: room.name, guests, nights, rate, roomTotal, breakfastIncluded: true, lunch, dinner, total: roomTotal + lunch + dinner };
 }
