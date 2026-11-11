@@ -351,6 +351,9 @@ nav a:hover:after,nav a[aria-current]:after {
 .welcome .text-link {
   color:var(--green)
 }
+.home-divider {
+  border-top:1px solid #d81b6052
+}
 .experience-section {
   background:#fff;
   padding:88px 0 94px
@@ -605,11 +608,30 @@ legend {
   grid-template-columns:1fr 1fr;
   gap:45px 35px
 }
-.facility-card img {
-  height:340px
-}
-.facility-card>div {
+.facility-card .facility-copy {
   padding-top:25px
+}
+.parking-card {
+  grid-column:1 / -1
+}
+.parking-gallery {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  background:var(--green);
+  padding:12px
+}
+.parking-gallery img {
+  width:100%;
+  height:360px;
+  object-fit:contain;
+  background:var(--green);
+  filter:brightness(1.06)
+}
+.parking-gallery img:first-child {
+  grid-column:1 / -1;
+  height:auto;
+  max-height:520px
 }
 .facility-card h2 {
   font-size:36px;
@@ -1494,7 +1516,7 @@ footer {
     grid-template-columns:1fr;
     gap:30px
   }
-  .facility-card img {
+  .parking-gallery img {
     height:285px
   }
   .facility-card h2 {
@@ -1709,6 +1731,8 @@ footer {
 .menu-notes p+p {margin-top:7px}
 @media(max-width:900px){.menu-stage-content{padding:38px 28px 30px}.menu-stage-overlay{background:linear-gradient(180deg,rgba(9,28,20,.36),rgba(9,28,20,.85) 34%,rgba(9,28,20,.95))}}
 @media(max-width:640px){.menu-stage-content{padding:30px 16px 18px}.menu-view-heading{margin-bottom:22px}.menu-view-heading h2{font-size:44px}.page-menu .menu-grid{grid-template-columns:1fr}.page-menu .menu-copy{padding:18px}.page-menu .item-heading h2{font-size:22px}.menu-stage{border-radius:5px}.menu-notes{padding:15px}}
+
+@media(max-width:640px){.parking-gallery{grid-template-columns:1fr}.parking-gallery img,.parking-gallery img:first-child{grid-column:auto;height:auto;max-height:none}}
 
 /* Preserve full owner photographs on the homepage and in the gallery. */
 .hero{background:#1c3027}

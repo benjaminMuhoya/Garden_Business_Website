@@ -10,7 +10,7 @@ for (const group of [content.menu, content.rooms]) {
 const rates = [...content.menu.filter(x => x.orderable !== false).map(x => x.price), ...content.rooms.flatMap(x => [x.single, x.double]), ...Object.values(content.meals)];
 if (rates.some(rate => !Number.isFinite(rate) || rate < 0)) throw new Error('Invalid sample price');
 if (content.menu.some(item => item.orderable === false && (!item.priceLabel || item.price !== null))) throw new Error('Invalid informational menu item');
-const assets = new Set(['garden', 'flowers', 'venue', 'food', 'room', ...[...content.facilities, ...content.menu, ...content.rooms, ...content.team, ...content.gallery].map(x => x.image).filter(Boolean)]);
+const assets = new Set(['garden', 'flowers', 'venue', 'food', 'room', ...content.facilities.flatMap(x => [x.image, ...(x.images || []).map(photo => photo.src)]).filter(Boolean), ...[...content.menu, ...content.rooms, ...content.team, ...content.gallery].map(x => x.image).filter(Boolean)]);
 const assetFile = asset => ({'Children gallery':'Children gallery.JPG',Jane_host:'Jane_host.png'}[asset] || `${asset}.jpg`);
 for(const asset of assets) if((await stat(`src/assets/${assetFile(asset)}`)).size<1000) throw new Error('Missing asset '+asset);
 await rm('dist',{recursive:true,force:true});

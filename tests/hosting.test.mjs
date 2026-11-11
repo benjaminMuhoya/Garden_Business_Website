@@ -31,7 +31,11 @@ test('real build resolves every page link and asset for project hosting and loca
       if (key === 'home') {
         assert.match(html, /Slow moments/);
         assert.match(html, /Fresh flavours/);
+        assert.equal((html.match(/class="home-divider wrap"/g) || []).length, 1);
+        assert.doesNotMatch(html, /A place to slow down, connect and enjoy the gardens/i);
         assert.doesNotMatch(html, /card-number|Meet Jane, your host/);
+      } else {
+        assert.doesNotMatch(html, /class="home-divider wrap"/);
       }
       if (key === 'reserve') {
         assert.match(html, /The perfect place/);
@@ -50,7 +54,12 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /0724767617/);
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
-      if (key === 'facilities') assert.equal((html.match(/class="facility-card"/g) || []).length, 9);
+      if (key === 'facilities') {
+        assert.equal((html.match(/class="facility-card /g) || []).length, 9);
+        assert.equal((html.match(/class="parking-gallery"/g) || []).length, 1);
+        assert.equal((html.match(/assets\/parking-(?:wall|garden|event)\.jpg/g) || []).length, 3);
+        assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 8);
+      }
       if (key === 'accommodation') {
         assert.match(html, /Breakfast included/);
         for (const price of ['1,500','2,800','3,500','5,000']) assert.match(html, new RegExp(`KES\\s*${price}`));

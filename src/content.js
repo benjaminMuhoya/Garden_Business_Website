@@ -4,18 +4,21 @@ export const content = {
   motto: 'Your Nature Haven for Food, Drinks & Events.',
   currency: 'KES',
   origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of nature, joyful gatherings, good food and unforgettable moments, Jotham Gardens is a place to meet, connect and share beautiful moments close to nature.',
-  originNote: 'A place to slow down, connect and enjoy the gardens.',
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
   facilities: [
-    { name: 'Garden Lawn', image: 'Garden_gallery', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
-    { name: 'Ground-Floor Conference Room', image: 'night_set_up_catering', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
-    { name: 'First-Floor Conference Room', image: 'terrace', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
-    { name: 'Bar', image: 'bonfire_dinner', description: 'Drinks service for relaxed gatherings and private events.' },
-    { name: 'On-Demand Kitchen', image: 'food', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
-    { name: 'Catering Kitchen', image: 'Meats', description: 'A dedicated kitchen supporting large events and outside catering.' },
-    { name: 'Parking and Security', image: 'venue', description: 'Ample parking with 24-hour security.' },
-    { name: 'Garden Corners', image: 'Flowers', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
-    { name: 'Live Music and Tent Space', image: 'night_set_up_catering', description: 'Space for a live band and multiple tents for custom events.' }
+    { name: 'Garden Lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
+    { name: 'Ground-Floor Conference Room', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
+    { name: 'First-Floor Conference Room', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
+    { name: 'Bar', description: 'Drinks service for relaxed gatherings and private events.' },
+    { name: 'On-Demand Kitchen', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
+    { name: 'Catering Kitchen', description: 'A dedicated kitchen supporting large events and outside catering.' },
+    { name: 'Parking and Security', images: [
+      { src: 'parking-wall', width: 1280, height: 576, alt: 'Landscaped wall beside the Jotham Gardens parking area' },
+      { src: 'parking-garden', width: 3264, height: 2448, alt: 'Guest vehicles parked beneath the trees at Jotham Gardens' },
+      { src: 'parking-event', width: 1280, height: 960, alt: 'Decorated event vehicle in the Jotham Gardens parking area' }
+    ], description: 'Ample parking with 24-hour security.' },
+    { name: 'Garden Corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
+    { name: 'Live Music and Tent Space', description: 'Space for a live band and multiple tents for custom events.' }
   ],
   menu: [
       {
