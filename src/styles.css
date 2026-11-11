@@ -3,8 +3,9 @@
   --forest:#172c22;
   --cream:#fff;
   --paper:#fff;
-  --rose:#a45961;
-  --rose-pale:#eee1de;
+  --accent-pink:#d81b60;
+  --rose:var(--accent-pink);
+  --rose-pale:#ffe6ee;
   --earth:#796d5e;
   --ink:#263b30;
   --muted:#646a61;
@@ -166,6 +167,18 @@ input[type=checkbox],input[type=radio] {
   width:43px;
   stroke:var(--rose);
   stroke-width:1.15
+}
+.site-header .brand {
+  gap:13px;
+  font-size:29px
+}
+.site-header .brand svg {
+  height:60px;
+  width:51px
+}
+.site-header .brand small {
+  font-size:10px;
+  letter-spacing:2.3px
 }
 nav {
   display:flex;
@@ -1046,7 +1059,7 @@ footer {
   padding-bottom:48px
 }
 .footer-main .brand svg {
-  stroke:#c09a92
+  stroke:var(--accent-pink)
 }
 .footer-main>p {
   font-family:var(--serif);
@@ -1110,6 +1123,13 @@ footer {
   }
   .brand svg {
     width:36px
+  }
+  .site-header .brand {
+    font-size:25px
+  }
+  .site-header .brand svg {
+    width:46px;
+    height:54px
   }
   .brand small {
     font-size:8px
@@ -1186,6 +1206,16 @@ footer {
     padding:10px 15px;
     color:var(--green);
     font-size:12px
+  }
+  .site-header .brand {
+    font-size:22px
+  }
+  .site-header .brand svg {
+    width:42px;
+    height:49px
+  }
+  .site-header .brand small {
+    font-size:9px
   }
   .nav-toggle span {
     font-size:17px
@@ -1646,7 +1676,7 @@ footer {
 }
 
 /* Jotham menu: category-led pages with one atmospheric owner photograph at a time. */
-.page-menu {--green:#173e2b;--forest:#102b20;--cream:#fff;--paper:#fff;--rose:#ad8440;--rose-pale:#fff;--ink:#172a20;--line:#d8d6c8;background:#fff}
+.page-menu {--green:#173e2b;--forest:#102b20;--cream:#fff;--paper:#fff;--rose:var(--accent-pink);--rose-pale:#fff;--ink:#172a20;--line:#d8d6c8;background:#fff}
 .page-menu .page-intro {padding-bottom:15px}
 .page-menu .page-intro h1 {font-size:clamp(42px,5vw,70px);margin-bottom:12px}
 .page-menu .page-intro .lead {font-size:13px;margin-bottom:15px}

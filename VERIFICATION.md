@@ -11,6 +11,7 @@ Latest verification: November 10, 2026.
 - Domain tests verify cart sanitization and totals, room pricing, optional breakfast handling, invalid dates, occupancy limits and stay-length boundaries.
 - Generated-form assertions verify that phone numbers are required while email addresses remain optional on event, food and accommodation forms. The updated browser test also checks that email becomes required for copy delivery and that phone numbers reach submission payloads.
 - The opening photograph uses full-container cover sizing and a subtle responsive pan-and-zoom animation. Existing reduced-motion CSS disables the animation for visitors who request reduced motion.
+- The shared rose accent is the accessible bright raspberry pink `#D81B60`. Header-only wordmark rules enlarge the top logo responsively while footer dimensions remain unchanged.
 - The browser integration test was updated for the submitted order, event inquiry and accommodation booking workflows, including invoice-copy opt-in and downloads. It was not rerun during this revision because the user confirmed Playwright had already been tested and asked to finish the changes.
 - `git diff --check` is run before committing.
 

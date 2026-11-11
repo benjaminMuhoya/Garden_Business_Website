@@ -48,5 +48,9 @@ test('real build resolves every page link and asset for project hosting and loca
       if (key === 'accommodation') assert.match(html, /Breakfast is available on request for an additional charge/);
       if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);
     }
+    const css = await readFile('dist/styles.css', 'utf8');
+    assert.match(css, /--accent-pink:#d81b60/);
+    assert.match(css, /\.site-header \.brand \{[^}]*font-size:29px/s);
+    assert.match(css, /\.footer-main \.brand svg \{\s*stroke:var\(--accent-pink\)/s);
   }
 });
