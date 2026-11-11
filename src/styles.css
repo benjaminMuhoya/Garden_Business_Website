@@ -1088,15 +1088,12 @@ footer {
 .footer-main .brand svg {
   stroke:var(--accent-pink)
 }
-.footer-main>p {
+.footer-main .contact-number {
   font-family:var(--serif);
-  font-size:24px;
-  margin:0;
-  line-height:1.4
-}
-.footer-main>p>span {
-  font:11px var(--sans);
-  color:#c7d0c2
+  font-size:clamp(26px,3vw,42px);
+  line-height:1.2;
+  letter-spacing:-.025em;
+  text-align:right
 }
 .footer-bottom {
   display:flex;
@@ -1643,8 +1640,10 @@ footer {
     display:block;
     padding-bottom:30px
   }
-  .footer-main>p {
-    margin:27px 0
+  .footer-main .contact-number {
+    display:inline-block;
+    margin:27px 0 0;
+    text-align:left
   }
   .footer-bottom {
     display:block;

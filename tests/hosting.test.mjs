@@ -18,7 +18,7 @@ test('real build resolves every page link and asset for project hosting and loca
     for (const key of pageKeys) {
       const html = await readFile(`dist/${key === 'home' ? '' : key + '/'}index.html`, 'utf8');
       for (const [, value] of html.matchAll(/\b(?:href|src)="([^"]*)"/g)) {
-        if (value.startsWith('#')) continue;
+        if (value.startsWith('#') || /^[a-z][a-z0-9+.-]*:/i.test(value)) continue;
         assert.ok(value.startsWith(base), `${key}: ${value} escaped ${base}`);
         const relative = value.slice(base.length);
         const path = `dist/${relative}${relative === '' || relative.endsWith('/') ? 'index.html' : ''}`;
@@ -28,6 +28,9 @@ test('real build resolves every page link and asset for project hosting and loca
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
       assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
       assert.match(html, /© 2026 Jotham Garden and Restaurant/);
+      assert.equal((html.match(/CONTACT: \+254 718 337555/g) || []).length, key === 'facilities' ? 2 : 1);
+      assert.match(html, /href="tel:\+254718337555"/);
+      assert.doesNotMatch(html, /0724767617/);
       if (key === 'home') {
         assert.match(html, /Slow moments/);
         assert.match(html, /Fresh flavours/);
@@ -53,7 +56,7 @@ test('real build resolves every page link and asset for project hosting and loca
         for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350','Glass KSh 350 · Bottle KSh 2,000','Single KSh 250 · Double KSh 400','Any bottle is KSh 4,500']) assert.ok(html.includes(price), price);
         assert.equal((html.match(/<p>Ask what’s available\.<\/p>/g) || []).length, 1);
         assert.doesNotMatch(html, /Wine Shots|Whisky Shots|Gin Shots|Vodka Shots/);
-        assert.match(html, /0724767617/);
+        assert.match(html, /call \+254 718 337555/);
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
       if (key === 'facilities') {
