@@ -28,7 +28,7 @@ jobs:
       - name: Build project website
         run: npm run build
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          BASE_PATH: /
       - name: Upload built website
         uses: actions/upload-pages-artifact@v4
         with:
