@@ -611,6 +611,11 @@ legend {
 .facility-card .facility-copy {
   padding-top:25px
 }
+.facility-image {
+  width:100%;
+  height:340px;
+  object-fit:cover
+}
 .parking-card {
   grid-column:1 / -1
 }
@@ -1516,7 +1521,7 @@ footer {
     grid-template-columns:1fr;
     gap:30px
   }
-  .parking-gallery img {
+  .facility-image,.parking-gallery img {
     height:285px
   }
   .facility-card h2 {
@@ -1723,6 +1728,9 @@ footer {
 .page-menu .item-heading h2 {font-size:23px;margin-bottom:12px}
 .page-menu .item-heading strong {color:#8b672d;font-size:13px}
 .page-menu .menu-card-info {background:#fffaf3}
+.page-menu .menu-card-info .item-heading strong,.page-menu .menu-card-info .menu-copy>p {color:#000}
+.page-menu .menu-card-info .item-heading {display:block}
+.page-menu .menu-card-info .item-heading strong {display:block;white-space:normal;margin-bottom:12px}
 .menu-inquiry-link {display:inline-block;color:var(--green);font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .page-menu .quantity button:hover {background:#fff}
 .page-menu .order-panel {background:#fff;border-top:3px solid #ad8440;box-shadow:0 10px 30px #06170d24}

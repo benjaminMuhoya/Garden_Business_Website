@@ -6,9 +6,9 @@ export const content = {
   origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of nature, joyful gatherings, good food and unforgettable moments, Jotham Gardens is a place to meet, connect and share beautiful moments close to nature.',
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
   facilities: [
-    { name: 'Garden Lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
+    { name: 'Garden Lawn', image: 'facility-garden-lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
     { name: 'Ground-Floor Conference Room', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
-    { name: 'First-Floor Conference Room', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
+    { name: 'First-Floor Conference Room', image: 'facility-first-floor', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
     { name: 'Bar', description: 'Drinks service for relaxed gatherings and private events.' },
     { name: 'On-Demand Kitchen', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
     { name: 'Catering Kitchen', description: 'A dedicated kitchen supporting large events and outside catering.' },
@@ -17,7 +17,7 @@ export const content = {
       { src: 'parking-garden', width: 3264, height: 2448, alt: 'Guest vehicles parked beneath the trees at Jotham Gardens' },
       { src: 'parking-event', width: 1280, height: 960, alt: 'Decorated event vehicle in the Jotham Gardens parking area' }
     ], description: 'Ample parking with 24-hour security.' },
-    { name: 'Garden Corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
+    { name: 'Garden Corners', image: 'facility-garden-corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
     { name: 'Live Music and Tent Space', description: 'Space for a live band and multiple tents for custom events.' }
   ],
   menu: [
@@ -328,47 +328,25 @@ export const content = {
           "tag": ""
       },
       {
-          "id": "wine-shots",
-          "name": "Wine Shots",
+          "id": "wines",
+          "name": "Wines",
           "category": "Alcoholic Drinks",
           "price": null,
-          "priceLabel": "Ask what’s available",
+          "priceLabel": "Glass KSh 350 · Bottle KSh 2,000",
           "orderable": false,
           "image": "food",
-          "description": "Selection and prices vary by brand.",
+          "description": "Ask what’s available.",
           "tag": ""
       },
       {
-          "id": "whisky-shots",
-          "name": "Whisky Shots",
+          "id": "spirits",
+          "name": "Whisky, Gin & Vodka",
           "category": "Alcoholic Drinks",
           "price": null,
-          "priceLabel": "Ask what’s available",
+          "priceLabel": "Single KSh 250 · Double KSh 400",
           "orderable": false,
           "image": "food",
-          "description": "Selection and prices vary by brand.",
-          "tag": ""
-      },
-      {
-          "id": "gin-shots",
-          "name": "Gin Shots",
-          "category": "Alcoholic Drinks",
-          "price": null,
-          "priceLabel": "Ask what’s available",
-          "orderable": false,
-          "image": "food",
-          "description": "Selection and prices vary by brand.",
-          "tag": ""
-      },
-      {
-          "id": "vodka-shots",
-          "name": "Vodka Shots",
-          "category": "Alcoholic Drinks",
-          "price": null,
-          "priceLabel": "Ask what’s available",
-          "orderable": false,
-          "image": "food",
-          "description": "Selection and prices vary by brand.",
+          "description": "Served as single or double shots. Any bottle is KSh 4,500. Ask for ice, salt, cucumber or lime.",
           "tag": ""
       },
       {
@@ -386,7 +364,7 @@ export const content = {
           "category": "Alcoholic Drinks",
           "price": 300,
           "image": "food",
-          "description": "Tusker, White Cap, Heineken, Guinness or Pilsner. Ask what is available.",
+          "description": "Tusker, White Cap, Heineken, Guinness or Pilsner, subject to availability.",
           "tag": ""
       },
       {
@@ -412,8 +390,8 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
-    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
+    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: null, single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
+    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Luxury_bed_and_house', single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
   ],
   meals: { lunch: 18, dinner: 25 },
   team: [

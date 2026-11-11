@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {content} from '../src/content.js';
 import {sanitizeCart,cartSummary,stayQuote} from '../src/domain.js';
 test('cart trusts only orderable item identifiers and bounded integer quantities',()=>{
- assert.deepEqual(sanitizeCart({beef1:2,soup:-1,kienyeji1:1.5,lemontea:21,'wine-shots':2,customgroup:1,unknown:3},content.menu),{beef1:2});
+ assert.deepEqual(sanitizeCart({beef1:2,soup:-1,kienyeji1:1.5,lemontea:21,wines:2,spirits:1,customgroup:1,unknown:3},content.menu),{beef1:2});
  assert.deepEqual(sanitizeCart(null,content.menu),{});
  const summary=cartSummary({beef1:2,lemontea:1},content.menu);
  assert.equal(summary.total,2900);assert.equal(summary.count,3);assert.equal(summary.lines.length,2);

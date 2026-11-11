@@ -49,8 +49,10 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="emailCopy"/);
       }
       if (key === 'menu') {
-        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
-        for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350']) assert.ok(html.includes(price), price);
+        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)','Wines','Whisky, Gin &amp; Vodka']) assert.ok(html.includes(item), item);
+        for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350','Glass KSh 350 · Bottle KSh 2,000','Single KSh 250 · Double KSh 400','Any bottle is KSh 4,500']) assert.ok(html.includes(price), price);
+        assert.equal((html.match(/<p>Ask what’s available\.<\/p>/g) || []).length, 1);
+        assert.doesNotMatch(html, /Wine Shots|Whisky Shots|Gin Shots|Vodka Shots/);
         assert.match(html, /0724767617/);
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
@@ -58,12 +60,15 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.equal((html.match(/class="facility-card /g) || []).length, 9);
         assert.equal((html.match(/class="parking-gallery"/g) || []).length, 1);
         assert.equal((html.match(/assets\/parking-(?:wall|garden|event)\.jpg/g) || []).length, 3);
-        assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 8);
+        assert.equal((html.match(/class="facility-image"/g) || []).length, 3);
+        assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 5);
       }
       if (key === 'accommodation') {
         assert.match(html, /Breakfast included/);
         for (const price of ['1,500','2,800','3,500','5,000']) assert.match(html, new RegExp(`KES\\s*${price}`));
         assert.doesNotMatch(html, /extra charge|name="breakfast"/i);
+        assert.equal((html.match(/Luxury_bed_and_house\.jpg/g) || []).length, 1);
+        assert.doesNotMatch(html, /Full_Board\.jpg/);
       }
       if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);
     }

@@ -87,10 +87,10 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.waitForURL('**/menu/');
   console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
-  assert.equal(await page.locator('.menu-card').count(),42);
-  assert.equal(await page.locator('.menu-card:visible').count(),42);
+  assert.equal(await page.locator('.menu-card').count(),40);
+  assert.equal(await page.locator('.menu-card:visible').count(),40);
   assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'All');
-  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':6,'Groups & Events':2};
+  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':4,'Groups & Events':2};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);
@@ -105,7 +105,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
     }
   }
   await page.getByRole('button',{name:'All',exact:true}).click();
-  assert.equal(await page.locator('.menu-card-info').count(),5);
+  assert.equal(await page.locator('.menu-card-info').count(),3);
   assert.equal(await page.locator('.menu-card-info .quantity').count(),0);
   assert.match(await page.locator('.menu-card').filter({hasText:'Freshly Made Coffee'}).innerText(),/KSh 200/);
   assert.match(await page.locator('.menu-card').filter({hasText:'Chai with Milk'}).innerText(),/KSh 150/);
