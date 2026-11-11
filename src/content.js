@@ -7,18 +7,18 @@ export const content = {
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
   facilities: [
     { name: 'Garden Lawn', image: 'facility-garden-lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
-    { name: 'Ground-Floor Conference Room', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
     { name: 'First-Floor Conference Room', image: 'facility-first-floor', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
+    { name: 'Garden Corners', image: 'facility-garden-corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
+    { name: 'Ground-Floor Conference Room', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
     { name: 'Bar', description: 'Drinks service for relaxed gatherings and private events.' },
     { name: 'On-Demand Kitchen', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
     { name: 'Catering Kitchen', description: 'A dedicated kitchen supporting large events and outside catering.' },
+    { name: 'Live Music and Tent Space', description: 'Space for a live band and multiple tents for custom events.' },
     { name: 'Parking and Security', images: [
       { src: 'parking-wall', width: 1280, height: 576, alt: 'Landscaped wall beside the Jotham Gardens parking area' },
       { src: 'parking-garden', width: 3264, height: 2448, alt: 'Guest vehicles parked beneath the trees at Jotham Gardens' },
       { src: 'parking-event', width: 1280, height: 960, alt: 'Decorated event vehicle in the Jotham Gardens parking area' }
-    ], description: 'Ample parking with 24-hour security.' },
-    { name: 'Garden Corners', image: 'facility-garden-corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
-    { name: 'Live Music and Tent Space', description: 'Space for a live band and multiple tents for custom events.' }
+    ], description: 'Ample parking with 24-hour security.' }
   ],
   menu: [
       {

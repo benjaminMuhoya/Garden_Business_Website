@@ -62,6 +62,9 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.equal((html.match(/assets\/parking-(?:wall|garden|event)\.jpg/g) || []).length, 3);
         assert.equal((html.match(/class="facility-image"/g) || []).length, 3);
         assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 5);
+        const facilityNames = [...html.matchAll(/<article class="facility-card [^"]*">[\s\S]*?<h2>([^<]+)<\/h2>/g)].map(match => match[1]);
+        assert.deepEqual(facilityNames.slice(0, 3), ['Garden Lawn','First-Floor Conference Room','Garden Corners']);
+        assert.equal(facilityNames.at(-1), 'Parking and Security');
       }
       if (key === 'accommodation') {
         assert.match(html, /Breakfast included/);
