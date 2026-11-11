@@ -34,8 +34,10 @@ async function submitRequest(form, kind, details, receipt) {
   form.querySelector('.submission-error')?.remove();
   button.disabled=true;button.setAttribute('aria-busy','true');
   const sendCopy=form.elements.emailCopy?.checked;
-  const payload={...details,_subject:`New Jotham Gardens ${kind}`,_template:'table',_captcha:'false',_replyto:details.email};
-  if(sendCopy) payload._cc=details.email;
+  const customerEmail=form.elements.email?.value.trim();
+  const payload={...details,_subject:`New Jotham Gardens ${kind}`,_template:'table',_captcha:'false'};
+  if(customerEmail) payload._replyto=customerEmail;
+  if(sendCopy) payload._cc=customerEmail;
   try {
     const response=await fetch(formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
@@ -48,6 +50,17 @@ async function submitRequest(form, kind, details, receipt) {
     button.insertAdjacentElement('afterend',error);announce(error.textContent);return false;
   } finally {button.disabled=false;button.removeAttribute('aria-busy');}
 }
+$$('form').forEach(form=>{
+  const copy=form.elements.emailCopy, email=form.elements.email;
+  if(!copy || !email) return;
+  const syncEmailRequirement=()=>{
+    email.required=copy.checked;
+    email.setCustomValidity(copy.checked && !email.value.trim() ? 'Enter your email address to receive a copy.' : '');
+  };
+  copy.addEventListener('change',syncEmailRequirement);
+  email.addEventListener('input',syncEmailRequirement);
+  syncEmailRequirement();
+});
 $('#download-draft')?.addEventListener('click',()=>{
   const blob = new Blob([draft],{type:'text/plain;charset=utf-8'});
   const url=URL.createObjectURL(blob), link=document.createElement('a');
@@ -58,8 +71,9 @@ $('#reservation-form')?.addEventListener('submit',async event=>{
   event.preventDefault();
   const data=Object.fromEntries(new FormData(event.currentTarget));
   if(data.date<localToday()) {event.currentTarget.elements.date.setCustomValidity('Choose today or a future date.');event.currentTarget.reportValidity();return;}
-  const receipt=`EVENT INQUIRY\n\nName: ${data.name}\nEmail: ${data.email}\nPreferred date: ${data.date}\nGuests: ${data.guests}\nOccasion: ${data.occasion}\nNotes: ${data.notes || 'None'}\n\nThe venue will confirm availability and arrangements.`;
-  await submitRequest(event.currentTarget,'Event inquiry',{name:data.name,email:data.email,'Preferred date':data.date,Guests:data.guests,Occasion:data.occasion,Notes:data.notes || 'None'},receipt);
+  const email=data.email || 'Not provided';
+  const receipt=`EVENT INQUIRY\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${email}\nPreferred date: ${data.date}\nGuests: ${data.guests}\nOccasion: ${data.occasion}\nNotes: ${data.notes || 'None'}\n\nThe venue will confirm availability and arrangements.`;
+  await submitRequest(event.currentTarget,'Event inquiry',{Name:data.name,Phone:data.phone,Email:email,'Preferred date':data.date,Guests:data.guests,Occasion:data.occasion,Notes:data.notes || 'None'},receipt);
 });
 $('#reservation-form [name="date"]')?.addEventListener('input',event=>event.target.setCustomValidity(''));
 
@@ -97,8 +111,9 @@ if($('.page-menu')) {
     event.preventDefault();const summary=cartSummary(cart,content.menu);if(!summary.count)return;
     const data=Object.fromEntries(new FormData(event.currentTarget));
     const lines=summary.lines.map(line=>`${line.quantity} × ${line.name}: ${menuCash(line.total)}`).join('\n');
-    const receipt=`ORDER INVOICE\n\nName: ${data.name}\nEmail: ${data.email}\n\n${lines}\n\nSubtotal: ${menuCash(summary.total)}\nNotes: ${data.notes || 'None'}\n\nThe restaurant will confirm availability, service and delivery details.`;
-    await submitRequest(event.currentTarget,'Food order',{name:data.name,email:data.email,Order:lines,Subtotal:menuCash(summary.total),Notes:data.notes || 'None'},receipt);
+    const email=data.email || 'Not provided';
+    const receipt=`ORDER INVOICE\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${email}\n\n${lines}\n\nSubtotal: ${menuCash(summary.total)}\nNotes: ${data.notes || 'None'}\n\nThe restaurant will confirm availability, service and delivery details.`;
+    await submitRequest(event.currentTarget,'Food order',{Name:data.name,Phone:data.phone,Email:email,Order:lines,Subtotal:menuCash(summary.total),Notes:data.notes || 'None'},receipt);
   });renderCart();
 }
 
@@ -119,8 +134,9 @@ if($('#booking-form')) {
     if(q.error){form.elements.departure.setCustomValidity(q.error);form.reportValidity();return;}
     const data=input();
     const breakfast=q.breakfastRequested?'Requested — extra charge':'Not requested';
-    const receipt=`BOOKING INVOICE\n\nName: ${data.name}\nEmail: ${data.email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${breakfast}\nEstimated total: ${cash(q.total)}\n\nThe venue will confirm availability and final charges.`;
-    await submitRequest(event.currentTarget,'Accommodation booking',{name:data.name,email:data.email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:breakfast,'Estimated total':cash(q.total)},receipt);
+    const email=data.email || 'Not provided';
+    const receipt=`BOOKING INVOICE\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${breakfast}\nEstimated total: ${cash(q.total)}\n\nThe venue will confirm availability and final charges.`;
+    await submitRequest(event.currentTarget,'Accommodation booking',{Name:data.name,Phone:data.phone,Email:email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:breakfast,'Estimated total':cash(q.total)},receipt);
   });renderQuote();
 }
 $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{

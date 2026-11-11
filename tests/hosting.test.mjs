@@ -38,6 +38,12 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /Up to 1,000/);
         assert.match(html, /Let’s plan your event/);
       }
+      if (['reserve','menu','accommodation'].includes(key)) {
+        assert.match(html, /name="phone"[^>]*required/);
+        assert.match(html, /name="email"[^>]*type="email"/);
+        assert.doesNotMatch(html, /name="email"[^>]*required/);
+        assert.match(html, /name="emailCopy"/);
+      }
       if (key === 'facilities') assert.equal((html.match(/class="facility-card"/g) || []).length, 9);
       if (key === 'accommodation') assert.match(html, /Breakfast is available on request for an additional charge/);
       if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);

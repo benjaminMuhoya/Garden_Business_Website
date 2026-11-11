@@ -54,7 +54,7 @@ Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` ag
 
 ## Ordering and booking behavior
 
-Cart quantities (only) persist in the current browser under `rosewood-cart-v1`. Unknown item IDs and invalid quantities are discarded; each dish is limited to 20. Names, emails and notes are not written to browser storage. Successful submissions can be downloaded by the visitor as text confirmations.
+Cart quantities (only) persist in the current browser under `rosewood-cart-v1`. Unknown item IDs and invalid quantities are discarded; each dish is limited to 20. Names, phone numbers, emails and notes are not written to browser storage. Every order, booking and inquiry requires a customer phone number. Email is optional and becomes required only when the customer asks for an emailed invoice or copy. Successful submissions can also be downloaded as text confirmations.
 
 Room rates are per room per night and depend on one or two guests. Breakfast is optional and its extra charge is confirmed by the venue, so it is not included in the website estimate. Date arithmetic uses whole calendar days, avoiding daylight-saving hour differences. Stays are limited to 1–30 nights. The site sends order and inquiry details but does not process payment or automatically confirm inventory or availability.
 

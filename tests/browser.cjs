@@ -53,13 +53,15 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.match(homeText,/Rooted in nature\./);
   assert.equal(await page.locator('footer').getByText("Let’s plan something beautiful",{exact:false}).count(),0);
   assert.equal(await page.getByRole('link',{name:'Meet the Host',exact:true}).count(),1);
-  const [heroImageBox,heroContentBox,heroBottomBox]=await Promise.all([
+  const [heroBox,heroImageBox,heroContentBox,heroBottomBox]=await Promise.all([
+    page.locator('.hero').boundingBox(),
     page.locator('.hero-image').boundingBox(),
     page.locator('.hero-content').boundingBox(),
     page.locator('.hero-bottom').boundingBox()
   ]);
-  assert.equal(heroContentBox.y>=heroImageBox.y+heroImageBox.height-1,true,'mobile hero content follows image');
-  assert.equal(heroBottomBox.y>=heroContentBox.y+heroContentBox.height-1,true,'mobile explore link follows hero content');
+  assert.equal(Math.abs(heroImageBox.width-heroBox.width)<2&&Math.abs(heroImageBox.height-heroBox.height)<2,true,'mobile hero image fills container');
+  assert.equal(heroContentBox.y>=heroBox.y&&heroContentBox.y+heroContentBox.height<=heroBox.y+heroBox.height,true,'mobile hero content stays within image');
+  assert.equal(heroBottomBox.y+heroBottomBox.height<=heroBox.y+heroBox.height,true,'mobile explore link stays within image');
 
   await page.goto(base+'/team/');
   const hostText=await page.locator('main').innerText();
@@ -112,11 +114,14 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.reload();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 3,050');
   await page.getByLabel('Name',{exact:true}).fill('Test Guest');
-  await page.getByLabel('Email address').fill('guest@example.com');
+  await page.getByLabel('Phone number').fill('+254 700 000 000');
   await page.getByRole('button',{name:'Place order'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Subtotal: KSh 3,050/);
+  assert.match(await page.locator('#draft-text').textContent(),/Phone: \+254 700 000 000/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Food order');
-  assert.equal(submissions.at(-1)._cc,'guest@example.com');
+  assert.equal(submissions.at(-1).Phone,'+254 700 000 000');
+  assert.equal(submissions.at(-1).Email,'Not provided');
+  assert.equal('_cc' in submissions.at(-1),false);
   const downloadPromise=page.waitForEvent('download');
   await page.getByRole('button',{name:'Download invoice'}).click();
   const download=await downloadPromise;
@@ -130,12 +135,15 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
 
   await page.goto(base+'/reserve/');
   await page.getByLabel('Your name').fill('Test Guest');
+  await page.getByLabel('Phone number').fill('+254 711 111 111');
   await page.getByLabel('Email address').fill('guest@example.com');
+  await page.getByLabel('Email me an invoice or copy').check();
   await page.getByLabel('Preferred date').fill('2030-06-10');
   await page.getByLabel('Guests',{exact:true}).fill('45');
   await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Guests: 45/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Event inquiry');
+  assert.equal(submissions.at(-1)._cc,'guest@example.com');
   await page.getByLabel('Guests',{exact:true}).fill('1001');
   await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);
@@ -147,12 +155,14 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-12');
   assert.match(await page.locator('#stay-summary').textContent(),/KES\s*6,000/);
   await page.getByLabel('Your name').fill('Test Guest');
-  await page.getByLabel('Email address').fill('guest@example.com');
+  await page.getByLabel('Phone number').fill('+254 722 222 222');
   await page.getByLabel('Add breakfast (extra charge)').check();
   await page.getByRole('button',{name:'Send booking request'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Estimated total: KES\s*6,000/);
   assert.match(await page.locator('#draft-text').textContent(),/Breakfast: Requested — extra charge/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Accommodation booking');
+  assert.equal(submissions.at(-1).Phone,'+254 722 222 222');
+  assert.equal('_cc' in submissions.at(-1),false);
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-09');
   await page.getByRole('button',{name:'Send booking request'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);
