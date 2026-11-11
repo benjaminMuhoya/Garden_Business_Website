@@ -1,8 +1,8 @@
-# Jotham Gardens — website prototype
+# Jotham Gardens — business website
 
-An independent, seven-page garden venue and hospitality website. **Jotham Gardens is the owner-provided business name.** All business descriptions, team profiles, capacities, rates and photographs are illustrative. The motto is “Your Nature Haven for Food, Drinks & Events.”
+An independent, seven-page garden venue and hospitality website. **Jotham Gardens is the owner-provided business name.** The motto is “Your Nature Haven for Food, Drinks & Events.”
 
-The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages, matching the personal website’s hosting method. The site uses local assets and no third-party requests. The public website remains clearly labeled as a prototype; `noindex` metadata is retained and is not access control.
+The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages. The site uses local assets and FormSubmit for event inquiries, food orders and accommodation booking requests.
 
 ## Run locally
 
@@ -30,15 +30,15 @@ BASE_PATH=/Garden_Business_Website/ npm run build
 BASE_PATH=/Garden_Business_Website/ PORT=4174 npm run preview
 ```
 
-Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. No real orders, bookings, email or payments are enabled by publication.
+Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. FormSubmit must be activated from the confirmation message sent to the venue inbox before it will forward live submissions.
 
 ## Pages
 
 - `/`: cinematic garden introduction, editable origin story, and six purposeful destinations.
-- `/reserve/`: venue concept, occasion types, capacity, and local inquiry draft.
-- `/facilities/`: four facility concepts with photographic scaffolds.
-- `/menu/`: six sample menu items, category filtering, quantity controls, persistent basket, draft order and text download.
-- `/accommodation/`: two sample room types, separate single/double rates, date-based estimates, board and meal choices, local booking draft.
+- `/reserve/`: event information, occasion types, capacity, and a working inquiry form.
+- `/facilities/`: nine venue facilities with concise descriptions.
+- `/menu/`: category filtering, quantity controls, a persistent basket, order submission and invoice download.
+- `/accommodation/`: room rates, date-based estimates, optional breakfast and booking submission.
 - `/team/`: editable example profiles and explicit headshot placeholders.
 - `/gallery/`: seven inspiration slots, category filtering, accessible native image dialog.
 
@@ -49,14 +49,14 @@ Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` ag
 - `src/styles.css`: shared colors, typography, layout, responsive breakpoints and component styling.
 - `src/assets/`: local inspiration photographs and rose SVG. See `ASSETS.md` before replacing/publishing imagery.
 - `src/domain.js`: bounded cart quantities and pricing calculations, shared by the real browser caller and unit tests.
-- `src/app.js`: client interactions, validation and local draft downloads.
+- `src/app.js`: client interactions, validation, form delivery and confirmation downloads.
 - `scripts/build.mjs`: generates all seven pages and copies local assets.
 
-## Prototype behavior
+## Ordering and booking behavior
 
-Cart quantities (only) persist in the current browser under `rosewood-cart-v1`. Unknown item IDs and invalid quantities are discarded; each dish is limited to 20. No names, emails or notes are written to browser storage. Drafts remain in memory until downloaded by the visitor or the page is left/reloaded. Updating the form or basket hides stale draft summaries.
+Cart quantities (only) persist in the current browser under `rosewood-cart-v1`. Unknown item IDs and invalid quantities are discarded; each dish is limited to 20. Names, emails and notes are not written to browser storage. Successful submissions can be downloaded by the visitor as text confirmations.
 
-Room rates are per room per night and depend on one or two guests. Breakfast, lunch and dinner are per person per night and apply to every night. Date arithmetic uses whole calendar days, avoiding daylight-saving hour differences. Stays are limited to 1–30 nights. The prototype does not manage actual inventory, taxes, fees, bookings, delivery, payments, email or order submission. These flows intentionally stop at a reviewable local draft.
+Room rates are per room per night and depend on one or two guests. Breakfast is optional and its extra charge is confirmed by the venue, so it is not included in the website estimate. Date arithmetic uses whole calendar days, avoiding daylight-saving hour differences. Stays are limited to 1–30 nights. The site sends order and inquiry details but does not process payment or automatically confirm inventory or availability.
 
 Native labels, field validation, focus indicators, a skip link, responsive navigation, live summaries, descriptive image alternatives and reduced-motion support are included. Team images are abstract placeholders, not portraits of real employees.
 
@@ -69,4 +69,4 @@ npm run build
 
 `tests/domain.test.mjs` covers malformed basket data, subtotals and counts, occupancy pricing, meal multiplication, date errors, and date boundaries. Browser integration checks are described in `VERIFICATION.md`; the reproducible browser script is `tests/browser.cjs`. It requires Playwright and an installed Chrome browser and is optional for running the site. See the environment-variable example in `VERIFICATION.md`.
 
-Before accepting real orders or bookings, complete `CONTENT-CHECKLIST.md`, replace the photographs and team placeholders, approve content/brand, choose providers, and implement/test the real server workflows. No payment or booking provider has been selected.
+Before accepting real orders or bookings, activate the FormSubmit endpoint, approve the content and brand, and confirm the photographs. No payment provider has been selected.

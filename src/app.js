@@ -17,25 +17,49 @@ document.addEventListener('keydown', event => {
 });
 $$('[data-future]').forEach(input => {input.min = localToday();});
 let draft = '';
+let downloadName = 'jotham-gardens-request.txt';
+const formEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
 function hideDraft(){ const result=$('#draft-result'); if(result){result.hidden=true;draft='';} }
-function showDraft(text) {
-  draft = text + '\n\nLOCAL PROTOTYPE ONLY — not sent, reserved, ordered or charged. All facts and prices require owner approval.';
+function showDraft(text, filename, emailed) {
+  draft = text;
+  downloadName = filename;
   $('#draft-text').textContent = draft;
+  $('#draft-message').textContent = emailed ? 'The venue has received your details, and a copy will be emailed to you.' : 'The venue has received your details. You can download a copy below.';
   $('#draft-result').hidden = false;
   $('#draft-result').focus();
-  announce('Your local draft is ready. Nothing has been sent.');
+  announce('Your request has been submitted.');
+}
+async function submitRequest(form, kind, details, receipt) {
+  const button=form.querySelector('[type="submit"]');
+  form.querySelector('.submission-error')?.remove();
+  button.disabled=true;button.setAttribute('aria-busy','true');
+  const sendCopy=form.elements.emailCopy?.checked;
+  const payload={...details,_subject:`New Jotham Gardens ${kind}`,_template:'table',_captcha:'false',_replyto:details.email};
+  if(sendCopy) payload._cc=details.email;
+  try {
+    const response=await fetch(formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok || result.success===false) throw new Error(result.message || 'Submission failed');
+    showDraft(receipt,`jotham-gardens-${kind.toLowerCase().replace(/[^a-z]+/g,'-')}.txt`,sendCopy);
+    return true;
+  } catch {
+    const error=document.createElement('p');error.className='submission-error';error.setAttribute('role','alert');
+    error.textContent='We could not send your request. Please check your connection and try again.';
+    button.insertAdjacentElement('afterend',error);announce(error.textContent);return false;
+  } finally {button.disabled=false;button.removeAttribute('aria-busy');}
 }
 $('#download-draft')?.addEventListener('click',()=>{
   const blob = new Blob([draft],{type:'text/plain;charset=utf-8'});
   const url=URL.createObjectURL(blob), link=document.createElement('a');
-  link.href=url; link.download='rosewood-local-draft.txt'; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+  link.href=url; link.download=downloadName; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $$('form').forEach(form=>form.addEventListener('input',hideDraft));
-$('#reservation-form')?.addEventListener('submit',event=>{
+$('#reservation-form')?.addEventListener('submit',async event=>{
   event.preventDefault();
   const data=Object.fromEntries(new FormData(event.currentTarget));
   if(data.date<localToday()) {event.currentTarget.elements.date.setCustomValidity('Choose today or a future date.');event.currentTarget.reportValidity();return;}
-  showDraft(`VENUE INQUIRY DRAFT\n\nName: ${data.name}\nEmail: ${data.email}\nPreferred date: ${data.date}\nGuests: ${data.guests}\nOccasion: ${data.occasion}\nNotes: ${data.notes || 'None'}\n\nRequested date and sample capacity are subject to confirmation.`);
+  const receipt=`EVENT INQUIRY\n\nName: ${data.name}\nEmail: ${data.email}\nPreferred date: ${data.date}\nGuests: ${data.guests}\nOccasion: ${data.occasion}\nNotes: ${data.notes || 'None'}\n\nThe venue will confirm availability and arrangements.`;
+  await submitRequest(event.currentTarget,'Event inquiry',{name:data.name,email:data.email,'Preferred date':data.date,Guests:data.guests,Occasion:data.occasion,Notes:data.notes || 'None'},receipt);
 });
 $('#reservation-form [name="date"]')?.addEventListener('input',event=>event.target.setCustomValidity(''));
 
@@ -49,7 +73,7 @@ if($('.page-menu')) {
     $$('[data-qty]').forEach(button=>{const qty=cart[button.dataset.id]||0;button.disabled=Number(button.dataset.qty)<0?qty===0:qty>=20;});
     $('#cart-count').textContent=summary.count;
     $('#cart-total').textContent=menuCash(summary.total);
-    $('#cart-lines').innerHTML=summary.lines.length?summary.lines.map(line=>`<div class="cart-line"><div><strong>${escape(line.name)}</strong><span>${line.quantity} × ${menuCash(line.price)}</span></div><strong>${menuCash(line.total)}</strong></div>`).join(''):'<p class="empty-basket">A little something delicious?<br>Add a dish to start your draft.</p>';
+    $('#cart-lines').innerHTML=summary.lines.length?summary.lines.map(line=>`<div class="cart-line"><div><strong>${escape(line.name)}</strong><span>${line.quantity} × ${menuCash(line.price)}</span></div><strong>${menuCash(line.total)}</strong></div>`).join(''):'<p class="empty-basket">A little something delicious?<br>Add a dish to start your order.</p>';
     $('#order-button').disabled=!summary.count; $('#clear-cart').disabled=!summary.count;
     try{localStorage.setItem('rosewood-cart-v1',JSON.stringify(cart));}catch{}
   }
@@ -69,30 +93,34 @@ if($('.page-menu')) {
     $('#menu-view-title').textContent=category;
     announce(`${category} menu selected.`);
   }));
-  $('#order-form').addEventListener('submit',event=>{
+  $('#order-form').addEventListener('submit',async event=>{
     event.preventDefault();const summary=cartSummary(cart,content.menu);if(!summary.count)return;
     const data=Object.fromEntries(new FormData(event.currentTarget));
-    showDraft(`ORDER DRAFT\n\nName: ${data.name}\n\n${summary.lines.map(line=>`${line.quantity} × ${line.name}: ${menuCash(line.total)}`).join('\n')}\n\nSubtotal: ${menuCash(summary.total)}\nTaxes, service and delivery not determined.\nNotes: ${data.notes || 'None'}\n\nAllergens and dietary requests need confirmation before a real order.`);
+    const lines=summary.lines.map(line=>`${line.quantity} × ${line.name}: ${menuCash(line.total)}`).join('\n');
+    const receipt=`ORDER INVOICE\n\nName: ${data.name}\nEmail: ${data.email}\n\n${lines}\n\nSubtotal: ${menuCash(summary.total)}\nNotes: ${data.notes || 'None'}\n\nThe restaurant will confirm availability, service and delivery details.`;
+    await submitRequest(event.currentTarget,'Food order',{name:data.name,email:data.email,Order:lines,Subtotal:menuCash(summary.total),Notes:data.notes || 'None'},receipt);
   });renderCart();
 }
 
 if($('#booking-form')) {
   const form=$('#booking-form');
-  function input(){const data=Object.fromEntries(new FormData(form));return {...data,lunch:!!data.lunch,dinner:!!data.dinner};}
+  function input(){const data=Object.fromEntries(new FormData(form));return {...data,breakfast:!!data.breakfast,lunch:!!data.lunch,dinner:!!data.dinner};}
   function quote(){return stayQuote(input(),content);}
   function renderQuote(){
     form.elements.departure.setCustomValidity('');
     const q=quote();
     if(q.error){$('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><p>${escape(q.error)}</p>`;return;}
-    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR SAMPLE STAY</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Bed & breakfast · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${[['Breakfast',q.breakfast],['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Sample total</span><strong>${cash(q.total)}</strong></div><p class="small">KSh · Breakfast included. Availability and any additional fees require confirmation.</p>`;
+    $('#stay-summary').innerHTML=`<p class="eyebrow">YOUR STAY AT A GLANCE</p><h3>${escape(q.room)}</h3><p>${q.guests} ${q.guests===1?'guest':'guests'} · ${q.nights} ${q.nights===1?'night':'nights'}</p><div class="summary-line"><span>Room · ${cash(q.rate)} × ${q.nights} nights</span><strong>${cash(q.roomTotal)}</strong></div>${q.breakfastRequested?'<div class="summary-line"><span>Breakfast requested</span><strong>Extra charge</strong></div>':''}${[['Lunch',q.lunch],['Dinner',q.dinner]].filter(([,n])=>n>0).map(([label,n])=>`<div class="summary-line"><span>${label} · ${q.guests} × ${q.nights}</span><strong>${cash(n)}</strong></div>`).join('')}<div class="total-row"><span>Estimated total</span><strong>${cash(q.total)}</strong></div><p class="small">Breakfast is optional and its charge is not included in this estimate. Availability and final charges require confirmation.</p>`;
   }
   form.addEventListener('input',renderQuote);form.addEventListener('change',()=>{hideDraft();renderQuote();});
   $$('.choose-room').forEach(button=>button.addEventListener('click',()=>{form.elements.room.value=button.dataset.room;hideDraft();renderQuote();$('#plan-stay').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});form.elements.arrival.focus({preventScroll:true});}));
-  form.addEventListener('submit',event=>{
+  form.addEventListener('submit',async event=>{
     event.preventDefault();const q=quote();
     if(q.error){form.elements.departure.setCustomValidity(q.error);form.reportValidity();return;}
     const data=input();
-    showDraft(`BOOKING INQUIRY DRAFT\n\nName: ${data.name}\nEmail: ${data.email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nBoard: Bed & breakfast included\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${cash(q.breakfast)}\nLunch: ${cash(q.lunch)}\nDinner: ${cash(q.dinner)}\nSample total: ${cash(q.total)}\nTaxes and fees not determined.\n\nAvailability has not been checked. No room is held.`);
+    const breakfast=q.breakfastRequested?'Requested — extra charge':'Not requested';
+    const receipt=`BOOKING INVOICE\n\nName: ${data.name}\nEmail: ${data.email}\nRoom: ${q.room}\nArrival: ${data.arrival}\nDeparture: ${data.departure}\n${q.guests} guest(s) · ${q.nights} night(s)\nRoom: ${cash(q.roomTotal)}\nBreakfast: ${breakfast}\nEstimated total: ${cash(q.total)}\n\nThe venue will confirm availability and final charges.`;
+    await submitRequest(event.currentTarget,'Accommodation booking',{name:data.name,email:data.email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:breakfast,'Estimated total':cash(q.total)},receipt);
   });renderQuote();
 }
 $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{

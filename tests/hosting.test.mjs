@@ -26,6 +26,21 @@ test('real build resolves every page link and asset for project hosting and loca
       }
       assert.doesNotMatch(html, /WEBSITE PREVIEW|PRIVATE CONCEPT|interactive prototype/i);
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
+      assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|Plan an inquiry|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE|breakfast included/i);
+      assert.match(html, /© 2026 Jotham Garden and Restaurant/);
+      if (key === 'home') {
+        assert.match(html, /Slow moments/);
+        assert.match(html, /Fresh flavours/);
+        assert.doesNotMatch(html, /card-number|Meet Jane, your host/);
+      }
+      if (key === 'reserve') {
+        assert.match(html, /The perfect place/);
+        assert.match(html, /Up to 1,000/);
+        assert.match(html, /Let’s plan your event/);
+      }
+      if (key === 'facilities') assert.equal((html.match(/class="facility-card"/g) || []).length, 9);
+      if (key === 'accommodation') assert.match(html, /Breakfast is available on request for an additional charge/);
+      if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);
     }
   }
 });

@@ -27,7 +27,7 @@ function dateNumber(value) {
 export function stayQuote(input, content, today = localToday()) {
   const room = content.rooms.find(r => r.id === input.room);
   const guests = Number(input.guests);
-  if (!room || ![1,2].includes(guests) || !['bed','breakfast'].includes(input.board)) return { error: 'Choose a room, one or two guests, and a board option.' };
+  if (!room || ![1,2].includes(guests)) return { error: 'Choose a room and one or two guests.' };
   const arrival = dateNumber(input.arrival), departure = dateNumber(input.departure);
   if (!Number.isFinite(arrival) || !Number.isFinite(departure)) return { error: 'Choose your arrival and departure dates to see a total.' };
   const nights = (departure - arrival) / 86400000;
@@ -35,8 +35,7 @@ export function stayQuote(input, content, today = localToday()) {
   if (nights < 1 || nights > 30) return { error: 'Choose a stay of 1 to 30 nights, with departure after arrival.' };
   const rate = guests === 1 ? room.single : room.double;
   const roomTotal = rate * nights;
-  const breakfast = input.board === 'breakfast' ? content.meals.breakfast * guests * nights : 0;
   const lunch = input.lunch ? content.meals.lunch * guests * nights : 0;
   const dinner = input.dinner ? content.meals.dinner * guests * nights : 0;
-  return { room: room.name, guests, nights, rate, roomTotal, breakfast, lunch, dinner, total: roomTotal + breakfast + lunch + dinner };
+  return { room: room.name, guests, nights, rate, roomTotal, breakfastRequested: Boolean(input.breakfast), lunch, dinner, total: roomTotal + lunch + dinner };
 }

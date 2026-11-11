@@ -13,9 +13,14 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const errors=[];
   const badResponses=[];
   const external=[];
+  const submissions=[];
+  await page.route('https://formsubmit.co/**',async route=>{
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true})});
+  });
   page.on('pageerror',error=>errors.push(error.message));
   page.on('response',response=>{if(response.status()>=400)badResponses.push(`${response.url()}: ${response.status()}`);});
-  page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:'))external.push(request.url());});
+  page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:')&&!request.url().startsWith('https://formsubmit.co/'))external.push(request.url());});
 
   const routes=['/','/reserve/','/facilities/','/menu/','/accommodation/','/team/','/gallery/'];
   for(const width of [1440,768,390,320]){
@@ -60,7 +65,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const hostText=await page.locator('main').innerText();
   assert.match(hostText,/Jane/);
   assert.match(hostText,/mother of three/i);
-  assert.match(hostText,/30 years as a teacher/i);
+  assert.match(hostText,/30 years of experience/i);
   assert.match(hostText,/Jotham Ngaina/);
   assert.doesNotMatch(hostText,/Alex Morgan|Jamie Ellis|Sam Rivers/);
   const hostPhoto=page.locator('.host-portrait');
@@ -107,14 +112,17 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.reload();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 3,050');
   await page.getByLabel('Name',{exact:true}).fill('Test Guest');
-  await page.getByRole('button',{name:'Review selections'}).click();
+  await page.getByLabel('Email address').fill('guest@example.com');
+  await page.getByRole('button',{name:'Place order'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Subtotal: KSh 3,050/);
+  assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Food order');
+  assert.equal(submissions.at(-1)._cc,'guest@example.com');
   const downloadPromise=page.waitForEvent('download');
-  await page.getByRole('button',{name:'Download details'}).click();
+  await page.getByRole('button',{name:'Download invoice'}).click();
   const download=await downloadPromise;
   const downloadPath=path.join(out,'order-details.txt');
   await download.saveAs(downloadPath);
-  assert.match(await fs.readFile(downloadPath,'utf8'),/LOCAL PROTOTYPE ONLY/);
+  assert.match(await fs.readFile(downloadPath,'utf8'),/ORDER INVOICE/);
   await page.getByRole('button',{name:'Empty basket'}).click();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 0');
   assert.equal(await page.locator('#order-button').isDisabled(),true);
@@ -125,10 +133,11 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByLabel('Email address').fill('guest@example.com');
   await page.getByLabel('Preferred date').fill('2030-06-10');
   await page.getByLabel('Guests',{exact:true}).fill('45');
-  await page.getByRole('button',{name:'Review inquiry'}).click();
+  await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Guests: 45/);
-  await page.getByLabel('Guests',{exact:true}).fill('121');
-  await page.getByRole('button',{name:'Review inquiry'}).click();
+  assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Event inquiry');
+  await page.getByLabel('Guests',{exact:true}).fill('1001');
+  await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);
   console.log('PASS: reservation inquiry and capacity constraint.');
 
@@ -139,10 +148,13 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.match(await page.locator('#stay-summary').textContent(),/KES\s*6,000/);
   await page.getByLabel('Your name').fill('Test Guest');
   await page.getByLabel('Email address').fill('guest@example.com');
-  await page.getByRole('button',{name:'Review stay details'}).click();
-  assert.match(await page.locator('#draft-text').textContent(),/Sample total: KES\s*6,000/);
+  await page.getByLabel('Add breakfast (extra charge)').check();
+  await page.getByRole('button',{name:'Send booking request'}).click();
+  assert.match(await page.locator('#draft-text').textContent(),/Estimated total: KES\s*6,000/);
+  assert.match(await page.locator('#draft-text').textContent(),/Breakfast: Requested — extra charge/);
+  assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Accommodation booking');
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-09');
-  await page.getByRole('button',{name:'Review stay details'}).click();
+  await page.getByRole('button',{name:'Send booking request'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);
   assert.match(await page.locator('#stay-summary').textContent(),/departure after arrival/);
   await page.getByLabel('Departure',{exact:true}).fill('2030-06-12');

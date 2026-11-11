@@ -5,12 +5,17 @@ export const content = {
   currency: 'KES',
   origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of gardens, good food and thoughtful hospitality, Jotham Gardens is a place to gather, celebrate and feel a little closer to nature.',
   originNote: 'A place to slow down, connect and enjoy the gardens.',
-  venue: { capacity: 120, occasions: ['Garden weddings', 'Private celebrations', 'Team retreats', 'Intimate gatherings'] },
+  venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
   facilities: [
-    { name: 'The garden lawn', label: 'GATHER UNDER OPEN SKIES', image: 'Garden_gallery', description: 'A green canvas for ceremonies, leisurely afternoons and beautiful celebrations. ' },
-    { name: 'The covered pavilion', label: 'A LITTLE SHELTER, A LOT OF CHARM', image: 'night_set_up_catering', description: 'An airy setting for dining and conversation, with a covered layout for smaller events. ' },
-    { name: 'The dining terrace', label: 'TIME TO SAVOUR', image: 'terrace', description: 'An inviting place for seasonal plates, a slow breakfast or a table shared with friends. ' },
-    { name: 'The quiet corners', label: 'ROOM TO EXHALE', image: 'Flowers', description: 'Shaded garden seating and tucked-away spots for reading, reflection and unhurried conversation.' }
+    { name: 'Garden Lawn', image: 'Garden_gallery', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
+    { name: 'Ground-Floor Conference Room', image: 'night_set_up_catering', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
+    { name: 'First-Floor Conference Room', image: 'terrace', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
+    { name: 'Bar', image: 'bonfire_dinner', description: 'Drinks service for relaxed gatherings and private events.' },
+    { name: 'On-Demand Kitchen', image: 'food', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
+    { name: 'Catering Kitchen', image: 'Meats', description: 'A dedicated kitchen supporting large events and outside catering.' },
+    { name: 'Parking and Security', image: 'venue', description: 'Ample parking with 24-hour security.' },
+    { name: 'Garden Corners', image: 'Flowers', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
+    { name: 'Live Music and Tent Space', image: 'night_set_up_catering', description: 'Space for a live band and multiple tents for custom events.' }
   ],
   menu: [
       {
@@ -294,16 +299,16 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 2500, double: 3000, bed: 'Bed and breakfast included', details: 'For one or two guests' },
-    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 4500, double: 5000, bed: 'Bed and breakfast included', details: 'For one or two guests' }
+    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: 'Luxury_bed_and_house', single: 2500, double: 3000, bed: 'Breakfast available on request at an additional charge', details: 'For one or two guests' },
+    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Full_Board', single: 4500, double: 5000, bed: 'Breakfast available on request at an additional charge', details: 'For one or two guests' }
   ],
-  meals: { breakfast: 0, lunch: 18, dinner: 25 },
+  meals: { lunch: 18, dinner: 25 },
   team: [
-    { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'I am a mother of three and spent 30 years as a teacher. In retirement, I now devote my time to running Jotham Gardens, which I named in loving memory of my late father, Jotham Ngaina.' }
+    { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'Welcome to our garden. I am a mother of three and a retired teacher with 30 years of experience. I now devote my time to running Jotham Gardens, which I named in loving memory of my late father, Jotham Ngaina.' }
   ],
   gallery: [
     { image: 'Garden_gallery', title: 'A path to somewhere peaceful', category: 'Gardens' },
-    { image: 'bonfire_dinner', title: 'A setting for your story', category: 'Celebrations' },
+    { image: 'bonfire_dinner', title: 'The perfect place for your event', category: 'Celebrations' },
     { image: 'Meats', title: 'Fresh from the kitchen', category: 'Dining' },
     { image: 'Flowers', title: 'Nature in the details', category: 'Gardens' },
     { image: 'Luxury_bed_and_house', title: 'Stay a little longer', category: 'Rooms' },

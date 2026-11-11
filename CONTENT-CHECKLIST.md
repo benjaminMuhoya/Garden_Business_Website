@@ -1,6 +1,6 @@
 # Owner information needed next
 
-The business name and motto are owner-provided; other business details remain placeholders. The public prototype is for review. Complete and approve these before presenting the site as the final business website or taking real orders/bookings.
+The business name, motto and current venue details are owner-provided. Confirm the following operational details before accepting live orders and bookings.
 
 - [x] **Business name and motto:** Jotham Gardens — Your Nature Haven for Food, Drinks & Events.
 - [ ] **Visual identity:** approved logo, colors and preferred typefaces.
