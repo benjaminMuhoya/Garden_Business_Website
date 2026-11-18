@@ -2,7 +2,7 @@
 export const content = {
   brand: 'Jotham Gardens',
   motto: 'Your Nature Haven for Food, Drinks & Events.',
-  contact: { phoneDisplay: '+254 718 337555', phoneHref: '+254718337555' },
+  contact: { phoneDisplay: '+254183299583', phoneHref: '+254183299583' },
   currency: 'KES',
   origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of nature, joyful gatherings, good food and unforgettable moments, Jotham Gardens is a place to meet, connect and share beautiful moments close to nature.',
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
@@ -386,7 +386,7 @@ export const content = {
           "orderable": false,
           "href": "/reserve/",
           "image": "venue",
-          "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call +254 718 337555.",
+          "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call +254183299583.",
           "tag": ""
       }
   ],
