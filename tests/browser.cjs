@@ -15,7 +15,12 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const external=[];
   const submissions=[];
   await page.route('https://formsubmit.co/**',async route=>{
-    submissions.push(route.request().postDataJSON());
+    const submission=route.request().postDataJSON();
+    submissions.push(submission);
+    if(submission._next) {
+      await route.fulfill({status:303,headers:{location:submission._next},body:''});
+      return;
+    }
     await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true})});
   });
   page.on('pageerror',error=>errors.push(error.message));
@@ -113,7 +118,8 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.match(await page.locator('.menu-card').filter({hasText:'Beer'}).innerText(),/KSh 300/);
   const sideNames=await page.locator('.menu-card[data-category="Sides"] h2').allTextContents();
   assert.equal(sideNames.at(-1),'Any Side Plate (Large)');
-  assert.match(await page.locator('.menu-card').filter({hasText:'Custom Group & Event Offers'}).innerText(),/0724767617/);
+  const currentPhone=await page.evaluate(()=>JSON.parse(document.querySelector('#site-content').textContent).contact.phoneDisplay);
+  assert.ok((await page.locator('.menu-card').filter({hasText:'Custom Group & Event Offers'}).innerText()).includes(currentPhone));
   await page.getByRole('button',{name:'Add one Beef · 1 kg',exact:true}).click({clickCount:2});
   await page.getByRole('button',{name:'Add one Fries · plate',exact:true}).click();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 3,050');
@@ -149,10 +155,13 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByLabel('Email me an invoice or copy').check();
   await page.getByLabel('Preferred date').fill('2030-06-10');
   await page.getByLabel('Guests',{exact:true}).fill('45');
-  await page.getByRole('button',{name:'Send inquiry'}).click();
+  await Promise.all([page.waitForNavigation(),page.getByRole('button',{name:'Send inquiry'}).click()]);
   assert.match(await page.locator('#draft-text').textContent(),/Guests: 45/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Event inquiry');
-  assert.equal(submissions.at(-1)._cc,'guest@example.com');
+  assert.equal(submissions.at(-1).email,'guest@example.com');
+  assert.match(submissions.at(-1)._autoresponse,/EVENT INQUIRY/);
+  assert.equal('_cc' in submissions.at(-1),false);
+  assert.equal('_captcha' in submissions.at(-1),false);
   await page.getByLabel('Guests',{exact:true}).fill('1001');
   await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);

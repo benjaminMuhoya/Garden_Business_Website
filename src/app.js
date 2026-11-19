@@ -18,7 +18,9 @@ document.addEventListener('keydown', event => {
 $$('[data-future]').forEach(input => {input.min = localToday();});
 let draft = '';
 let downloadName = 'jotham-gardens-request.txt';
-const formEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
+const formEndpoint = 'https://formsubmit.co/bauzbenjamin@gmail.com';
+const ajaxFormEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
+const receiptStorageKey = 'jotham-gardens-submission-receipt';
 function hideDraft(){ const result=$('#draft-result'); if(result){result.hidden=true;draft='';} }
 function showDraft(text, filename, emailed) {
   draft = text;
@@ -29,6 +31,23 @@ function showDraft(text, filename, emailed) {
   $('#draft-result').focus();
   announce('Your request has been submitted.');
 }
+function postNativeForm(payload) {
+  const nativeForm=document.createElement('form');
+  nativeForm.method='POST';nativeForm.action=formEndpoint;nativeForm.hidden=true;
+  Object.entries(payload).forEach(([name,value])=>{
+    const input=document.createElement('input');input.type='hidden';input.name=name;input.value=String(value);nativeForm.append(input);
+  });
+  document.body.append(nativeForm);
+  nativeForm.submit();
+}
+if(new URLSearchParams(location.search).get('submitted')==='1') {
+  try {
+    const saved=JSON.parse(sessionStorage.getItem(receiptStorageKey) || 'null');
+    if(saved?.receipt && saved?.filename && $('#draft-result')) showDraft(saved.receipt,saved.filename,true);
+    sessionStorage.removeItem(receiptStorageKey);
+  } catch {}
+  history.replaceState(null,'',location.pathname+location.hash);
+}
 async function submitRequest(form, kind, details, receipt) {
   const button=form.querySelector('[type="submit"]');
   form.querySelector('.submission-error')?.remove();
@@ -37,12 +56,19 @@ async function submitRequest(form, kind, details, receipt) {
   const customerEmail=form.elements.email?.value.trim();
   const payload={...details,_subject:`New Jotham Gardens ${kind}`,_template:'table',_captcha:'false'};
   if(customerEmail) payload._replyto=customerEmail;
-  if(sendCopy) payload._cc=customerEmail;
+  const filename=`jotham-gardens-${kind.toLowerCase().replace(/[^a-z]+/g,'-')}.txt`;
   try {
-    const response=await fetch(formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+    if(sendCopy) {
+      const next=new URL(location.href);next.searchParams.set('submitted','1');
+      try {sessionStorage.setItem(receiptStorageKey,JSON.stringify({receipt,filename}));} catch {}
+      const {_captcha,...nativePayload}=payload;
+      postNativeForm({...nativePayload,email:customerEmail,_autoresponse:receipt,_next:next.href});
+      return true;
+    }
+    const response=await fetch(ajaxFormEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok || result.success===false) throw new Error(result.message || 'Submission failed');
-    showDraft(receipt,`jotham-gardens-${kind.toLowerCase().replace(/[^a-z]+/g,'-')}.txt`,sendCopy);
+    showDraft(receipt,filename,false);
     return true;
   } catch {
     const error=document.createElement('p');error.className='submission-error';error.setAttribute('role','alert');

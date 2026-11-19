@@ -4,6 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {readFile, stat} from 'node:fs/promises';
 import {normalizeBasePath} from '../scripts/hosting.mjs';
 import {pageKeys} from '../src/templates.js';
+import {content} from '../src/content.js';
 
 test('base path accepts repository names and rejects external or traversing paths', () => {
   assert.equal(normalizeBasePath(), '/');
@@ -28,8 +29,8 @@ test('real build resolves every page link and asset for project hosting and loca
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
       assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
       assert.match(html, /© 2026 Jotham Garden and Restaurant/);
-      assert.equal((html.match(/CONTACT: \+254 718 337555/g) || []).length, key === 'facilities' ? 2 : 1);
-      assert.match(html, /href="tel:\+254718337555"/);
+      assert.equal(html.split(`CONTACT: ${content.contact.phoneDisplay}`).length - 1, key === 'facilities' ? 2 : 1);
+      assert.ok(html.includes(`href="tel:${content.contact.phoneHref}"`));
       assert.doesNotMatch(html, /0724767617/);
       if (key === 'home') {
         assert.match(html, /Slow moments/);
@@ -56,7 +57,7 @@ test('real build resolves every page link and asset for project hosting and loca
         for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350','Glass KSh 350 · Bottle KSh 2,000','Single KSh 250 · Double KSh 400','Any bottle is KSh 4,500']) assert.ok(html.includes(price), price);
         assert.equal((html.match(/<p>Ask what’s available\.<\/p>/g) || []).length, 1);
         assert.doesNotMatch(html, /Wine Shots|Whisky Shots|Gin Shots|Vodka Shots/);
-        assert.match(html, /call \+254 718 337555/);
+        assert.ok(html.includes(`call ${content.contact.phoneDisplay}`));
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
       if (key === 'facilities') {
