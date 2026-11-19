@@ -2,7 +2,7 @@
 
 An independent, seven-page garden venue and hospitality website. **Jotham Gardens is the owner-provided business name.** The motto is “Your Nature Haven for Food, Drinks & Events.”
 
-The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages. The site uses local assets and FormSubmit for event inquiries, food orders and accommodation booking requests.
+The repository is independent on `main`. No personal-website files were reused. It is linked to `https://github.com/benjaminMuhoya/Garden_Business_Website` and publishes through GitHub Actions to GitHub Pages. The site uses local assets, FormSubmit for venue notifications, and EmailJS for separate customer copies requested through the opt-in checkbox.
 
 ## Run locally
 
@@ -30,7 +30,7 @@ BASE_PATH=/Garden_Business_Website/ npm run build
 BASE_PATH=/Garden_Business_Website/ PORT=4174 npm run preview
 ```
 
-Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. FormSubmit must be activated from the confirmation message sent to the venue inbox before it will forward live submissions.
+Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. FormSubmit must be activated from the confirmation message sent to the venue inbox before it will forward live submissions. The EmailJS Gmail service and customer template configured in `src/app.js` must also remain active for opted-in customer copies.
 
 ## Pages
 

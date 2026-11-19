@@ -14,18 +14,19 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const badResponses=[];
   const external=[];
   const submissions=[];
+  const customerEmails=[];
   await page.route('https://formsubmit.co/**',async route=>{
     const submission=route.request().postDataJSON();
     submissions.push(submission);
-    if(submission._next) {
-      await route.fulfill({status:303,headers:{location:submission._next},body:''});
-      return;
-    }
     await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true})});
+  });
+  await page.route('https://api.emailjs.com/**',async route=>{
+    customerEmails.push(route.request().postDataJSON());
+    await route.fulfill({status:200,contentType:'text/plain',body:'OK'});
   });
   page.on('pageerror',error=>errors.push(error.message));
   page.on('response',response=>{if(response.status()>=400)badResponses.push(`${response.url()}: ${response.status()}`);});
-  page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:')&&!request.url().startsWith('https://formsubmit.co/'))external.push(request.url());});
+  page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:')&&!request.url().startsWith('https://formsubmit.co/')&&!request.url().startsWith('https://api.emailjs.com/'))external.push(request.url());});
 
   const routes=['/','/reserve/','/facilities/','/menu/','/accommodation/','/team/','/gallery/'];
   for(const width of [1440,768,390,320]){
@@ -155,13 +156,19 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByLabel('Email me an invoice or copy').check();
   await page.getByLabel('Preferred date').fill('2030-06-10');
   await page.getByLabel('Guests',{exact:true}).fill('45');
-  await Promise.all([page.waitForNavigation(),page.getByRole('button',{name:'Send inquiry'}).click()]);
+  await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.match(await page.locator('#draft-text').textContent(),/Guests: 45/);
   assert.equal(submissions.at(-1)._subject,'New Jotham Gardens Event inquiry');
-  assert.equal(submissions.at(-1).email,'guest@example.com');
-  assert.match(submissions.at(-1)._autoresponse,/EVENT INQUIRY/);
   assert.equal('_cc' in submissions.at(-1),false);
-  assert.equal('_captcha' in submissions.at(-1),false);
+  assert.equal('_autoresponse' in submissions.at(-1),false);
+  assert.equal(customerEmails.at(-1).service_id,'service_phhdqe9');
+  assert.equal(customerEmails.at(-1).template_id,'template_hdinv6x');
+  assert.equal(customerEmails.at(-1).user_id,'A3-jSSaFomV5yB1e0');
+  assert.equal(customerEmails.at(-1).template_params.customer_email,'guest@example.com');
+  assert.equal(customerEmails.at(-1).template_params.customer_name,'Test Guest');
+  assert.equal(customerEmails.at(-1).template_params.request_type,'Event inquiry');
+  assert.match(customerEmails.at(-1).template_params.receipt,/EVENT INQUIRY/);
+  assert.match(await page.locator('#draft-message').textContent(),/separate copy was emailed/i);
   await page.getByLabel('Guests',{exact:true}).fill('1001');
   await page.getByRole('button',{name:'Send inquiry'}).click();
   assert.equal(await page.locator('#draft-result').isVisible(),false);

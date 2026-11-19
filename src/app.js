@@ -18,35 +18,26 @@ document.addEventListener('keydown', event => {
 $$('[data-future]').forEach(input => {input.min = localToday();});
 let draft = '';
 let downloadName = 'jotham-gardens-request.txt';
-const formEndpoint = 'https://formsubmit.co/bauzbenjamin@gmail.com';
-const ajaxFormEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
-const receiptStorageKey = 'jotham-gardens-submission-receipt';
+const formEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
+const emailjsEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
+const emailjsConfig = {service_id:'service_phhdqe9',template_id:'template_hdinv6x',user_id:'A3-jSSaFomV5yB1e0'};
 function hideDraft(){ const result=$('#draft-result'); if(result){result.hidden=true;draft='';} }
-function showDraft(text, filename, emailed) {
+function showDraft(text, filename, emailStatus='none') {
   draft = text;
   downloadName = filename;
   $('#draft-text').textContent = draft;
-  $('#draft-message').textContent = emailed ? 'The venue has received your details, and a copy will be emailed to you.' : 'The venue has received your details. You can download a copy below.';
+  $('#draft-message').textContent = emailStatus==='sent'
+    ? 'The venue has received your details, and a separate copy was emailed to you.'
+    : emailStatus==='failed'
+      ? 'The venue has received your details, but your email copy could not be sent. You can download it below.'
+      : 'The venue has received your details. You can download a copy below.';
   $('#draft-result').hidden = false;
   $('#draft-result').focus();
-  announce('Your request has been submitted.');
+  announce(emailStatus==='failed' ? 'Your request was submitted, but the email copy could not be sent.' : 'Your request has been submitted.');
 }
-function postNativeForm(payload) {
-  const nativeForm=document.createElement('form');
-  nativeForm.method='POST';nativeForm.action=formEndpoint;nativeForm.hidden=true;
-  Object.entries(payload).forEach(([name,value])=>{
-    const input=document.createElement('input');input.type='hidden';input.name=name;input.value=String(value);nativeForm.append(input);
-  });
-  document.body.append(nativeForm);
-  nativeForm.submit();
-}
-if(new URLSearchParams(location.search).get('submitted')==='1') {
-  try {
-    const saved=JSON.parse(sessionStorage.getItem(receiptStorageKey) || 'null');
-    if(saved?.receipt && saved?.filename && $('#draft-result')) showDraft(saved.receipt,saved.filename,true);
-    sessionStorage.removeItem(receiptStorageKey);
-  } catch {}
-  history.replaceState(null,'',location.pathname+location.hash);
+async function sendCustomerCopy(customerEmail, customerName, kind, receipt) {
+  const response=await fetch(emailjsEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...emailjsConfig,template_params:{customer_email:customerEmail,customer_name:customerName,request_type:kind,receipt,title:kind,name:customerName,email:customerEmail,message:receipt}})});
+  if(!response.ok) throw new Error(await response.text() || 'Customer email failed');
 }
 async function submitRequest(form, kind, details, receipt) {
   const button=form.querySelector('[type="submit"]');
@@ -54,21 +45,19 @@ async function submitRequest(form, kind, details, receipt) {
   button.disabled=true;button.setAttribute('aria-busy','true');
   const sendCopy=form.elements.emailCopy?.checked;
   const customerEmail=form.elements.email?.value.trim();
+  const customerName=form.elements.name?.value.trim() || details.Name || 'Guest';
   const payload={...details,_subject:`New Jotham Gardens ${kind}`,_template:'table',_captcha:'false'};
   if(customerEmail) payload._replyto=customerEmail;
   const filename=`jotham-gardens-${kind.toLowerCase().replace(/[^a-z]+/g,'-')}.txt`;
   try {
-    if(sendCopy) {
-      const next=new URL(location.href);next.searchParams.set('submitted','1');
-      try {sessionStorage.setItem(receiptStorageKey,JSON.stringify({receipt,filename}));} catch {}
-      const {_captcha,...nativePayload}=payload;
-      postNativeForm({...nativePayload,email:customerEmail,_autoresponse:receipt,_next:next.href});
-      return true;
-    }
-    const response=await fetch(ajaxFormEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+    const response=await fetch(formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok || result.success===false) throw new Error(result.message || 'Submission failed');
-    showDraft(receipt,filename,false);
+    if(sendCopy) {
+      try {await sendCustomerCopy(customerEmail,customerName,kind,receipt);}
+      catch {showDraft(receipt,filename,'failed');return false;}
+    }
+    showDraft(receipt,filename,sendCopy?'sent':'none');
     return true;
   } catch {
     const error=document.createElement('p');error.className='submission-error';error.setAttribute('role','alert');

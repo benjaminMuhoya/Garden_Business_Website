@@ -17,11 +17,11 @@ Latest verification: November 10, 2026.
 
 ## Email workflow
 
-The static GitHub Pages site submits event inquiries, food orders and accommodation booking requests through FormSubmit. Every request is addressed to the private venue inbox configured in `src/app.js`. Customers may opt in to an emailed copy and can download their confirmation or invoice.
+The static GitHub Pages site submits event inquiries, food orders and accommodation booking requests to the venue through FormSubmit. When a customer opts in, the accepted venue submission is followed by a separate EmailJS request using the configured Gmail service and customer template. Customers can also download their confirmation or invoice. If the second request fails, the page reports that the venue received the request but the customer email was not sent.
 
 FormSubmit requires the venue owner to click its activation message before live submissions are forwarded. After activation, replace the exposed email endpoint with FormSubmit's random endpoint token if the inbox address must also be hidden from page source.
 
 ## Limits
 
 - The site submits requests but does not process payments or automatically confirm inventory, room availability or event availability.
-- Live email delivery is not end-to-end verified until FormSubmit is activated and a real submission is confirmed in the venue inbox.
+- Live delivery is not end-to-end verified until a real opted-in submission is confirmed in both the venue and customer inboxes.
