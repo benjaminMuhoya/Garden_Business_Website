@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFile, stat} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {normalizeBasePath} from '../scripts/hosting.mjs';
 import {pageKeys} from '../src/templates.js';
 import {content} from '../src/content.js';
@@ -14,10 +15,14 @@ test('base path accepts repository names and rejects external or traversing path
 });
 
 test('real build resolves every page link and asset for project hosting and local previews', async () => {
+  const appSource = await readFile('src/app.js');
+  const appFile = `app-${createHash('sha256').update(appSource).digest('hex').slice(0,12)}.js`;
   for (const base of ['/Garden_Business_Website/', '/']) {
     execFileSync(process.execPath, ['scripts/build.mjs'], {env: {...process.env, BASE_PATH: base}});
+    assert.deepEqual(await readFile(`dist/${appFile}`), appSource);
     for (const key of pageKeys) {
       const html = await readFile(`dist/${key === 'home' ? '' : key + '/'}index.html`, 'utf8');
+      assert.ok(html.includes(`src="${base}${appFile}"`));
       for (const [, value] of html.matchAll(/\b(?:href|src)="([^"]*)"/g)) {
         if (value.startsWith('#') || /^[a-z][a-z0-9+.-]*:/i.test(value)) continue;
         assert.ok(value.startsWith(base), `${key}: ${value} escaped ${base}`);

@@ -1,4 +1,5 @@
-import {mkdir, cp, writeFile, rm, stat} from 'node:fs/promises';
+import {mkdir, cp, writeFile, rm, stat, readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {renderPage, pageKeys} from '../src/templates.js';
 import {content} from '../src/content.js';
 import {normalizeBasePath, applyBasePath} from './hosting.mjs';
@@ -15,9 +16,12 @@ const assetFile = asset => ({'Children gallery':'Children gallery.JPG',Jane_host
 for(const asset of assets) if((await stat(`src/assets/${assetFile(asset)}`)).size<1000) throw new Error('Missing asset '+asset);
 await rm('dist',{recursive:true,force:true});
 await mkdir('dist',{recursive:true});
-for(const file of ['app.js','domain.js','styles.css']) await cp(`src/${file}`,`dist/${file}`);
+const appSource = await readFile('src/app.js');
+const appFile = `app-${createHash('sha256').update(appSource).digest('hex').slice(0,12)}.js`;
+await writeFile(`dist/${appFile}`, appSource);
+for(const file of ['domain.js','styles.css']) await cp(`src/${file}`,`dist/${file}`);
 await cp('src/assets','dist/assets',{recursive:true});
-for(const key of pageKeys){const dir=key==='home'?'dist':`dist/${key}`;await mkdir(dir,{recursive:true});await writeFile(`${dir}/index.html`,applyBasePath(renderPage(key), basePath));}
+for(const key of pageKeys){const dir=key==='home'?'dist':`dist/${key}`;await mkdir(dir,{recursive:true});await writeFile(`${dir}/index.html`,applyBasePath(renderPage(key, appFile), basePath));}
 await writeFile('dist/.nojekyll', '');
 await writeFile('dist/CNAME', 'JothamGardens.com\n');
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
