@@ -30,7 +30,7 @@ BASE_PATH=/Garden_Business_Website/ npm run build
 BASE_PATH=/Garden_Business_Website/ PORT=4174 npm run preview
 ```
 
-Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. FormSubmit must be activated from the confirmation message sent to the venue inbox before it will forward live submissions. The EmailJS Gmail service and customer template configured in `src/app.js` must also remain active for opted-in customer copies.
+Then open http://127.0.0.1:4174/Garden_Business_Website/. Run `npm run build` again to restore a root-path local build. The forms submit to `jothamgardens.online@gmail.com` through FormSubmit. Open the activation message in that inbox and confirm the new endpoint before it will forward live submissions. The EmailJS Gmail service and customer template configured in `src/app.js` must also remain active for opted-in customer copies. If that service still sends from the previous account, reconnect it to the Jotham account and update its template in EmailJS.
 
 ## Pages
 

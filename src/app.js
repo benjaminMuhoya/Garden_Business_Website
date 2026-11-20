@@ -18,7 +18,7 @@ document.addEventListener('keydown', event => {
 $$('[data-future]').forEach(input => {input.min = localToday();});
 let draft = '';
 let downloadName = 'jotham-gardens-request.txt';
-const formEndpoint = 'https://formsubmit.co/ajax/bauzbenjamin@gmail.com';
+const formEndpoint = 'https://formsubmit.co/ajax/jothamgardens.online@gmail.com';
 const emailjsEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
 const emailjsConfig = {service_id:'service_phhdqe9',template_id:'template_hdinv6x',user_id:'A3-jSSaFomV5yB1e0'};
 function hideDraft(){ const result=$('#draft-result'); if(result){result.hidden=true;draft='';} }

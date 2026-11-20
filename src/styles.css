@@ -1088,12 +1088,49 @@ footer {
 .footer-main .brand svg {
   stroke:var(--accent-pink)
 }
-.footer-main .contact-number {
+.contact-card {
+  display:grid;
+  gap:12px;
+  min-width:0;
+  max-width:100%;
+  font-style:normal
+}
+.contact-heading {
+  margin:0 0 4px;
   font-family:var(--serif);
-  font-size:clamp(26px,3vw,42px);
-  line-height:1.2;
-  letter-spacing:-.025em;
+  font-size:clamp(24px,2.5vw,34px);
+  line-height:1.1
+}
+.contact-card a {
+  display:grid;
+  gap:3px;
+  width:fit-content;
+  max-width:100%;
+  text-decoration:none
+}
+.contact-card a>span {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  opacity:.72
+}
+.contact-card a strong {
+  font-family:var(--serif);
+  font-size:clamp(18px,2vw,24px);
+  font-weight:400;
+  line-height:1.25;
+  overflow-wrap:anywhere
+}
+.contact-card a:hover strong {
+  text-decoration:underline;
+  text-underline-offset:4px
+}
+.footer-main .contact-card {
   text-align:right
+}
+.footer-main .contact-card a {
+  margin-left:auto
 }
 .footer-bottom {
   display:flex;
@@ -1640,10 +1677,12 @@ footer {
     display:block;
     padding-bottom:30px
   }
-  .footer-main .contact-number {
-    display:inline-block;
+  .footer-main .contact-card {
     margin:27px 0 0;
     text-align:left
+  }
+  .footer-main .contact-card a {
+    margin-left:0
   }
   .footer-bottom {
     display:block;

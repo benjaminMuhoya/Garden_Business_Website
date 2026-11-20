@@ -29,8 +29,11 @@ test('real build resolves every page link and asset for project hosting and loca
       assert.doesNotMatch(html, /PRIVATE CONCEPT/);
       assert.doesNotMatch(html, /↗|→|↓|GARDENS · GATHERINGS · GETAWAYS|MAKE YOURSELF AT HOME|A beautiful beginning|GATHER BEAUTIFULLY|YOUR OCCASION, NATURALLY|ROOM FOR MEANINGFUL MOMENTS|SPACES TO ENJOY|A little room|A THOUGHTFUL VISIT|YOUR OWN PACE/i);
       assert.match(html, /© 2026 Jotham Garden and Restaurant/);
-      assert.equal(html.split(`CONTACT: ${content.contact.phoneDisplay}`).length - 1, key === 'facilities' ? 2 : 1);
-      assert.ok(html.includes(`href="tel:${content.contact.phoneHref}"`));
+      const contactCount = key === 'facilities' ? 2 : 1;
+      assert.equal(html.split(`href="tel:${content.contact.phoneHref}"`).length - 1, contactCount);
+      assert.equal(html.split(`href="mailto:${content.contact.email}"`).length - 1, contactCount);
+      assert.equal(html.split(`href="${content.contact.mapUrl}"`).length - 1, contactCount);
+      assert.doesNotMatch(html, /bauzbenjamin@gmail\.com/);
       assert.doesNotMatch(html, /0724767617/);
       if (key === 'home') {
         assert.match(html, /Slow moments/);

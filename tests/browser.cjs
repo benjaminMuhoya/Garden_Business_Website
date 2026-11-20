@@ -16,6 +16,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   const submissions=[];
   const customerEmails=[];
   await page.route('https://formsubmit.co/**',async route=>{
+    assert.equal(route.request().url(),'https://formsubmit.co/ajax/jothamgardens.online@gmail.com');
     const submission=route.request().postDataJSON();
     submissions.push(submission);
     await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true})});
@@ -29,6 +30,8 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:')&&!request.url().startsWith('https://formsubmit.co/')&&!request.url().startsWith('https://api.emailjs.com/'))external.push(request.url());});
 
   const routes=['/','/reserve/','/facilities/','/menu/','/accommodation/','/team/','/gallery/'];
+  const contactEmail='jothamgardens.online@gmail.com';
+  const mapUrl='https://maps.app.goo.gl/zVXSmxbScTZKDVaY7';
   for(const width of [1440,768,390,320]){
     await page.setViewportSize({width,height:1000});
     for(const route of routes){
@@ -36,6 +39,8 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
       assert.equal(response.status(),200,route);
       await page.locator('h1').waitFor();
       assert.equal(await page.locator('h1').count(),1,`${route} one h1`);
+      assert.equal(await page.locator('footer').locator(`a[href="mailto:${contactEmail}"]`).count(),1);
+      assert.equal(await page.locator('footer').locator(`a[href="${mapUrl}"]`).count(),1);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${route} overflow ${width}`);
       const badImages=await page.locator('img[src]').evaluateAll(images=>images.filter(image=>image.complete&&!image.naturalWidth).map(image=>image.src));
       assert.deepEqual(badImages,[],`${route} images`);
