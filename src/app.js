@@ -153,13 +153,56 @@ if($('#booking-form')) {
     await submitRequest(event.currentTarget,'Accommodation booking',{Name:data.name,Phone:data.phone,Email:email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:'Included','Estimated total':cash(q.total)},receipt);
   });renderQuote();
 }
-$$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
-  $$('[data-gallery-filter]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
-  $$('[data-gallery-category]').forEach(item=>{item.hidden=button.dataset.galleryFilter!=='All'&&item.dataset.galleryCategory!==button.dataset.galleryFilter;});
-}));
-$$('.gallery-open').forEach(button=>button.addEventListener('click',()=>{
-  const item=content.gallery[Number(button.dataset.index)];
-  $('#lightbox-image').src=new URL(`assets/${item.image}.jpg`, import.meta.url).href;$('#lightbox-image').alt=item.title+' — inspiration photograph';$('#lightbox-caption').textContent=item.title+' · Inspiration photograph';$('#lightbox').showModal();
-}));
-$('.close-lightbox')?.addEventListener('click',()=>$('#lightbox').close());
-$('#lightbox')?.addEventListener('click',event=>{if(event.target===$('#lightbox'))$('#lightbox').close();});
+if($('.page-gallery')) {
+  const gallery=$('.gallery-grid'), lightbox=$('#lightbox');
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  let hovered=false, pausedIndex=null, pendingTouchIndex=null, pauseTimer, pointerType='mouse';
+  const syncMotion=()=>gallery.classList.toggle('is-paused',hovered || pausedIndex!==null || lightbox.open);
+  const clearTouchPause=()=>{clearTimeout(pauseTimer);pausedIndex=null;pendingTouchIndex=null;syncMotion();};
+
+  $$('.gallery-item').forEach(item=>{
+    // Each photograph gets a different, gentle path without changing its place in the grid.
+    item.style.setProperty('--drift-x',`${12+Math.round(Math.random()*22)}px`);
+    item.style.setProperty('--drift-y',`${10+Math.round(Math.random()*22)}px`);
+    item.style.setProperty('--drift-rotation',`${(Math.random()*3+1).toFixed(1)}deg`);
+    item.style.setProperty('--drift-time',`${(8+Math.random()*6).toFixed(1)}s`);
+    item.style.setProperty('--drift-delay',`${(-Math.random()*12).toFixed(1)}s`);
+    item.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hovered=true;syncMotion();}});
+    item.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){hovered=false;syncMotion();}});
+  });
+
+  $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
+    clearTouchPause();
+    $$('[data-gallery-filter]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
+    $$('[data-gallery-category]').forEach(item=>{item.hidden=button.dataset.galleryFilter!=='All'&&item.dataset.galleryCategory!==button.dataset.galleryFilter;});
+  }));
+  $$('.gallery-open').forEach(button=>{
+    button.addEventListener('pointerdown',event=>{
+      pointerType=event.pointerType;
+      if(reducedMotion.matches || (pointerType!=='touch' && pointerType!=='pen')) return;
+      const index=Number(button.dataset.index);
+      pendingTouchIndex=pausedIndex===index ? null : index;
+      if(pendingTouchIndex!==null) {
+        clearTimeout(pauseTimer);pausedIndex=index;syncMotion();
+        pauseTimer=setTimeout(clearTouchPause,4500);
+      }
+    });
+    button.addEventListener('click',event=>{
+      const index=Number(button.dataset.index);
+      if(event.detail && (pointerType==='touch' || pointerType==='pen') && pendingTouchIndex===index) {
+        pendingTouchIndex=null;
+        return;
+      }
+      clearTouchPause();
+      const item=content.gallery[index], photo=button.querySelector('img');
+      $('#lightbox-image').src=photo.currentSrc || photo.src;
+      $('#lightbox-image').alt=photo.alt;
+      $('#lightbox-caption').textContent=item.title;
+      lightbox.showModal();syncMotion();
+    });
+  });
+  const closeLightbox=()=>lightbox.close();
+  $('.close-lightbox').addEventListener('click',closeLightbox);
+  lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
+  lightbox.addEventListener('close',()=>{hovered=false;clearTouchPause();});
+}

@@ -1793,6 +1793,19 @@ footer {
 .gallery-open{background:#fff;overflow:visible}
 .gallery-open img,.gallery-item:nth-child(n) img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;transition:none}
 .gallery-open:hover img{transform:none}
+.page-gallery .gallery-grid{gap:48px 42px;padding:34px 18px 100px}
+.page-gallery .gallery-item{animation:gallery-drift var(--drift-time,10s) ease-in-out var(--drift-delay,0s) infinite alternate;will-change:transform,opacity}
+.page-gallery .gallery-grid.is-paused .gallery-item{animation-play-state:paused}
+.page-gallery .gallery-open{aspect-ratio:4/3;background:#e9e8df;cursor:zoom-in;touch-action:manipulation}
+.page-gallery .gallery-open img,.page-gallery .gallery-item:nth-child(n) img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center}
+@keyframes gallery-drift{
+  from{transform:translate(0,0) rotate(0) scale(.97);opacity:.72}
+  to{transform:translate(var(--drift-x,20px),var(--drift-y,20px)) rotate(var(--drift-rotation,2deg)) scale(1.01);opacity:1}
+}
+@keyframes gallery-drift-mobile{
+  from{transform:translate(0,0) scale(.97);opacity:.72}
+  to{transform:translate(6px,12px) scale(1);opacity:1}
+}
 @media(max-width:640px) {
   .hero {
     height:auto;
@@ -1845,6 +1858,8 @@ footer {
     grid-template-columns:1fr;
     gap:22px
   }
+  .page-gallery .gallery-grid{gap:36px;padding:20px 8px 80px}
+  .page-gallery .gallery-item{animation-name:gallery-drift-mobile}
   .details-photo img {
     max-height:none
   }
@@ -1980,3 +1995,4 @@ footer {
     padding-top:48px
   }
 }
+@media(prefers-reduced-motion:reduce){.page-gallery .gallery-item{animation:none}}
