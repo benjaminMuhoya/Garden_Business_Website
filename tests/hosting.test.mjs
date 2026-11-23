@@ -74,17 +74,29 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.equal((html.match(/class="facility-card /g) || []).length, 9);
         assert.equal((html.match(/class="parking-gallery"/g) || []).length, 1);
         assert.equal((html.match(/assets\/parking-(?:wall|garden|event)\.jpg/g) || []).length, 3);
-        assert.equal((html.match(/class="facility-image"/g) || []).length, 3);
-        assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 5);
+        assert.equal((html.match(/class="facility-image"/g) || []).length, 4);
+        assert.equal((html.match(/<article class="facility-card "><div class="facility-copy">/g) || []).length, 4);
         const facilityNames = [...html.matchAll(/<article class="facility-card [^"]*">[\s\S]*?<h2>([^<]+)<\/h2>/g)].map(match => match[1]);
         assert.deepEqual(facilityNames.slice(0, 3), ['Garden Lawn','First-Floor Conference Room','Garden Corners']);
         assert.equal(facilityNames.at(-1), 'Parking and Security');
+        const facilityCards = html.match(/<article class="facility-card [^"]*">[\s\S]*?<\/article>/g);
+        assert.ok(facilityCards[1].includes(`src="${base}assets/facility-first-floor.jpg"`));
+        assert.ok(facilityCards[3].includes(`src="${base}assets/facility-ground-floor.png"`));
+        assert.ok(facilityCards[3].includes('<h2>Ground-Floor Conference Room</h2>'));
       }
       if (key === 'accommodation') {
         assert.match(html, /Breakfast included/);
         for (const price of ['1,500','2,800','3,500','5,000']) assert.match(html, new RegExp(`KES\\s*${price}`));
         assert.doesNotMatch(html, /extra charge|name="breakfast"/i);
-        assert.equal((html.match(/Luxury_bed_and_house\.jpg/g) || []).length, 1);
+        const roomCards = html.match(/<article class="room-card">[\s\S]*?<\/article>/g);
+        assert.equal(roomCards.length, 2);
+        const roomImageSources = roomCards.map(card => [...card.matchAll(/<img src="([^"]+)"/g)].map(match => match[1]));
+        assert.deepEqual(roomImageSources, [
+          [`${base}assets/rooms-at-garden.png`],
+          [`${base}assets/Luxury_bed_and_house.jpg`, `${base}assets/cabin-room.jpg`]
+        ]);
+        assert.ok(roomCards[0].includes('<h2>Rooms at the Garden</h2>'));
+        assert.ok(roomCards[1].includes('<h2>Cabins at the Garden</h2>'));
         assert.doesNotMatch(html, /Full_Board\.jpg/);
       }
       if (key === 'team') assert.match(html, /Twajikaza Kisabuni/);

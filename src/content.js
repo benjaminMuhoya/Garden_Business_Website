@@ -10,7 +10,7 @@ export const content = {
     { name: 'Garden Lawn', image: 'facility-garden-lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
     { name: 'First-Floor Conference Room', image: 'facility-first-floor', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
     { name: 'Garden Corners', image: 'facility-garden-corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
-    { name: 'Ground-Floor Conference Room', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
+    { name: 'Ground-Floor Conference Room', image: 'facility-ground-floor', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
     { name: 'Bar', description: 'Drinks service for relaxed gatherings and private events.' },
     { name: 'On-Demand Kitchen', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
     { name: 'Catering Kitchen', description: 'A dedicated kitchen supporting large events and outside catering.' },
@@ -391,8 +391,13 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', image: null, single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
-    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', image: 'Luxury_bed_and_house', single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
+    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', images: [
+      { src: 'rooms-at-garden', width: 1713, height: 918, alt: 'Wooden bed with heart-patterned bedding in a garden guest room' }
+    ], single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
+    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', images: [
+      { src: 'Luxury_bed_and_house', width: 1456, height: 1099, alt: 'A-frame cabin exteriors at Jotham Gardens' },
+      { src: 'cabin-room', width: 720, height: 477, alt: 'Cabin bedroom with timber walls and green bedding' }
+    ], single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
   ],
   meals: { lunch: 18, dinner: 25 },
   team: [

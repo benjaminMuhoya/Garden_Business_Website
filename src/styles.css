@@ -820,8 +820,20 @@ legend {
   background:var(--paper);
   min-width:0
 }
-.room-card>img {
-  height:340px
+.room-photos {
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr);
+  gap:4px;
+  aspect-ratio:2 / 1
+}
+.room-photos img {
+  height:100%;
+  min-height:0
+}
+.room-photos img:first-child:not(:only-child) {
+  object-position:65% center
 }
 .room-copy {
   padding:30px
@@ -1291,9 +1303,6 @@ footer {
     grid-template-columns:1fr;
     gap:0
   }
-  .room-card>img {
-    height:260px
-  }
   .room-copy {
     padding:22px
   }
@@ -1520,8 +1529,14 @@ footer {
     grid-template-columns:1fr;
     gap:28px
   }
-  .room-card>img {
-    height:270px
+  .room-photos {
+    grid-auto-flow:row;
+    grid-template-rows:none;
+    aspect-ratio:auto
+  }
+  .room-photos img {
+    height:auto;
+    aspect-ratio:3 / 2
   }
   .room-copy {
     padding:25px
