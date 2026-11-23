@@ -41,7 +41,9 @@ test('real build resolves every page link and asset for project hosting and loca
       assert.doesNotMatch(html, /bauzbenjamin@gmail\.com/);
       assert.doesNotMatch(html, /0724767617/);
       if (key === 'home') {
-        assert.match(html, /Slow moments/);
+        assert.doesNotMatch(html, /Discover the spaces, the people and the intricate details that bring our garden to life\.|>Slow moments<|A glimpse of life in the gardens/);
+        assert.ok(html.includes(`<a class="experience-link" href="${base}reserve/"><span class="experience-title">Reserve Venue</span></a>`));
+        assert.ok(html.includes(`<a class="discovery-link" href="${base}gallery/"><div><h3>Photo Gallery</h3><p>Slow moments at Jotham Gardens</p>`));
         assert.match(html, /Fresh flavours/);
         for (const photo of ['Opening_pic.jpg', 'Garden_evening_journey.jpg']) {
           assert.equal(html.split(`src="${base}assets/${photo}"`).length - 1, 1, photo);
