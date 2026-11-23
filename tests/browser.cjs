@@ -235,8 +235,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   console.log('PASS: current KSh accommodation pricing, invalid dates and room selection.');
 
   await page.goto(base+'/gallery/');
-  await page.getByRole('button',{name:'Rooms',exact:true}).click();
-  assert.equal(await page.locator('.gallery-sequence:not([aria-hidden]) .gallery-item:visible').count(),2);
+  assert.equal(await page.locator('.gallery-sequence:not([aria-hidden]) .gallery-item:visible').count(),19);
   await page.getByRole('button',{name:'View Stay a little longer'}).click();
   assert.equal(await page.locator('#lightbox').isVisible(),true);
   await page.locator('#lightbox-image').evaluate(image=>image.decode());

@@ -156,20 +156,17 @@ if($('#booking-form')) {
 if ($('.page-gallery')) {
   const lightbox = $('#lightbox');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const motionButton = $('.gallery-motion');
   const canHover = matchMedia('(hover: hover)');
-  let motionPaused = false;
-  const belts = $$('.gallery-belt').map((belt, index) => {
+  const beltAnimations = $$('.gallery-belt').map((belt, index) => {
     const viewport = belt.querySelector('.gallery-viewport');
     const sequence = belt.querySelector('.gallery-sequence');
-    const controls = belt.querySelector('.gallery-steps');
-    const items = [...sequence.children];
     const speed = index === 0 ? 28 : -23;
     let copies = [];
     let cycle = 0;
     let position = 0;
     let currentScroll = 0;
     let manualUntil = 0;
+    let touchPointer;
     let measuredWidth = 0;
 
     function scrollTo(next) {
@@ -189,15 +186,13 @@ if ($('.page-gallery')) {
       return copy;
     }
 
-    function refresh(preservePosition = false) {
-      const progress = preservePosition && cycle ? wrap(position - cycle) / cycle : 0;
+    function refresh() {
+      const progress = cycle ? wrap(position - cycle) / cycle : 0;
       copies.forEach(copy => copy.remove());
       copies = [];
-      belt.hidden = items.every(item => item.hidden);
       const width = sequence.getBoundingClientRect().width;
       measuredWidth = viewport.clientWidth;
-      cycle = !belt.hidden && width > measuredWidth ? width : 0;
-      controls.hidden = !cycle;
+      cycle = width > measuredWidth ? width : 0;
       if (cycle) {
         copies = [copySequence(), copySequence()];
         sequence.before(copies[0]);
@@ -208,18 +203,19 @@ if ($('.page-gallery')) {
 
     refresh();
     new ResizeObserver(() => {
-      if (viewport.clientWidth !== measuredWidth) refresh(true);
+      if (viewport.clientWidth !== measuredWidth) refresh();
     }).observe(viewport);
-    controls.addEventListener('click', event => {
-      const step = event.target.closest('[data-gallery-step]');
-      if (!step || !cycle) return;
-      const distance = Math.min(480, viewport.clientWidth * .72) * Number(step.dataset.galleryStep);
-      scrollTo(cycle + wrap(viewport.scrollLeft - cycle + distance));
+    viewport.addEventListener('pointerdown', event => {
+      if (event.pointerType !== 'mouse') touchPointer = event.pointerId;
       manualUntil = performance.now() + 1400;
     });
-    viewport.addEventListener('pointerdown', () => {
-      manualUntil = performance.now() + 1400;
-    });
+    function releaseTouch(event) {
+      if (event.pointerId !== touchPointer) return;
+      touchPointer = undefined;
+      manualUntil = performance.now() + 900;
+    }
+    addEventListener('pointerup', releaseTouch, {capture: true});
+    addEventListener('pointercancel', releaseTouch, {capture: true});
     viewport.addEventListener('mousedown', event => {
       if (event.target.closest('[aria-hidden="true"]')) event.preventDefault();
     });
@@ -231,38 +227,12 @@ if ($('.page-gallery')) {
         currentScroll = position;
         manualUntil = now + 900;
       }
-      if (motionPaused || reducedMotion.matches || lightbox.open ||
+      if (touchPointer !== undefined || reducedMotion.matches || lightbox.open ||
           now < manualUntil || (canHover.matches && belt.matches(':hover')) || belt.querySelector(':focus-visible')) return;
       scrollTo(cycle + wrap(position + speed * elapsed - cycle));
     }
-    return {items, refresh, animate};
+    return animate;
   });
-
-  const filterButtons = $$('[data-gallery-filter]');
-  filterButtons.forEach(button => button.addEventListener('click', () => {
-    const filter = button.dataset.galleryFilter;
-    filterButtons.forEach(other => {
-      other.classList.toggle('active', other === button);
-      other.setAttribute('aria-pressed', String(other === button));
-    });
-    belts.forEach(belt => {
-      belt.items.forEach(item => {
-        item.hidden = filter !== 'All' && item.dataset.galleryCategory !== filter;
-      });
-      belt.refresh();
-    });
-  }));
-
-  function updateMotionButton() {
-    motionButton.hidden = reducedMotion.matches;
-    motionButton.textContent = motionPaused ? 'Resume motion' : 'Pause motion';
-  }
-  motionButton.addEventListener('click', () => {
-    motionPaused = !motionPaused;
-    updateMotionButton();
-  });
-  reducedMotion.addEventListener('change', updateMotionButton);
-  updateMotionButton();
 
   $('.gallery-belts').addEventListener('click', event => {
     const button = event.target.closest('.gallery-open');
@@ -270,7 +240,6 @@ if ($('.page-gallery')) {
     const photo = button.querySelector('img');
     $('#lightbox-image').src = photo.currentSrc || photo.src;
     $('#lightbox-image').alt = photo.alt;
-    $('#lightbox-caption').textContent = content.gallery[button.dataset.index].title;
     lightbox.showModal();
   });
   $('.close-lightbox').addEventListener('click', () => lightbox.close());
@@ -282,7 +251,7 @@ if ($('.page-gallery')) {
   function animateBelts(now) {
     const elapsed = Math.min(now - lastFrame, 50) / 1000;
     lastFrame = now;
-    belts.forEach(belt => belt.animate(now, elapsed));
+    beltAnimations.forEach(animate => animate(now, elapsed));
     requestAnimationFrame(animateBelts);
   }
   requestAnimationFrame(animateBelts);

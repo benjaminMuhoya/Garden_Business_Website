@@ -960,15 +960,6 @@ legend {
 @media(min-width:760px) {
   .page-gallery .page-intro h1 br {display:none}
 }
-.gallery-toolbar,.gallery-belt-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px 22px
-}
-.gallery-toolbar {margin-bottom:26px}
-.gallery-toolbar .filters {margin:0}
 .gallery-belts {
   --gallery-gap:clamp(14px,2vw,27px);
   --photo-height:clamp(152px,18vw,264px);
@@ -978,20 +969,6 @@ legend {
 }
 .gallery-belt {
   min-width:0
-}
-.gallery-belt-heading {
-  margin-bottom:10px
-}
-.gallery-belt-heading h2 {
-  font-size:clamp(25px,3vw,38px);
-  margin:0
-}
-.gallery-steps {
-  display:flex;
-  gap:8px
-}
-.gallery-steps .chip {
-  padding-inline:14px
 }
 .gallery-viewport {
   overflow-x:auto;
@@ -1031,15 +1008,6 @@ legend {
   width:100%;
   height:auto
 }
-.gallery-item figcaption {
-  margin-top:8px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.4;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  overflow:hidden
-}
 dialog {
   padding:20px;
   border:0;
@@ -1056,10 +1024,6 @@ dialog img {
   width:auto;
   max-width:100%;
   margin:auto
-}
-dialog p {
-  margin:12px 0 0;
-  font-size:12px
 }
 .close-lightbox {
   position:absolute;
@@ -1598,10 +1562,7 @@ footer {
   .team-quote .eyebrow {
     font-size:7px
   }
-  .gallery-toolbar {margin-bottom:20px}
   .gallery-belts {gap:22px;padding-bottom:42px}
-  .gallery-belt-heading {gap:8px}
-  .gallery-steps .chip {padding-inline:10px}
   .footer-main {
     display:block;
     padding-bottom:30px
