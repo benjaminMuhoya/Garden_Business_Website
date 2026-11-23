@@ -11,7 +11,7 @@ export const content = {
     { name: 'First-Floor Conference Room', image: 'facility-first-floor', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },
     { name: 'Garden Corners', image: 'facility-garden-corners', description: 'Quiet garden spaces arranged to suit each guest, including tents, mats or seating.' },
     { name: 'Ground-Floor Conference Room', image: 'facility-ground-floor', description: 'A meeting space with a projector for presentations, workshops and conferences.' },
-    { name: 'Bar', description: 'Drinks service for relaxed gatherings and private events.' },
+    { name: 'Bar' },
     { name: 'On-Demand Kitchen', description: 'Fresh meals prepared on request for guests and smaller gatherings.' },
     { name: 'Catering Kitchen', description: 'A dedicated kitchen supporting large events and outside catering.' },
     { name: 'Live Music and Tent Space', description: 'Space for a live band and multiple tents for custom events.' },
@@ -391,26 +391,26 @@ export const content = {
       }
   ],
   rooms: [
-    { id: 'garden', name: 'Rooms at the Garden', subtitle: 'A comfortable stay surrounded by the gardens.', images: [
+    { id: 'garden', name: 'Rooms at the Garden', images: [
       { src: 'rooms-at-garden', width: 1713, height: 918, alt: 'Wooden bed with heart-patterned bedding in a garden guest room' }
-    ], single: 1500, double: 2800, bed: 'Breakfast included', details: 'For one or two guests' },
-    { id: 'terrace', name: 'Cabins at the Garden', subtitle: 'A peaceful cabin retreat in the gardens.', images: [
+    ], single: 1500, double: 2800 },
+    { id: 'terrace', name: 'Cabins at the Garden', images: [
       { src: 'Luxury_bed_and_house', width: 1456, height: 1099, alt: 'A-frame cabin exteriors at Jotham Gardens' },
       { src: 'cabin-room', width: 720, height: 477, alt: 'Cabin bedroom with timber walls and green bedding' }
-    ], single: 3500, double: 5000, bed: 'Breakfast included', details: 'For one or two guests' }
+    ], single: 3500, double: 5000 }
   ],
   meals: { lunch: 18, dinner: 25 },
   team: [
     { name: 'Jane', role: 'Your host', image: 'Jane_host', description: 'Welcome to our garden, named in memory of my late father, Jotham Ngaina—a humble coffee farmer and lifelong mentor. I am a mother of three and a retired teacher, now fully devoted to Jotham Gardens. I spend much of my time tending the flowers and caring for the details that help every guest leave smiling and looking forward to returning.' }
   ],
   gallery: [
-    { image: 'Garden_gallery', title: 'A path to somewhere peaceful', category: 'Gardens' },
-    { image: 'bonfire_dinner', title: 'The perfect place for your event', category: 'Celebrations' },
-    { image: 'Meats', title: 'Fresh from the kitchen', category: 'Dining' },
-    { image: 'Flowers', title: 'Nature in the details', category: 'Gardens' },
-    { image: 'Luxury_bed_and_house', title: 'Stay a little longer', category: 'Rooms' },
-    { image: 'night_set_up_catering', title: 'Gather around the table', category: 'Dining' },
-    { image: 'dessert', title: 'The sweetest ending', category: 'Dining' },
-    { image: 'Children gallery', title: 'Family moments', category: 'Gardens' }
+    { image: 'Garden_gallery', width: 4000, height: 3000, title: 'A path to somewhere peaceful', category: 'Gardens' },
+    { image: 'bonfire_dinner', width: 1600, height: 900, title: 'The perfect place for your event', category: 'Celebrations' },
+    { image: 'Meats', width: 3840, height: 1728, title: 'Fresh from the kitchen', category: 'Dining' },
+    { image: 'Flowers', width: 4000, height: 3000, title: 'Nature in the details', category: 'Gardens' },
+    { image: 'Luxury_bed_and_house', width: 1456, height: 1099, title: 'Stay a little longer', category: 'Rooms' },
+    { image: 'night_set_up_catering', width: 1600, height: 900, title: 'Gather around the table', category: 'Dining' },
+    { image: 'dessert', width: 1000, height: 1500, title: 'The sweetest ending', category: 'Dining' },
+    { image: 'Children gallery', width: 3264, height: 2448, title: 'Family moments', category: 'Gardens' }
   ]
 };

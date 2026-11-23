@@ -11,12 +11,21 @@ const chrome=process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} 
     await page.goto(base+'/gallery/');
     assert.equal(await page.locator('.gallery-item').count(),8);
     await page.locator('.gallery-open img').evaluateAll(images=>Promise.all(images.map(image=>{image.loading='eager';return image.decode();})));
-    const frames=await page.locator('.gallery-open').evaluateAll(buttons=>buttons.map(button=>{
+    const photos=await page.locator('.gallery-open').evaluateAll(buttons=>buttons.map(button=>{
       const image=button.querySelector('img');
-      return {ratio:button.offsetWidth/button.offsetHeight,fit:getComputedStyle(image).objectFit,loaded:image.naturalWidth>0};
+      const style=getComputedStyle(button);
+      return {
+        ratio:button.offsetWidth/button.offsetHeight,
+        naturalRatio:image.naturalWidth/image.naturalHeight,
+        background:style.backgroundColor,
+        overflow:style.overflow
+      };
     }));
-    assert.equal(frames.every(frame=>Math.abs(frame.ratio-4/3)<.01 && frame.fit==='contain' && frame.loaded),true);
-    assert.equal(await page.locator('.gallery-item').first().evaluate(item=>getComputedStyle(item).animationPlayState),'running');
+    assert.equal(photos.every(photo=>Math.abs(photo.ratio-photo.naturalRatio)<.01 && photo.background==='rgba(0, 0, 0, 0)' && photo.overflow==='visible'),true);
+    const firstPhoto=page.locator('.gallery-item').first();
+    assert.equal(await firstPhoto.evaluate(item=>getComputedStyle(item).animationPlayState),'running');
+    const initialPosition=await firstPhoto.evaluate(item=>getComputedStyle(item).transform);
+    await page.waitForFunction(initial=>getComputedStyle(document.querySelector('.gallery-item')).transform!==initial,initialPosition);
     await page.getByRole('button',{name:'Rooms',exact:true}).click();
     assert.equal(await page.locator('.gallery-item:visible').count(),1);
     await page.getByRole('button',{name:'View Stay a little longer'}).click({force:true});

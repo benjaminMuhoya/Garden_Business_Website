@@ -83,9 +83,12 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.ok(facilityCards[1].includes(`src="${base}assets/facility-first-floor.jpg"`));
         assert.ok(facilityCards[3].includes(`src="${base}assets/facility-ground-floor.png"`));
         assert.ok(facilityCards[3].includes('<h2>Ground-Floor Conference Room</h2>'));
+        assert.ok(facilityCards[4].includes('<div class="facility-copy"><h2>Bar</h2></div>'));
+        assert.doesNotMatch(html, /Drinks service for relaxed gatherings and private events/);
       }
       if (key === 'accommodation') {
-        assert.match(html, /Breakfast included/);
+        assert.equal((html.match(/Breakfast included with the price/g) || []).length, 2);
+        assert.doesNotMatch(html, /A comfortable stay surrounded by the gardens|A peaceful cabin retreat in the gardens|For one or two guests|Room rate per night · Breakfast included/i);
         for (const price of ['1,500','2,800','3,500','5,000']) assert.match(html, new RegExp(`KES\\s*${price}`));
         assert.doesNotMatch(html, /extra charge|name="breakfast"/i);
         const roomCards = html.match(/<article class="room-card">[\s\S]*?<\/article>/g);
