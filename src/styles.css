@@ -1996,3 +1996,48 @@ footer {
   }
 }
 @media(prefers-reduced-motion:reduce){.page-gallery .gallery-item{animation:none}}
+
+/* The home journey sits behind the existing sections and leaves other pages untouched. */
+.page-home main {position:relative;isolation:isolate}
+.home-backdrop {display:none}
+.page-home.garden-motion .site-header,.page-home.garden-motion footer {position:relative;z-index:2}
+.page-home.garden-motion .home-backdrop {
+  display:block;
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  background:#14251c;
+  pointer-events:none;
+  z-index:0
+}
+.page-home.garden-motion main>.hero,
+.page-home.garden-motion main>.welcome,
+.page-home.garden-motion main>.home-divider,
+.page-home.garden-motion main>.experience-section,
+.page-home.garden-motion main>.details-section {position:relative;z-index:1}
+.home-backdrop-frame {position:absolute;inset:0;opacity:0;transform-origin:center center}
+.home-backdrop-frame:first-child {opacity:1}
+.home-backdrop-frame img {
+  width:100%;height:100%;object-fit:cover;object-position:center center;
+  animation:home-backdrop-idle 18s ease-in-out infinite alternate
+}
+.home-backdrop-frame:first-child img {object-position:center 56%}
+.home-backdrop-frame:nth-child(2) img {animation-duration:22s}
+.home-backdrop-frame:nth-child(3) img {animation-duration:20s}
+@keyframes home-backdrop-idle {
+  from {transform:scale(1.04) translate3d(-.5%,0,0)}
+  to {transform:scale(1.09) translate3d(.6%,-.6%,0)}
+}
+.page-home.garden-motion .hero {background:transparent}
+.page-home.garden-motion .hero-image {opacity:0;animation:none}
+.page-home.garden-motion .welcome,
+.page-home.garden-motion .details-section {background:rgba(255,255,255,.88)}
+.page-home.garden-motion .experience-section {background:rgba(255,255,255,.86)}
+@media(max-width:640px) {
+  .home-backdrop-frame:first-child img {object-position:center center}
+  .home-backdrop-frame:nth-child(2) img {object-position:51% center}
+  .home-backdrop-frame:nth-child(3) img {object-position:50% center}
+  .page-home.garden-motion .welcome,
+  .page-home.garden-motion .details-section {background:rgba(255,255,255,.92)}
+  .page-home.garden-motion .experience-section {background:rgba(255,255,255,.90)}
+}

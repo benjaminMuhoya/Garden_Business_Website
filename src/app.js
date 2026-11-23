@@ -206,3 +206,57 @@ if($('.page-gallery')) {
   lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
   lightbox.addEventListener('close',()=>{hovered=false;clearTouchPause();});
 }
+
+if(document.body.classList.contains('page-home')) {
+  const frames=$$('.home-backdrop-frame');
+  const welcome=$('.welcome');
+  const details=$('.details-section');
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const clamp=value=>Math.max(0,Math.min(1,value));
+  const smoothstep=value=>{const t=clamp(value);return t*t*(3-2*t);};
+  let firstCenter=0,secondCenter=0,fadeWidth=1,journeyEnd=1;
+  let current=scrollY,target=scrollY,frameId=0;
+
+  const measure=()=>{
+    const top=element=>element.getBoundingClientRect().top+scrollY;
+    firstCenter=top(welcome)-innerHeight*.25;
+    secondCenter=top(details)-innerHeight*.4;
+    fadeWidth=Math.max(350,innerHeight*.65);
+    journeyEnd=Math.max(1,top(details)+details.offsetHeight-innerHeight);
+    target=scrollY;
+    if(!reducedMotion.matches){current=target;render();}
+  };
+  const render=()=>{
+    const first=smoothstep((current-firstCenter)/fadeWidth+.5);
+    const second=smoothstep((current-secondCenter)/fadeWidth+.5);
+    const progress=clamp(current/journeyEnd);
+    const opacity=[1-first,first*(1-second),second];
+    frames.forEach((frame,index)=>{
+      frame.style.opacity=opacity[index].toFixed(4);
+      const x=[-1.2,.8,-.4][index]+[2.4,-1.6,1.2][index]*progress;
+      const y=[.4,-.5,.3][index]-1.4*progress;
+      frame.style.transform=`translate3d(${x}%,${y}%,0) scale(${(1.025+.035*progress).toFixed(4)})`;
+    });
+  };
+  const tick=()=>{
+    current+=(target-current)*.16;
+    if(Math.abs(target-current)<.25) current=target;
+    render();
+    frameId=current===target?0:requestAnimationFrame(tick);
+  };
+  const onScroll=()=>{
+    if(reducedMotion.matches) return;
+    target=scrollY;
+    if(!frameId) frameId=requestAnimationFrame(tick);
+  };
+  const syncMotion=()=>{
+    cancelAnimationFrame(frameId);frameId=0;
+    document.body.classList.toggle('garden-motion',!reducedMotion.matches);
+    if(!reducedMotion.matches) measure();
+  };
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',measure,{passive:true});
+  addEventListener('load',measure,{once:true});
+  reducedMotion.addEventListener('change',syncMotion);
+  syncMotion();
+}
