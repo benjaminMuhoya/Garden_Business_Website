@@ -271,18 +271,6 @@ nav a:hover:after,nav a[aria-current]:after {
   display:flex;
   align-items:center
 }
-.hero-image,.hero-shade {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%
-}
-.hero-image {
-  object-position:center 56%
-}
-.hero-shade {
-  background:linear-gradient(90deg,rgba(7,27,15,.77),rgba(9,30,17,.25) 65%,rgba(5,21,12,.18)),linear-gradient(0deg,rgba(5,20,12,.5),transparent 40%)
-}
 .hero-content {
   position:relative;
   padding-bottom:25px
@@ -350,9 +338,6 @@ nav a:hover:after,nav a[aria-current]:after {
 }
 .welcome .text-link {
   color:var(--green)
-}
-.home-divider {
-  border-top:1px solid #d81b6052
 }
 .experience-section {
   background:#fff;
@@ -1365,12 +1350,6 @@ footer {
     min-height:0;
     max-height:none
   }
-  .hero-image {
-    object-position:62% center
-  }
-  .hero-shade {
-    background:linear-gradient(90deg,#0a2019bd,#0b231c4d),linear-gradient(0deg,#0d2718a6,transparent 50%)
-  }
   .hero-content {
     padding-bottom:25px
   }
@@ -1720,8 +1699,6 @@ footer {
 @media(max-width:640px){.parking-gallery{grid-template-columns:1fr}.parking-gallery img,.parking-gallery img:first-child{grid-column:auto;height:auto;max-height:none}}
 
 /* Preserve full owner photographs on the homepage and in the gallery. */
-.hero{background:#1c3027}
-.hero-image{object-fit:contain;object-position:center center}
 .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 22px;align-items:start}
 .gallery-item,.gallery-item:nth-child(n){grid-column:auto;padding:0}
 .gallery-open{background:#fff;overflow:visible}
@@ -1747,21 +1724,7 @@ footer {
     display:grid;
     grid-template-columns:1fr;
     padding:0;
-    background:var(--forest)
-  }
-  .hero-image {
-    position:relative;
-    inset:auto;
-    grid-area:1/1;
-    width:100%;
-    height:auto;
-    object-fit:contain
-  }
-  .hero-shade {
-    position:relative;
-    inset:auto;
-    grid-area:1/1;
-    background:linear-gradient(0deg,rgba(7,27,15,.34),transparent 60%)
+    background:transparent
   }
   .hero-content {
     position:relative;
@@ -1808,15 +1771,6 @@ footer {
     max-height:none;
     overflow:visible;
   }
-  .hero-image {
-    position:relative;
-    inset:auto;
-    flex:none;
-    width:100%;
-    height:auto;
-    object-fit:contain;
-  }
-  .hero-shade { display:none; }
   .hero-content {
     position:relative;
     inset:auto;
@@ -1860,52 +1814,16 @@ footer {
   }
 }
 
-/* Full-bleed opening image with subtle motion and no exposed container color. */
-@keyframes hero-drift {
-  from { transform:scale(1.04) translate3d(-.6%,0,0) }
-  to { transform:scale(1.12) translate3d(.8%,-.7%,0) }
-}
-.hero {
-  overflow:hidden;
-  background:#111
-}
-.hero-image {
-  object-fit:cover;
-  object-position:center 56%;
-  animation:hero-drift 18s ease-in-out infinite alternate;
-  will-change:transform
-}
-.hero-shade {
-  z-index:0
-}
-.hero-content,.hero-bottom {
-  z-index:1
-}
 @media (max-width:640px) {
   .hero {
     position:relative;
     display:flex;
     flex-direction:column;
     justify-content:center;
-    min-height:700px;
-    height:min(820px,185vw);
+    height:clamp(530px,160vw,670px);
+    min-height:0;
     max-height:none;
-    overflow:hidden;
-    background:#111
-  }
-  .hero-image {
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center center
-  }
-  .hero-shade {
-    display:block;
-    position:absolute;
-    inset:0;
-    background:linear-gradient(180deg,rgba(7,27,15,.16),rgba(7,27,15,.74) 72%,rgba(7,27,15,.9))
+    overflow:hidden
   }
   .hero-content {
     position:relative;
@@ -1928,52 +1846,47 @@ footer {
 }
 @media(prefers-reduced-motion:reduce){.page-gallery .gallery-item{animation:none}}
 
-/* A single scenic layer stays visible behind the home page copy. */
-.page-home {background:#14251c}
-.page-home main {position:relative;isolation:isolate;color:#fff}
-.page-home .site-header,.page-home footer {position:relative;z-index:2}
-.home-backdrop {
-  display:block;
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  background:#14251c;
-  pointer-events:none;
-  z-index:0
+/* Keep daylight continuous across the hero and welcome, then fade in the evening photo. */
+.page-home main {
+  --home-fade:clamp(104px,13vw,168px);
+  color:#fff;
+  isolation:isolate;
+  background:var(--forest)
 }
-.home-backdrop:after {
-  content:'';
+.home-day,.home-night {position:relative}
+.home-photo {
   position:absolute;
   inset:0;
-  background:rgba(5,20,13,.36)
+  pointer-events:none
 }
-.page-home main>.hero,
-.page-home main>.welcome,
-.page-home main>.home-divider,
-.page-home main>.experience-section,
-.page-home main>.details-section {position:relative;z-index:1}
-.home-backdrop-frame {position:absolute;inset:0;opacity:0;transform-origin:center center}
-.home-backdrop-frame:first-child {opacity:1}
-.home-backdrop-frame img {
-  width:100%;height:100%;object-fit:cover;object-position:center center;
-  animation:home-backdrop-idle 18s ease-in-out infinite alternate
+.home-photo img {width:100%;height:100%;object-fit:cover}
+.home-photo::after {content:'';position:absolute;inset:0}
+.home-day .home-photo img {object-position:52% center}
+.home-day .home-photo::after {
+  background:linear-gradient(90deg,rgba(6,25,15,.64),rgba(6,25,15,.12) 53%,rgba(6,25,15,.54))
 }
-.home-backdrop-frame:first-child img {object-position:center 56%}
-.home-backdrop-frame:nth-child(2) img {animation-duration:22s}
-@keyframes home-backdrop-idle {
-  from {transform:scale(1.04) translate3d(-.5%,0,0)}
-  to {transform:scale(1.09) translate3d(.6%,-.6%,0)}
+.home-night .home-photo {
+  top:calc(-1 * var(--home-fade));
+  background:var(--forest);
+  mask-image:linear-gradient(to bottom,transparent,#000 var(--home-fade))
 }
-.page-home .hero {background:transparent}
-.page-home .hero-image {opacity:0;animation:none}
-.page-home .welcome,.page-home .experience-section,.page-home .details-section {background:transparent}
+.home-night .home-photo img {object-position:54% center}
+.home-night .home-photo::after {
+  background:linear-gradient(to bottom,transparent 88%,var(--green)),
+             linear-gradient(90deg,rgba(7,20,15,.64),rgba(7,20,15,.4) 55%,rgba(7,20,15,.54))
+}
+.home-day>section,.home-night>section {position:relative;z-index:1}
+.page-home .hero,.page-home .experience-section {background:transparent}
+.page-home .hero h1,.page-home .hero-content>p,.page-home .hero-bottom a,.page-home .welcome p {
+  text-shadow:0 2px 12px rgba(0,0,0,.65)
+}
 .page-home .welcome>div:last-child,
 .page-home .section-head>p,
 .page-home .details-intro>p:last-child,
 .page-home .discovery-link p {color:rgba(255,255,255,.92)}
-.page-home .home-divider,.page-home .discovery-link {border-color:rgba(255,255,255,.45)}
+.page-home .discovery-link {border-color:rgba(255,255,255,.45)}
 .page-home .welcome h2,.page-home .section-head h2,.page-home .details-intro h2,.page-home .discovery-link h3 {text-shadow:0 2px 18px rgba(0,0,0,.4)}
-.page-home .welcome {padding-block:120px 112px}
+.page-home .welcome {padding-block:96px 168px}
 .page-home .welcome h2 {font-size:clamp(42px,4.2vw,60px)}
 .page-home .welcome>div:last-child>p:first-child {max-width:520px;font-size:16px;line-height:1.9}
 .page-home .experience-section {padding-block:104px 112px}
@@ -1981,15 +1894,32 @@ footer {
 .page-home .section-head h2 {font-size:clamp(38px,4vw,54px)}
 .page-home .section-head>p {max-width:310px;line-height:1.85}
 .page-home .details-section {border-top:1px solid rgba(255,255,255,.42)}
-.page-home .discovery-link {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding:27px 0}
-.page-home .discovery-link>div {transition:transform .3s}
-.page-home .discovery-link:after {content:'↗';font-family:var(--sans);font-size:21px;line-height:1;opacity:.8;transition:transform .3s}
-.page-home .discovery-link:hover>div,.page-home .discovery-link:focus-visible>div {transform:translateX(5px)}
-.page-home .discovery-link:hover:after,.page-home .discovery-link:focus-visible:after {transform:translate(3px,-3px)}
+.page-home .experience-grid {gap:12px 24px}
+.page-home .experience-link {
+  align-items:flex-start;
+  min-height:96px;
+  padding:20px 0;
+  border:0;
+  border-top:1px solid rgba(255,255,255,.45);
+  background:transparent;
+  text-align:left
+}
+.page-home .experience-link:hover,.page-home .experience-link:focus-visible {
+  border-color:#fff;
+  transform:none
+}
+.page-home .discovery-link {padding:27px 0}
+.page-home .discovery-link:hover h3,.page-home .discovery-link:focus-visible h3,
+.page-home .experience-link:hover .experience-title,.page-home .experience-link:focus-visible .experience-title {
+  text-decoration:underline;
+  text-underline-offset:.18em
+}
 @media(max-width:640px) {
-  .home-backdrop-frame:first-child img {object-position:center center}
-  .home-backdrop-frame:nth-child(2) img {object-position:50% center}
-  .page-home .welcome {padding-block:72px 76px}
+  .home-day .home-photo::after {
+    background:linear-gradient(to bottom,rgba(6,25,15,.14),rgba(6,25,15,.55) 31%,rgba(6,25,15,.61) 87%)
+  }
+  .page-home .experience-grid {gap:0}
+  .page-home .welcome {padding-block:55px 108px}
   .page-home .welcome h2 {font-size:clamp(38px,10vw,46px)}
   .page-home .welcome>div:last-child>p:first-child {font-size:15px}
   .page-home .experience-section {padding-block:76px 88px}

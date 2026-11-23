@@ -43,11 +43,11 @@ test('real build resolves every page link and asset for project hosting and loca
       if (key === 'home') {
         assert.match(html, /Slow moments/);
         assert.match(html, /Fresh flavours/);
-        assert.equal((html.match(/class="home-divider wrap"/g) || []).length, 1);
+        for (const photo of ['Opening_pic.jpg', 'Garden_evening_journey.jpg']) {
+          assert.equal(html.split(`src="${base}assets/${photo}"`).length - 1, 1, photo);
+        }
         assert.doesNotMatch(html, /A place to slow down, connect and enjoy the gardens/i);
         assert.doesNotMatch(html, /card-number|Meet Jane, your host/);
-      } else {
-        assert.doesNotMatch(html, /class="home-divider wrap"/);
       }
       if (key === 'reserve') {
         assert.match(html, /The perfect place/);

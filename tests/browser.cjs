@@ -29,6 +29,59 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   page.on('response',response=>{if(response.status()>=400)badResponses.push(`${response.url()}: ${response.status()}`);});
   page.on('request',request=>{if(!request.url().startsWith(base)&&!request.url().startsWith('blob:')&&!request.url().startsWith('https://formsubmit.co/')&&!request.url().startsWith('https://api.emailjs.com/'))external.push(request.url());});
 
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(base+'/');
+  const homeText=await page.locator('main').innerText();
+  assert.doesNotMatch(homeText,/A little closer to what matters|However you find us|make it your moment|Wake up somewhere softer|Made for you/);
+  assert.equal((homeText.match(/Some places invite you/g)||[]).length,1);
+  assert.match(homeText,/Welcome to\s+Jotham Gardens/i);
+  assert.match(homeText,/best moments happen when we slow down to appreciate not only our surroundings, but also the people around us/i);
+  assert.doesNotMatch(homeText,/Jotham Ngaina|30 years as a teacher|mother of three/i);
+  assert.match(homeText,/Rooted in nature\./);
+  assert.equal(await page.locator('footer').getByText("Let’s plan something beautiful",{exact:false}).count(),0);
+  assert.equal(await page.locator('main').getByRole('link',{name:/^Meet the Host/}).count(),1);
+  const [heroBox,heroContentBox,heroBottomBox]=await Promise.all([
+    page.locator('.hero').boundingBox(),
+    page.locator('.hero-content').boundingBox(),
+    page.locator('.hero-bottom').boundingBox()
+  ]);
+  assert.equal(heroContentBox.y>=heroBox.y&&heroContentBox.y+heroContentBox.height<=heroBox.y+heroBox.height,true,'mobile hero content stays within image');
+  assert.equal(heroBottomBox.y+heroBottomBox.height<=heroBox.y+heroBox.height,true,'mobile explore link stays within image');
+
+  for(const width of [1440,1030,390,320]){
+    await page.setViewportSize({width,height:844});
+    const journey=await page.evaluate(async()=>{
+      const day=document.querySelector('.home-day .home-photo');
+      const night=document.querySelector('.home-night .home-photo');
+      const images=[day.querySelector('img'),night.querySelector('img')];
+      await Promise.all(images.map(image=>image.decode()));
+      const hero=document.querySelector('.hero');
+      const welcome=document.querySelector('.welcome');
+      const footer=document.querySelector('footer');
+      const dayBounds=day.getBoundingClientRect();
+      const nightBounds=night.getBoundingClientRect();
+      const fade=getComputedStyle(night).maskImage;
+      return {
+        filenames:images.map(image=>new URL(image.src).pathname.split('/').pop()),
+        dayCoversWelcome:dayBounds.top===hero.getBoundingClientRect().top && dayBounds.bottom===welcome.getBoundingClientRect().bottom,
+        heroBackground:getComputedStyle(hero).backgroundColor,
+        fadeMeetsNight:nightBounds.top<dayBounds.bottom && fade.startsWith('linear-gradient('),
+        nightMeetsFooter:nightBounds.bottom===footer.getBoundingClientRect().top
+      };
+    });
+    assert.deepEqual(journey.filenames,['Opening_pic.jpg','Garden_evening_journey.jpg']);
+    assert.equal(journey.dayCoversWelcome,true,`continuous photo at ${width}px`);
+    assert.equal(journey.heroBackground,'rgba(0, 0, 0, 0)',`transparent hero at ${width}px`);
+    assert.equal(journey.fadeMeetsNight,true,`completed fade at ${width}px`);
+    assert.equal(journey.nightMeetsFooter,true,`night photo reaches footer at ${width}px`);
+  }
+  await page.getByRole('link',{name:/^explore the gardens$/i}).click();
+  await page.waitForURL('**/#discover');
+  for(const path of ['reserve','menu','accommodation','facilities','team','gallery']){
+    assert.equal(await page.locator(`main .experience-link[href$="/${path}/"], main .discovery-link[href$="/${path}/"]`).count(),1);
+  }
+  console.log('PASS: continuous daylight, night fade, and welcome link at desktop and mobile widths.');
+
   const routes=['/','/reserve/','/facilities/','/menu/','/accommodation/','/team/','/gallery/'];
   const contactEmail='jothamgardens.online@gmail.com';
   const mapUrl='https://maps.app.goo.gl/zVXSmxbScTZKDVaY7';
@@ -52,27 +105,6 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
     }
   }
   console.log('PASS: all 7 pages at 1440, 768, 390 and 320px; no overflow or broken loaded images.');
-
-  await page.setViewportSize({width:390,height:844});
-  await page.goto(base+'/');
-  const homeText=await page.locator('main').innerText();
-  assert.doesNotMatch(homeText,/A little closer to what matters|However you find us|make it your moment|Wake up somewhere softer|Made for you/);
-  assert.equal((homeText.match(/Some places invite you/g)||[]).length,1);
-  assert.match(homeText,/Welcome to\s+Jotham Gardens/i);
-  assert.match(homeText,/best moments happen when we slow down to appreciate not only our surroundings, but also the people around us/i);
-  assert.doesNotMatch(homeText,/Jotham Ngaina|30 years as a teacher|mother of three/i);
-  assert.match(homeText,/Rooted in nature\./);
-  assert.equal(await page.locator('footer').getByText("Let’s plan something beautiful",{exact:false}).count(),0);
-  assert.equal(await page.getByRole('link',{name:'Meet the Host',exact:true}).count(),1);
-  const [heroBox,heroImageBox,heroContentBox,heroBottomBox]=await Promise.all([
-    page.locator('.hero').boundingBox(),
-    page.locator('.hero-image').boundingBox(),
-    page.locator('.hero-content').boundingBox(),
-    page.locator('.hero-bottom').boundingBox()
-  ]);
-  assert.equal(Math.abs(heroImageBox.width-heroBox.width)<2&&Math.abs(heroImageBox.height-heroBox.height)<2,true,'mobile hero image fills container');
-  assert.equal(heroContentBox.y>=heroBox.y&&heroContentBox.y+heroContentBox.height<=heroBox.y+heroBox.height,true,'mobile hero content stays within image');
-  assert.equal(heroBottomBox.y+heroBottomBox.height<=heroBox.y+heroBox.height,true,'mobile explore link stays within image');
 
   await page.goto(base+'/team/');
   const hostText=await page.locator('main').innerText();
