@@ -153,56 +153,137 @@ if($('#booking-form')) {
     await submitRequest(event.currentTarget,'Accommodation booking',{Name:data.name,Phone:data.phone,Email:email,Room:q.room,Arrival:data.arrival,Departure:data.departure,Guests:q.guests,Nights:q.nights,Breakfast:'Included','Estimated total':cash(q.total)},receipt);
   });renderQuote();
 }
-if($('.page-gallery')) {
-  const gallery=$('.gallery-grid'), lightbox=$('#lightbox');
-  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-  let hovered=false, pausedIndex=null, pendingTouchIndex=null, pauseTimer, pointerType='mouse';
-  const syncMotion=()=>gallery.classList.toggle('is-paused',hovered || pausedIndex!==null || lightbox.open);
-  const clearTouchPause=()=>{clearTimeout(pauseTimer);pausedIndex=null;pendingTouchIndex=null;syncMotion();};
+if ($('.page-gallery')) {
+  const lightbox = $('#lightbox');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const motionButton = $('.gallery-motion');
+  const canHover = matchMedia('(hover: hover)');
+  let motionPaused = false;
+  const belts = $$('.gallery-belt').map((belt, index) => {
+    const viewport = belt.querySelector('.gallery-viewport');
+    const sequence = belt.querySelector('.gallery-sequence');
+    const controls = belt.querySelector('.gallery-steps');
+    const items = [...sequence.children];
+    const speed = index === 0 ? 28 : -23;
+    let copies = [];
+    let cycle = 0;
+    let position = 0;
+    let currentScroll = 0;
+    let manualUntil = 0;
+    let measuredWidth = 0;
 
-  $$('.gallery-item').forEach(item=>{
-    // Each photograph gets a different, gentle path without changing its place in the grid.
-    item.style.setProperty('--drift-x',`${12+Math.round(Math.random()*22)}px`);
-    item.style.setProperty('--drift-y',`${10+Math.round(Math.random()*22)}px`);
-    item.style.setProperty('--drift-rotation',`${(Math.random()*3+1).toFixed(1)}deg`);
-    item.style.setProperty('--drift-time',`${(8+Math.random()*6).toFixed(1)}s`);
-    item.style.setProperty('--drift-delay',`${(-Math.random()*12).toFixed(1)}s`);
-    item.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hovered=true;syncMotion();}});
-    item.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){hovered=false;syncMotion();}});
+    function scrollTo(next) {
+      position = next;
+      viewport.scrollLeft = next;
+      currentScroll = viewport.scrollLeft;
+    }
+
+    function wrap(offset) {
+      return ((offset % cycle) + cycle) % cycle;
+    }
+
+    function copySequence() {
+      const copy = sequence.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true');
+      copy.querySelectorAll('button').forEach(button => { button.tabIndex = -1; });
+      return copy;
+    }
+
+    function refresh(preservePosition = false) {
+      const progress = preservePosition && cycle ? wrap(position - cycle) / cycle : 0;
+      copies.forEach(copy => copy.remove());
+      copies = [];
+      belt.hidden = items.every(item => item.hidden);
+      const width = sequence.getBoundingClientRect().width;
+      measuredWidth = viewport.clientWidth;
+      cycle = !belt.hidden && width > measuredWidth ? width : 0;
+      controls.hidden = !cycle;
+      if (cycle) {
+        copies = [copySequence(), copySequence()];
+        sequence.before(copies[0]);
+        sequence.after(copies[1]);
+      }
+      scrollTo(cycle * (1 + progress));
+    }
+
+    refresh();
+    new ResizeObserver(() => {
+      if (viewport.clientWidth !== measuredWidth) refresh(true);
+    }).observe(viewport);
+    controls.addEventListener('click', event => {
+      const step = event.target.closest('[data-gallery-step]');
+      if (!step || !cycle) return;
+      const distance = Math.min(480, viewport.clientWidth * .72) * Number(step.dataset.galleryStep);
+      scrollTo(cycle + wrap(viewport.scrollLeft - cycle + distance));
+      manualUntil = performance.now() + 1400;
+    });
+    viewport.addEventListener('pointerdown', () => {
+      manualUntil = performance.now() + 1400;
+    });
+    viewport.addEventListener('mousedown', event => {
+      if (event.target.closest('[aria-hidden="true"]')) event.preventDefault();
+    });
+
+    function animate(now, elapsed) {
+      if (!cycle) return;
+      if (viewport.scrollLeft !== currentScroll) {
+        position = viewport.scrollLeft;
+        currentScroll = position;
+        manualUntil = now + 900;
+      }
+      if (motionPaused || reducedMotion.matches || lightbox.open ||
+          now < manualUntil || (canHover.matches && belt.matches(':hover')) || belt.querySelector(':focus-visible')) return;
+      scrollTo(cycle + wrap(position + speed * elapsed - cycle));
+    }
+    return {items, refresh, animate};
   });
 
-  $$('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
-    clearTouchPause();
-    $$('[data-gallery-filter]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
-    $$('[data-gallery-category]').forEach(item=>{item.hidden=button.dataset.galleryFilter!=='All'&&item.dataset.galleryCategory!==button.dataset.galleryFilter;});
+  const filterButtons = $$('[data-gallery-filter]');
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.galleryFilter;
+    filterButtons.forEach(other => {
+      other.classList.toggle('active', other === button);
+      other.setAttribute('aria-pressed', String(other === button));
+    });
+    belts.forEach(belt => {
+      belt.items.forEach(item => {
+        item.hidden = filter !== 'All' && item.dataset.galleryCategory !== filter;
+      });
+      belt.refresh();
+    });
   }));
-  $$('.gallery-open').forEach(button=>{
-    button.addEventListener('pointerdown',event=>{
-      pointerType=event.pointerType;
-      if(reducedMotion.matches || (pointerType!=='touch' && pointerType!=='pen')) return;
-      const index=Number(button.dataset.index);
-      pendingTouchIndex=pausedIndex===index ? null : index;
-      if(pendingTouchIndex!==null) {
-        clearTimeout(pauseTimer);pausedIndex=index;syncMotion();
-        pauseTimer=setTimeout(clearTouchPause,4500);
-      }
-    });
-    button.addEventListener('click',event=>{
-      const index=Number(button.dataset.index);
-      if(event.detail && (pointerType==='touch' || pointerType==='pen') && pendingTouchIndex===index) {
-        pendingTouchIndex=null;
-        return;
-      }
-      clearTouchPause();
-      const item=content.gallery[index], photo=button.querySelector('img');
-      $('#lightbox-image').src=photo.currentSrc || photo.src;
-      $('#lightbox-image').alt=photo.alt;
-      $('#lightbox-caption').textContent=item.title;
-      lightbox.showModal();syncMotion();
-    });
+
+  function updateMotionButton() {
+    motionButton.hidden = reducedMotion.matches;
+    motionButton.textContent = motionPaused ? 'Resume motion' : 'Pause motion';
+  }
+  motionButton.addEventListener('click', () => {
+    motionPaused = !motionPaused;
+    updateMotionButton();
   });
-  const closeLightbox=()=>lightbox.close();
-  $('.close-lightbox').addEventListener('click',closeLightbox);
-  lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
-  lightbox.addEventListener('close',()=>{hovered=false;clearTouchPause();});
+  reducedMotion.addEventListener('change', updateMotionButton);
+  updateMotionButton();
+
+  $('.gallery-belts').addEventListener('click', event => {
+    const button = event.target.closest('.gallery-open');
+    if (!button) return;
+    const photo = button.querySelector('img');
+    $('#lightbox-image').src = photo.currentSrc || photo.src;
+    $('#lightbox-image').alt = photo.alt;
+    $('#lightbox-caption').textContent = content.gallery[button.dataset.index].title;
+    lightbox.showModal();
+  });
+  $('.close-lightbox').addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox) lightbox.close();
+  });
+
+  let lastFrame = performance.now();
+  function animateBelts(now) {
+    const elapsed = Math.min(now - lastFrame, 50) / 1000;
+    lastFrame = now;
+    belts.forEach(belt => belt.animate(now, elapsed));
+    requestAnimationFrame(animateBelts);
+  }
+  requestAnimationFrame(animateBelts);
 }
