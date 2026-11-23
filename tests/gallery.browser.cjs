@@ -13,9 +13,12 @@ const positions = page => page.locator('.gallery-viewport').evaluateAll(viewport
     const page = await browser.newPage({viewport: {width: 1440, height: 950}});
     assert.equal((await page.goto(base + '/gallery/')).status(), 200);
     assert.equal(await page.locator('.gallery-belt').count(), 2);
-    assert.equal(await page.locator(originals).count(), 19);
+    assert.equal(await page.locator(originals).count(), 21);
     assert.deepEqual(await page.locator('.gallery-belt').evaluateAll(belts =>
-      belts.map(belt => belt.querySelectorAll('.gallery-sequence:not([aria-hidden]) .gallery-item').length)), [9, 10]);
+      belts.map(belt => belt.querySelectorAll('.gallery-sequence:not([aria-hidden]) .gallery-item').length)), [12, 9]);
+    assert.equal(await page.getByRole('heading', {level: 1}).innerText(), 'Unforgettable times');
+    assert.equal(await page.locator('.page-intro .eyebrow').innerText(), 'A GLIMPSE OF MOMENTS AT JOTHAM');
+    assert.equal(await page.locator('.page-intro .lead').innerText(), 'The details that make Jotham the perfect place to be.');
     assert.equal(await page.locator('.gallery-sequence[aria-hidden] button:not([tabindex="-1"])').count(), 0);
 
     const start = await positions(page);
@@ -42,6 +45,20 @@ const positions = page => page.locator('.gallery-viewport').evaluateAll(viewport
 
     await page.locator(originals + ' img').evaluateAll(images =>
       Promise.all(images.map(image => { image.loading = 'eager'; return image.decode(); })));
+    const galleryPhotos = await page.locator(originals + ' img').evaluateAll(images =>
+      images.map(image => [new URL(image.src).pathname.split('/').at(-1), image.naturalWidth, image.naturalHeight]));
+    const names = galleryPhotos.map(([name]) => name);
+    assert.equal(new Set(names).size, names.length);
+    assert.ok(!names.includes('Meats.jpg') && !names.includes('dessert.jpg'));
+    for (const photo of [
+      ['bonfire_dinner.jpg', 1600, 900],
+      ['gallery-grass-and-cabins.jpg', 1600, 720],
+      ['garden_tusker.jpg', 3000, 4000],
+      ['gallery-stone-walkway.jpg', 3000, 4000],
+      ['gallery-celebration-arch.jpg', 2448, 3264]
+    ]) {
+      assert.deepEqual(galleryPhotos.find(([name]) => name === photo[0]), photo);
+    }
     const intact = await page.locator(originals).evaluateAll(figures => figures.every(figure => {
       const image = figure.querySelector('img');
       const button = image.parentElement;
@@ -98,7 +115,7 @@ const positions = page => page.locator('.gallery-viewport').evaluateAll(viewport
       assert.equal(await mobile.locator('#lightbox').isVisible(), false);
       await mobile.close();
     }
-    console.log('PASS: two moving belts, 19 full-proportion photos, hover and touch pause, phone swiping, keyboard and touch lightbox, and reduced motion.');
+    console.log('PASS: new gallery intro, 21 photos in two moving belts, hover and touch pause, swiping, lightbox, and reduced motion.');
   } finally {
     await browser.close();
   }

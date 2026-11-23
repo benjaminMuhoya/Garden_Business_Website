@@ -406,22 +406,24 @@ export const content = {
   gallery: [
     { image: 'gallery-garden-corner', width: 1600, height: 900, title: 'A quiet corner in the garden', category: 'Gardens' },
     { image: 'gallery-ostrich', width: 939, height: 1600, title: 'Ostrich sculpture', category: 'Gardens' },
+    { image: 'gallery-grass-and-cabins', width: 1600, height: 720, title: 'The lawn by the cabins', category: 'Gardens' },
     { image: 'Luxury_bed_and_house', width: 1456, height: 1099, title: 'Stay a little longer', category: 'Rooms' },
     { image: 'cabin-room', width: 720, height: 477, title: 'Inside a garden cabin', category: 'Rooms' },
     { image: 'Garden_gallery', width: 3000, height: 4000, title: 'A path to somewhere peaceful', category: 'Gardens' },
+    { image: 'garden_tusker', width: 3000, height: 4000, title: 'A sunny view across the lawn', category: 'Gardens' },
     { image: 'gallery-entrance', width: 1600, height: 900, title: 'Arriving at Jotham Gardens', category: 'Gardens' },
+    { image: 'gallery-stone-walkway', width: 3000, height: 4000, title: 'The stone feature beside the garden path', category: 'Gardens' },
     { image: 'Flowers', width: 3000, height: 4000, title: 'Nature in the details', category: 'Gardens' },
     { image: 'Children gallery', width: 3264, height: 2448, title: 'Family moments', category: 'Gardens' },
     { image: 'Garden_evening_journey', width: 1600, height: 782, title: 'Nights under the stars', category: 'Gardens' },
     { image: 'gallery-set-tables', width: 1600, height: 903, title: 'Tables set for a gathering', category: 'Celebrations' },
+    { image: 'gallery-celebration-arch', width: 2448, height: 3264, title: 'A flower arch and tents for a garden celebration', category: 'Celebrations' },
     { image: 'gallery-lawn-table', width: 4080, height: 2296, title: 'A table on the lawn', category: 'Dining' },
     { image: 'gallery-jotham-mug', width: 1568, height: 1600, title: 'A cup at Jotham Gardens', category: 'Dining' },
     { image: 'bonfire_dinner', width: 1600, height: 900, title: 'The perfect place for your event', category: 'Celebrations' },
     { image: 'gallery-indoor-seating', width: 1599, height: 884, title: 'Indoor lounge seating', category: 'Celebrations' },
     { image: 'gallery-red-bowls', width: 1280, height: 720, title: 'Red bowls and woven placemats', category: 'Dining' },
-    { image: 'Meats', width: 3840, height: 1728, title: 'Fresh from the kitchen', category: 'Dining' },
     { image: 'gallery-firelight-table', width: 1600, height: 900, title: 'Dinner by the fire', category: 'Dining' },
-    { image: 'night_set_up_catering', width: 1600, height: 900, title: 'Gather around the table', category: 'Dining' },
-    { image: 'dessert', width: 1000, height: 1500, title: 'The sweetest ending', category: 'Dining' }
+    { image: 'night_set_up_catering', width: 1600, height: 900, title: 'Gather around the table', category: 'Dining' }
   ]
 };

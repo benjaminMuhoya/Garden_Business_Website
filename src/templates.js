@@ -39,7 +39,7 @@ function gallery() {
     return `<section class="gallery-belt" aria-roledescription="carousel" aria-label="Photo row ${beltIndex + 1}">
     <div class="gallery-viewport" tabindex="0"><div class="gallery-track"><div class="gallery-sequence">${photos}</div></div></div></section>`;
   }).join('');
-  return `${intro('A GLIMPSE OF THE GOOD LIFE','Moments <br><em>worth keeping.</em>','Explore the flavours and details of slower days at Jotham.')}
+  return `${intro('A GLIMPSE OF MOMENTS AT JOTHAM','Unforgettable <br><em>times</em>','The details that make Jotham the perfect place to be.')}
   <div class="gallery-belts">${belts}</div>
   <dialog id="lightbox" aria-label="Enlarged gallery photo"><button type="button" class="close-lightbox" aria-label="Close image">×</button><img id="lightbox-image" alt=""></dialog>`;
 }
