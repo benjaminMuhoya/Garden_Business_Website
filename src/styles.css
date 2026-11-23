@@ -383,18 +383,18 @@ nav a:hover:after,nav a[aria-current]:after {
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:12px;
-  min-height:164px;
+  gap:10px;
+  min-height:152px;
   padding:24px;
-  border:1px solid rgba(255,255,255,.65);
-  background:rgba(8,26,17,.28);
+  border:1px solid rgba(255,255,255,.5);
+  background:rgba(8,26,17,.18);
   color:#fff;
   text-align:center;
   transition:transform .3s,background .3s,border-color .3s
 }
 .experience-link:hover,.experience-link:focus-visible {
   transform:translateY(-4px);
-  background:rgba(8,26,17,.48);
+  background:rgba(8,26,17,.4);
   border-color:#fff
 }
 .experience-title {
@@ -403,37 +403,27 @@ nav a:hover:after,nav a[aria-current]:after {
   line-height:1.1
 }
 .experience-caption {
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase
+  font-size:12px;
+  letter-spacing:.05em;
+  color:rgba(255,255,255,.88)
 }
 .details-section {
-  padding-block:100px;
+  padding-block:112px 128px;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:95px;
-  align-items:center
+  grid-template-columns:minmax(0,.9fr) minmax(0,1fr);
+  gap:clamp(55px,8vw,130px);
+  align-items:start
 }
-.details-photo {
-  position:relative
+.details-intro h2 {
+  font-size:clamp(44px,5vw,68px);
+  max-width:500px;
+  margin-bottom:26px
 }
-.details-photo img {
-  height:560px
-}
-.photo-tag {
-  position:absolute;
-  left:22px;
-  bottom:22px;
-  padding:10px 14px;
-  background:var(--cream);
-  font-size:9px;
-  letter-spacing:1.6px;
-  color:var(--green)
-}
-.details-copy>p:not(.eyebrow) {
-  max-width:390px;
+.details-intro>p:last-child {
+  max-width:430px;
   color:var(--muted);
-  font-size:14px
+  font-size:15px;
+  line-height:1.85
 }
 .discovery-link {
   display:flex;
@@ -1291,9 +1281,6 @@ footer {
   .details-section {
     gap:40px
   }
-  .details-photo img {
-    height:500px
-  }
   .shop-layout {
     grid-template-columns:1fr
   }
@@ -1462,14 +1449,8 @@ footer {
   }
   .details-section {
     grid-template-columns:1fr;
-    gap:40px;
-    padding-block:60px
-  }
-  .details-photo img {
-    height:390px
-  }
-  .details-copy h2 {
-    font-size:38px
+    gap:36px;
+    padding-block:68px 84px
   }
   .page-intro {
     padding-top:45px;
@@ -1483,12 +1464,6 @@ footer {
   }
   .wide-photo {
     height:290px
-  }
-  .photo-tag {
-    left:16px;
-    bottom:16px;
-    font-size:8px;
-    padding:9px 12px
   }
   .split-section {
     grid-template-columns:1fr;
@@ -1747,8 +1722,6 @@ footer {
 /* Preserve full owner photographs on the homepage and in the gallery. */
 .hero{background:#1c3027}
 .hero-image{object-fit:contain;object-position:center center}
-.details-photo{background:#fff}
-.details-photo img{width:100%;height:auto;max-height:560px;object-fit:contain}
 .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 22px;align-items:start}
 .gallery-item,.gallery-item:nth-child(n){grid-column:auto;padding:0}
 .gallery-open{background:#fff;overflow:visible}
@@ -1821,9 +1794,6 @@ footer {
   }
   .page-gallery .gallery-grid{gap:36px;padding:20px 8px 80px}
   .page-gallery .gallery-item{animation-name:gallery-drift-mobile}
-  .details-photo img {
-    max-height:none
-  }
 }
 
 /* Mobile homepage: keep hero title and CTAs in normal document flow.
@@ -1996,14 +1966,36 @@ footer {
 }
 .page-home .hero {background:transparent}
 .page-home .hero-image {opacity:0;animation:none}
-.page-home .welcome,.page-home .experience-section,.page-home .details-section,.page-home .details-photo {background:transparent}
+.page-home .welcome,.page-home .experience-section,.page-home .details-section {background:transparent}
 .page-home .welcome>div:last-child,
 .page-home .section-head>p,
-.page-home .details-copy>p:not(.eyebrow),
+.page-home .details-intro>p:last-child,
 .page-home .discovery-link p {color:rgba(255,255,255,.92)}
 .page-home .home-divider,.page-home .discovery-link {border-color:rgba(255,255,255,.45)}
-.page-home .welcome h2,.page-home .section-head h2,.page-home .details-copy h2,.page-home .discovery-link h3 {text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.page-home .welcome h2,.page-home .section-head h2,.page-home .details-intro h2,.page-home .discovery-link h3 {text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.page-home .welcome {padding-block:120px 112px}
+.page-home .welcome h2 {font-size:clamp(42px,4.2vw,60px)}
+.page-home .welcome>div:last-child>p:first-child {max-width:520px;font-size:16px;line-height:1.9}
+.page-home .experience-section {padding-block:104px 112px}
+.page-home .section-head {margin-bottom:48px}
+.page-home .section-head h2 {font-size:clamp(38px,4vw,54px)}
+.page-home .section-head>p {max-width:310px;line-height:1.85}
+.page-home .details-section {border-top:1px solid rgba(255,255,255,.42)}
+.page-home .discovery-link {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding:27px 0}
+.page-home .discovery-link>div {transition:transform .3s}
+.page-home .discovery-link:after {content:'↗';font-family:var(--sans);font-size:21px;line-height:1;opacity:.8;transition:transform .3s}
+.page-home .discovery-link:hover>div,.page-home .discovery-link:focus-visible>div {transform:translateX(5px)}
+.page-home .discovery-link:hover:after,.page-home .discovery-link:focus-visible:after {transform:translate(3px,-3px)}
 @media(max-width:640px) {
   .home-backdrop-frame:first-child img {object-position:center center}
   .home-backdrop-frame:nth-child(2) img {object-position:50% center}
+  .page-home .welcome {padding-block:72px 76px}
+  .page-home .welcome h2 {font-size:clamp(38px,10vw,46px)}
+  .page-home .welcome>div:last-child>p:first-child {font-size:15px}
+  .page-home .experience-section {padding-block:76px 88px}
+  .page-home .section-head {margin-bottom:34px}
+  .page-home .section-head h2 {font-size:38px}
+  .page-home .details-section {padding-block:76px 92px}
+  .page-home .details-intro h2 {font-size:clamp(42px,11vw,52px)}
+  .page-home .discovery-link {padding:22px 0}
 }
