@@ -22,374 +22,462 @@ export const content = {
     ], description: 'Ample parking with 24-hour security.' }
   ],
   menu: [
-      {
-          "id": "beef1",
-          "name": "Beef · 1 kg",
-          "category": "Meats",
-          "price": 1400,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "beefhalf",
-          "name": "Beef · ½ kg",
-          "category": "Meats",
-          "price": 800,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "kienyeji1",
-          "name": "Full Kienyeji Chicken",
-          "category": "Meats",
-          "price": 1800,
-          "image": "Chicken",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "broiler1",
-          "name": "Full Broiler Chicken",
-          "category": "Meats",
-          "price": 1500,
-          "image": "Chicken",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "kienyejihalf",
-          "name": "½ Kienyeji Chicken",
-          "category": "Meats",
-          "price": 1000,
-          "image": "Chicken",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "broilerhalf",
-          "name": "½ Broiler Chicken",
-          "category": "Meats",
-          "price": 800,
-          "image": "Chicken",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "mutton1",
-          "name": "Mutton · 1 kg",
-          "category": "Meats",
-          "price": 1500,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "muttonhalf",
-          "name": "Mutton · ½ kg",
-          "category": "Meats",
-          "price": 1100,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "fish",
-          "name": "Whole Fish",
-          "category": "Meats",
-          "price": 450,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "pork1",
-          "name": "Pork · 1 kg",
-          "category": "Meats",
-          "price": 1300,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "porkhalf",
-          "name": "Pork · ½ kg",
-          "category": "Meats",
-          "price": 650,
-          "image": "Meats",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "fries",
-          "name": "Fries · plate",
-          "category": "Sides",
-          "price": 250,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "roast250",
-          "name": "Roast · plate",
-          "category": "Sides",
-          "price": 250,
-          "image": "Roast_potato",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "bananas",
-          "name": "Roast Bananas · plate",
-          "category": "Sides",
-          "price": 200,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "roast300",
-          "name": "Any Side Plate (Large)",
-          "category": "Sides",
-          "price": 350,
-          "image": "Roast_potato",
-          "description": "Choose from the available accompaniments.",
-          "tag": ""
-      },
-      {
-          "id": "halfbreakfast",
-          "name": "Half Breakfast",
-          "category": "Breakfast",
-          "price": 700,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "fullbreakfast",
-          "name": "Full Breakfast",
-          "category": "Breakfast",
-          "price": 1100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "omelette",
-          "name": "Freshly Made Omelette",
-          "category": "Breakfast",
-          "price": 150,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "breakfastcoffee",
-          "name": "Freshly Made Coffee",
-          "category": "Breakfast",
-          "price": 200,
-          "image": "food",
-          "description": "Black or with milk.",
-          "tag": ""
-      },
-      {
-          "id": "breakfastchai",
-          "name": "Chai with Milk (Mixed Tea)",
-          "category": "Breakfast",
-          "price": 150,
-          "image": "food",
-          "description": "Ask to have a tea bag instead.",
-          "tag": ""
-      },
-      {
-          "id": "chapati",
-          "name": "Chapati · each",
-          "category": "Snacks",
-          "price": 30,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "sausage",
-          "name": "Sausages · pair",
-          "category": "Snacks",
-          "price": 150,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "toast",
-          "name": "Buttered Toast",
-          "category": "Snacks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "samosa",
-          "name": "Samosas · pair",
-          "category": "Snacks",
-          "price": 150,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "mandazi",
-          "name": "Mandazi · each",
-          "category": "Snacks",
-          "price": 30,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "milk",
-          "name": "Mug of Milk",
-          "category": "Hot Drinks",
-          "price": 150,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "lemontea",
-          "name": "Lemon Tea",
-          "category": "Hot Drinks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "strongtea",
-          "name": "Strong Tea",
-          "category": "Hot Drinks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "blackcoffee",
-          "name": "Black Coffee",
-          "category": "Hot Drinks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "dawa",
-          "name": "Dawa",
-          "category": "Hot Drinks",
-          "price": 200,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "whitecoffee",
-          "name": "White Coffee",
-          "category": "Hot Drinks",
-          "price": 120,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "soda",
-          "name": "Soda · 350 ml",
-          "category": "Cold Drinks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "water",
-          "name": "Water · 300 ml",
-          "category": "Cold Drinks",
-          "price": 100,
-          "image": "food",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "seasonaljuice",
-          "name": "Fresh Seasonal Juice",
-          "category": "Cold Drinks",
-          "price": 300,
-          "image": "food",
-          "description": "Pineapple, mango, watermelon or tropical mix. Ask for the fruit of the season.",
-          "tag": ""
-      },
-      {
-          "id": "wines",
-          "name": "Wines",
-          "category": "Alcoholic Drinks",
-          "price": null,
-          "priceLabel": "Glass KSh 350 · Bottle KSh 2,000",
-          "orderable": false,
-          "image": "food",
-          "description": "Ask what’s available.",
-          "tag": ""
-      },
-      {
-          "id": "spirits",
-          "name": "Whisky, Gin & Vodka",
-          "category": "Alcoholic Drinks",
-          "price": null,
-          "priceLabel": "Single KSh 250 · Double KSh 400",
-          "orderable": false,
-          "image": "food",
-          "description": "Served as single or double shots. Any bottle is KSh 4,500. Ask for ice, salt, cucumber or lime.",
-          "tag": ""
-      },
-      {
-          "id": "cocktails",
-          "name": "Cocktails",
-          "category": "Alcoholic Drinks",
-          "price": 650,
-          "image": "food",
-          "description": "Moscow Mule, Gin and Tonic, Rum and Coke, Fireball, Long Island Iced Tea or Whiskey Sour.",
-          "tag": ""
-      },
-      {
-          "id": "beer",
-          "name": "Beer",
-          "category": "Alcoholic Drinks",
-          "price": 300,
-          "image": "food",
-          "description": "Tusker, White Cap, Heineken, Guinness or Pilsner, subject to availability.",
-          "tag": ""
-      },
-      {
-          "id": "mbuzi",
-          "name": "Full Mbuzi · up to 20 people",
-          "category": "Groups & Events",
-          "price": 25000,
-          "image": "venue",
-          "description": "",
-          "tag": ""
-      },
-      {
-          "id": "customgroup",
-          "name": "Custom Group & Event Offers",
-          "category": "Groups & Events",
-          "price": null,
-          "priceLabel": "Plan an inquiry",
-          "orderable": false,
-          "href": "/reserve/",
-          "image": "venue",
-          "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call +254183299583.",
-          "tag": ""
-      }
-  ],
+    {
+        "id": "beef1",
+        "name": "Beef · 1 kg",
+        "category": "Meats",
+        "price": 1400,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "beefhalf",
+        "name": "Beef · ½ kg",
+        "category": "Meats",
+        "price": 800,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "kienyeji1",
+        "name": "Full Kienyeji Chicken",
+        "category": "Meats",
+        "price": 1800,
+        "image": "Chicken",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "broiler1",
+        "name": "Full Broiler Chicken",
+        "category": "Meats",
+        "price": 1500,
+        "image": "Chicken",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "kienyejihalf",
+        "name": "½ Kienyeji Chicken",
+        "category": "Meats",
+        "price": 1000,
+        "image": "Chicken",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "broilerhalf",
+        "name": "½ Broiler Chicken",
+        "category": "Meats",
+        "price": 800,
+        "image": "Chicken",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "mutton1",
+        "name": "Mutton · 1 kg",
+        "category": "Meats",
+        "price": 1500,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "muttonhalf",
+        "name": "Mutton · ½ kg",
+        "category": "Meats",
+        "price": 1100,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "fish",
+        "name": "Whole Fish",
+        "category": "Meats",
+        "price": 750,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "pork1",
+        "name": "Pork · 1 kg",
+        "category": "Meats",
+        "price": 1300,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "porkhalf",
+        "name": "Pork · ½ kg",
+        "category": "Meats",
+        "price": 650,
+        "image": "Meats",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "fries",
+        "name": "Fries · plate",
+        "category": "Sides",
+        "price": 200,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "roast250",
+        "name": "Roast · plate",
+        "category": "Sides",
+        "price": 250,
+        "image": "Roast_potato",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "bananas",
+        "name": "Roast Bananas · plate",
+        "category": "Sides",
+        "price": 200,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "roast300",
+        "name": "Any Side Plate (Large)",
+        "category": "Sides",
+        "price": 350,
+        "image": "Roast_potato",
+        "description": "Choose from the available accompaniments.",
+        "tag": ""
+    },
+    {
+        "id": "halfbreakfast",
+        "name": "Half Breakfast",
+        "category": "Breakfast",
+        "price": 700,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "fullbreakfast",
+        "name": "Full Breakfast",
+        "category": "Breakfast",
+        "price": 1100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "omelette",
+        "name": "Freshly Made Omelette",
+        "category": "Breakfast",
+        "price": 150,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "breakfastcoffee",
+        "name": "Freshly Made Coffee",
+        "category": "Breakfast",
+        "price": 200,
+        "image": "food",
+        "description": "Black or with milk.",
+        "tag": ""
+    },
+    {
+        "id": "breakfastchai",
+        "name": "Chai with Milk (Mixed Tea)",
+        "category": "Breakfast",
+        "price": 150,
+        "image": "food",
+        "description": "Ask to have a tea bag instead.",
+        "tag": ""
+    },
+    {
+        "id": "chapati",
+        "name": "Chapati · each",
+        "category": "Snacks",
+        "price": 30,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "sausage",
+        "name": "Sausages · pair",
+        "category": "Snacks",
+        "price": 150,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "toast",
+        "name": "Buttered Toast",
+        "category": "Snacks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "samosa",
+        "name": "Samosas · pair",
+        "category": "Snacks",
+        "price": 150,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "mandazi",
+        "name": "Mandazi · each",
+        "category": "Snacks",
+        "price": 30,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "milk",
+        "name": "Mug of Milk",
+        "category": "Hot Drinks",
+        "price": 150,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "lemontea",
+        "name": "Lemon Tea",
+        "category": "Hot Drinks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "strongtea",
+        "name": "Strong Tea",
+        "category": "Hot Drinks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "blackcoffee",
+        "name": "Black Coffee",
+        "category": "Hot Drinks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "dawa",
+        "name": "Dawa",
+        "category": "Hot Drinks",
+        "price": 200,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "whitecoffee",
+        "name": "White Coffee",
+        "category": "Hot Drinks",
+        "price": 120,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "soda",
+        "name": "Soda · 350 ml",
+        "category": "Cold Drinks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "water",
+        "name": "Water · 300 ml",
+        "category": "Cold Drinks",
+        "price": 100,
+        "image": "food",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "seasonaljuice",
+        "name": "Fresh Seasonal Juice",
+        "category": "Cold Drinks",
+        "price": 300,
+        "image": "food",
+        "description": "Pineapple, mango, watermelon or tropical mix. Ask for the fruit of the season.",
+        "tag": ""
+    },
+    {
+        "id": "caprice",
+        "name": "Caprice",
+        "category": "Alcoholic Drinks",
+        "price": 1400,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Wines"
+    },
+    {
+        "id": "four-cousins",
+        "name": "Four Cousins",
+        "category": "Alcoholic Drinks",
+        "price": 1500,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Wines"
+    },
+    {
+        "id": "captain-morgan",
+        "name": "Captain Morgan Rum",
+        "category": "Alcoholic Drinks",
+        "price": 1500,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "gilbeys-full",
+        "name": "Gilbey’s Gin",
+        "category": "Alcoholic Drinks",
+        "price": 2000,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "kenya-cane",
+        "name": "Kenya Cane",
+        "category": "Alcoholic Drinks",
+        "price": 1200,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "jameson",
+        "name": "Jameson Whiskey",
+        "category": "Alcoholic Drinks",
+        "price": 4000,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "johnnie-red",
+        "name": "Johnnie Walker Red Label",
+        "category": "Alcoholic Drinks",
+        "price": 2900,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "johnnie-black",
+        "name": "Johnnie Walker Black Label",
+        "category": "Alcoholic Drinks",
+        "price": 4000,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "viceroy",
+        "name": "Viceroy Brandy",
+        "category": "Alcoholic Drinks",
+        "price": 1800,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "Mzinga"
+    },
+    {
+        "id": "black-white-375",
+        "name": "Black & White Whisky (375 ml)",
+        "category": "Alcoholic Drinks",
+        "price": 900,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "375 ml"
+    },
+    {
+        "id": "gilbeys-375",
+        "name": "Gilbey’s Gin (375 ml)",
+        "category": "Alcoholic Drinks",
+        "price": 900,
+        "image": "food",
+        "description": "",
+        "tag": "",
+        "group": "375 ml"
+    },
+    {
+        "id": "cocktails",
+        "name": "Cocktails",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Moscow Mule, Gin and Tonic, Rum and Coke, Fireball, Long Island Iced Tea or Whiskey Sour.",
+        "tag": ""
+    },
+    {
+        "id": "beer",
+        "name": "Beer",
+        "category": "Alcoholic Drinks",
+        "price": 300,
+        "image": "food",
+        "description": "Tusker, White Cap, Heineken, Guinness or Pilsner, subject to availability.",
+        "tag": ""
+    },
+    {
+        "id": "mbuzi",
+        "name": "Full Mbuzi · up to 20 people",
+        "category": "Groups & Events",
+        "price": 25000,
+        "image": "venue",
+        "description": "",
+        "tag": ""
+    },
+    {
+        "id": "customgroup",
+        "name": "Custom Group & Event Offers",
+        "category": "Groups & Events",
+        "price": null,
+        "priceLabel": "Plan an inquiry",
+        "orderable": false,
+        "href": "/reserve/",
+        "image": "venue",
+        "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call +254183299583.",
+        "tag": ""
+    }
+],
   rooms: [
     { id: 'garden', name: 'Rooms at the Garden', images: [
       { src: 'rooms-at-garden', width: 1713, height: 918, alt: 'Wooden bed with heart-patterned bedding in a garden guest room' }
