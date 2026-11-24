@@ -66,7 +66,7 @@ test('real build resolves every page link and asset for project hosting and loca
         for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
         for (const group of ['Wines','Mzinga','375 ml']) assert.equal(html.split('>'+group+'</h3>').length-1,1);
         const expected = {'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktails':650,'beer':300};
-        const cards = html.match(/<article class="menu-card [^"]*">[\s\S]*?<\/article>/g);
+        const cards = [...html.matchAll(/<article class="menu-card [^"]*">.*?<\/article>/gs)].map(match => match[0]);
         for (const [id, price] of Object.entries(expected)) {
           const item = content.menu.find(m => m.id === id);
           assert.equal(item?.price, price, id);
