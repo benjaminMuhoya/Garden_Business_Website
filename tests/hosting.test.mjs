@@ -63,9 +63,18 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="emailCopy"/);
       }
       if (key === 'menu') {
-        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)','Wines','Whisky, Gin &amp; Vodka']) assert.ok(html.includes(item), item);
-        for (const price of ['KSh 200','KSh 150','KSh 300','KSh 650','KSh 350','Glass KSh 350 · Bottle KSh 2,000','Single KSh 250 · Double KSh 400','Any bottle is KSh 4,500']) assert.ok(html.includes(price), price);
-        assert.equal((html.match(/<p>Ask what’s available\.<\/p>/g) || []).length, 1);
+        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
+        for (const group of ['Wines','Mzinga','375 ml']) assert.equal(html.split('>'+group+'</h3>').length-1,1);
+        const expected = {'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktails':650,'beer':300};
+        const cards = html.match(/<article class="menu-card [^"]*">[\s\S]*?<\/article>/g);
+        for (const [id, price] of Object.entries(expected)) {
+          const item = content.menu.find(m => m.id === id);
+          assert.equal(item?.price, price, id);
+          assert.notEqual(item.orderable, false, id);
+          const card = cards.find(card => card.includes('data-id="'+id+'"'));
+          assert.ok(card?.includes('KSh '+price.toLocaleString('en-KE')), id);
+        }
+        assert.doesNotMatch(html, /Whisky, Gin &amp; Vodka|Glass KSh 350|Single KSh 250|Any bottle is KSh 4,500|Ask what’s available/);
         assert.doesNotMatch(html, /Wine Shots|Whisky Shots|Gin Shots|Vodka Shots/);
         assert.ok(html.includes(`call ${content.contact.phoneDisplay}`));
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
