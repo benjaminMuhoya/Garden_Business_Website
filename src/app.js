@@ -116,7 +116,7 @@ if($('.page-menu')) {
   $$('[data-menu-filter]').forEach(button=>button.addEventListener('click',()=>{
     const category=button.dataset.menuFilter;
     $$('[data-menu-filter]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
-    $$('[data-category]').forEach(card=>{card.hidden=category!=='All'&&card.dataset.category!==category;});
+    $$('[data-category]').forEach(card=>{card.hidden=card.dataset.category!==category;});
     $$('[data-menu-photo]').forEach(panel=>{panel.hidden=panel.dataset.menuPhoto!==category;});
     $('.menu-stage').dataset.menuView=category;
     $('#menu-view-title').textContent=category;

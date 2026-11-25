@@ -130,10 +130,10 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.waitForURL('**/menu/');
   console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
-  assert.equal(await page.locator('.menu-card').count(),54);
-  assert.equal(await page.locator('.menu-card:visible').count(),54);
-  assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'All');
-  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
+  assert.equal(await page.locator('.menu-card').count(),58);
+  assert.equal(await page.locator('.menu-card:visible').count(),11);
+  assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'Meats');
+  const categoryCounts={Meats:11,Vegetarian:4,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);
@@ -147,22 +147,32 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
       assert.equal(photoCount,0,`${category} neutral background`);
     }
   }
-  await page.getByRole('button',{name:'All',exact:true}).click();
+  assert.equal(await page.getByRole('button',{name:'All',exact:true}).count(),0);
+  await page.getByRole('button',{name:'Meats',exact:true}).click();
   assert.equal(await page.locator('.menu-card-info').count(),3);
   assert.equal(await page.locator('.menu-card-info .quantity').count(),0);
   assert.match(await page.locator('.menu-card').filter({hasText:'Freshly Made Coffee'}).innerText(),/KSh 200/);
   assert.match(await page.locator('.menu-card').filter({hasText:'Chai with Milk'}).innerText(),/KSh 150/);
   for (const name of ['Moscow Mule','Gin and Tonic','Rum and Coke','Dawa Gold — House Signature','Jotham’s Long Island','Whiskey Sour']) {
-    const card=page.locator('.menu-card').filter({has:page.getByRole('heading',{name,exact:true})});
+    const card=page.locator('.menu-card').filter({has:page.getByRole('heading',{name,exact:true,includeHidden:true})});
     assert.equal(await card.count(),1,name);
     assert.match(await card.innerText(),/KSh 650/);
   }
   assert.match(await page.locator('.menu-card').filter({hasText:'Beer'}).innerText(),/KSh 300/);
+  await page.getByRole('button',{name:'Vegetarian',exact:true}).click();
+  assert.equal(await page.locator('.menu-card:visible').count(),4);
+  for (const [name,price] of [['Matoke (Homemade Style)',400],['Jotham Gardens Special Githeri',400],['Rice with Minji Stew',350],['Mukimo with Vegetable Stew',350]]) {
+    const card=page.locator('.menu-card:visible').filter({has:page.getByRole('heading',{name,exact:true})});
+    assert.equal(await card.count(),1,name);
+    assert.match(await card.innerText(),new RegExp('KSh '+price));
+  }
+  await page.getByRole('button',{name:'Meats',exact:true}).click();
   const sideNames=await page.locator('.menu-card[data-category="Sides"] h2').allTextContents();
   assert.equal(sideNames.at(-1),'Any Side Plate (Large)');
   const currentPhone=await page.evaluate(()=>JSON.parse(document.querySelector('#site-content').textContent).contact.phoneDisplay);
   assert.ok((await page.locator('.menu-card').filter({hasText:'Custom Group & Event Offers'}).innerText()).includes(currentPhone));
   await page.getByRole('button',{name:'Add one Beef · 1 kg',exact:true}).click({clickCount:2});
+  await page.getByRole('button',{name:'Sides',exact:true}).click();
   await page.getByRole('button',{name:'Add one Fries · plate',exact:true}).click();
   assert.equal(await page.locator('#cart-total').textContent(),'KSh 3,050');
   assert.equal(await page.locator('#cart-count').textContent(),'3');

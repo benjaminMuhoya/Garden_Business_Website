@@ -122,6 +122,42 @@ export const content = {
         "tag": ""
     },
     {
+        "id": "matoke",
+        "name": "Matoke (Homemade Style)",
+        "category": "Vegetarian",
+        "price": 400,
+        "image": "food",
+        "description": "Green cooking bananas gently simmered in a rich vegetable stew.",
+        "tag": ""
+    },
+    {
+        "id": "special-githeri",
+        "name": "Jotham Gardens Special Githeri",
+        "category": "Vegetarian",
+        "price": 400,
+        "image": "food",
+        "description": "Traditional maize and beans cooked with vegetables and house seasoning.",
+        "tag": ""
+    },
+    {
+        "id": "rice-minji",
+        "name": "Rice with Minji Stew",
+        "category": "Vegetarian",
+        "price": 350,
+        "image": "food",
+        "description": "Rice served with a hearty green pea and vegetable stew.",
+        "tag": ""
+    },
+    {
+        "id": "mukimo-vegetable-stew",
+        "name": "Mukimo with Vegetable Stew",
+        "category": "Vegetarian",
+        "price": 350,
+        "image": "food",
+        "description": "Traditional mashed potatoes, maize and leafy greens served with vegetable stew.",
+        "tag": ""
+    },
+    {
         "id": "fries",
         "name": "Fries · plate",
         "category": "Sides",
