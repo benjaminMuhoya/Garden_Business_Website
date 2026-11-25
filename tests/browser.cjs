@@ -133,7 +133,7 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.equal(await page.locator('.menu-card').count(),58);
   assert.equal(await page.locator('.menu-card:visible').count(),11);
   assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'Meats');
-  const categoryCounts={Meats:11,Vegetarian:4,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
+  const categoryCounts={Meats:11,Vegetarian:4,Sides:4,'Breakfast, Snacks & Hot Drinks':16,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);

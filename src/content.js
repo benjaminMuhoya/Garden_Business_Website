@@ -196,146 +196,162 @@ export const content = {
     {
         "id": "halfbreakfast",
         "name": "Half Breakfast",
-        "category": "Breakfast",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 700,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Breakfast"
     },
     {
         "id": "fullbreakfast",
         "name": "Full Breakfast",
-        "category": "Breakfast",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 1100,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Breakfast"
     },
     {
         "id": "omelette",
         "name": "Freshly Made Omelette",
-        "category": "Breakfast",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 150,
         "image": "food",
         "description": "",
-        "tag": ""
-    },
-    {
-        "id": "breakfastcoffee",
-        "name": "Freshly Made Coffee",
-        "category": "Breakfast",
-        "price": 200,
-        "image": "food",
-        "description": "Black or with milk.",
-        "tag": ""
-    },
-    {
-        "id": "breakfastchai",
-        "name": "Chai with Milk (Mixed Tea)",
-        "category": "Breakfast",
-        "price": 150,
-        "image": "food",
-        "description": "Ask to have a tea bag instead.",
-        "tag": ""
+        "tag": "",
+        "group": "Breakfast"
     },
     {
         "id": "chapati",
         "name": "Chapati · each",
-        "category": "Snacks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 30,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Snacks"
     },
     {
         "id": "sausage",
         "name": "Sausages · pair",
-        "category": "Snacks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 150,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Snacks"
     },
     {
         "id": "toast",
         "name": "Buttered Toast",
-        "category": "Snacks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 100,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Snacks"
     },
     {
         "id": "samosa",
         "name": "Samosas · pair",
-        "category": "Snacks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 150,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Snacks"
     },
     {
         "id": "mandazi",
         "name": "Mandazi · each",
-        "category": "Snacks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 30,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Snacks"
+    },
+    {
+        "id": "breakfastcoffee",
+        "name": "Freshly Made Coffee",
+        "category": "Breakfast, Snacks & Hot Drinks",
+        "price": 200,
+        "image": "food",
+        "description": "Black or with milk.",
+        "tag": "",
+        "group": "Hot Drinks"
+    },
+    {
+        "id": "breakfastchai",
+        "name": "Chai with Milk (Mixed Tea)",
+        "category": "Breakfast, Snacks & Hot Drinks",
+        "price": 150,
+        "image": "food",
+        "description": "Ask to have a tea bag instead.",
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "milk",
         "name": "Mug of Milk",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 150,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "lemontea",
         "name": "Lemon Tea",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 100,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "strongtea",
         "name": "Strong Tea",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 100,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "blackcoffee",
         "name": "Black Coffee",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 100,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "dawa",
         "name": "Dawa",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 200,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "whitecoffee",
         "name": "White Coffee",
-        "category": "Hot Drinks",
+        "category": "Breakfast, Snacks & Hot Drinks",
         "price": 120,
         "image": "food",
         "description": "",
-        "tag": ""
+        "tag": "",
+        "group": "Hot Drinks"
     },
     {
         "id": "soda",

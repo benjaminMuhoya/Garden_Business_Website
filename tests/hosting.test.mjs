@@ -63,6 +63,14 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="emailCopy"/);
       }
       if (key === 'menu') {
+        assert.ok(html.includes('data-menu-filter="Breakfast, Snacks &amp; Hot Drinks"'));
+        for (const group of ['Breakfast','Snacks','Hot Drinks']) {
+          assert.equal(html.split('>'+group+'</h3>').length-1,1,group);
+          assert.ok(!html.includes('data-menu-filter="'+group+'"'),group);
+        }
+        assert.equal(content.menu.filter(m=>m.category==='Breakfast, Snacks & Hot Drinks').length,16);
+        assert.equal(content.menu.find(m=>m.id==='breakfastchai').group,'Hot Drinks');
+        assert.equal(content.menu.find(m=>m.id==='breakfastcoffee').group,'Hot Drinks');
         assert.doesNotMatch(html, /data-menu-filter="All"|data-menu-photo="All"/);
         assert.match(html, /data-menu-filter="Meats" aria-pressed="true"/);
         assert.match(html, /data-menu-filter="Vegetarian" aria-pressed="false"/);
