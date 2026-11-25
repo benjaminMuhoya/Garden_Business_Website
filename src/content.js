@@ -439,13 +439,64 @@ export const content = {
         "group": "375 ml"
     },
     {
-        "id": "cocktails",
-        "name": "Cocktails",
+        "id": "cocktail-moscow-mule",
+        "name": "Moscow Mule",
         "category": "Alcoholic Drinks",
         "price": 650,
         "image": "food",
-        "description": "Moscow Mule, Gin and Tonic, Rum and Coke, Fireball, Long Island Iced Tea or Whiskey Sour.",
-        "tag": ""
+        "description": "Vodka, fresh lime juice, ginger beer, mint, ice and lime wedges.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
+    },
+    {
+        "id": "cocktail-gin-tonic",
+        "name": "Gin and Tonic",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Gin, tonic water, a fresh cucumber slice, ice and lime wedges.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
+    },
+    {
+        "id": "cocktail-rum-coke",
+        "name": "Rum and Coke",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Rum, Coca-Cola, fresh lime juice, a dash of aromatic bitters, ice and lime wedges.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
+    },
+    {
+        "id": "cocktail-dawa-gold",
+        "name": "Dawa Gold — House Signature",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Brandy, fresh ginger, natural honey, fresh lime juice, a hint of citrus and ice.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
+    },
+    {
+        "id": "cocktail-jothams-long-island",
+        "name": "Jotham’s Long Island",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Vodka, gin, white rum, tequila, triple sec, freshly brewed Kenyan black tea, fresh lemon juice, a touch of sugarcane juice, ice and orange garnish.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
+    },
+    {
+        "id": "cocktail-whiskey-sour",
+        "name": "Whiskey Sour",
+        "category": "Alcoholic Drinks",
+        "price": 650,
+        "image": "food",
+        "description": "Whiskey, fresh lemon juice, a touch of sugarcane juice, optional pasteurized egg white, ice and citrus garnish.",
+        "tag": "",
+        "group": "Jotham Garden’s Cocktails @ KSh 650 each"
     },
     {
         "id": "beer",
