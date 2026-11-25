@@ -63,9 +63,9 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /name="emailCopy"/);
       }
       if (key === 'menu') {
-        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Cocktails','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
+        for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Moscow Mule','Gin and Tonic','Rum and Coke','Dawa Gold','Jotham’s Long Island','Whiskey Sour','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
         for (const group of ['Wines','Mzinga','375 ml']) assert.equal(html.split('>'+group+'</h3>').length-1,1);
-        const expected = {'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktails':650,'beer':300};
+        const expected = {'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktail-moscow-mule':650,'cocktail-gin-tonic':650,'cocktail-rum-coke':650,'cocktail-dawa-gold':650,'cocktail-jothams-long-island':650,'cocktail-whiskey-sour':650,'beer':300};
         for (const [id, price] of Object.entries(expected)) {
           const item = content.menu.find(m => m.id === id);
           assert.equal(item?.price, price, id);
