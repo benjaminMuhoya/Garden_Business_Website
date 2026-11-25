@@ -130,10 +130,10 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.waitForURL('**/menu/');
   console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
-  assert.equal(await page.locator('.menu-card').count(),58);
+  assert.equal(await page.locator('.menu-card').count(),60);
   assert.equal(await page.locator('.menu-card:visible').count(),11);
   assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'Meats');
-  const categoryCounts={Meats:11,Vegetarian:4,Sides:4,'Breakfast, Snacks & Hot Drinks':16,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
+  const categoryCounts={Meats:11,Vegetarian:4,Sides:4,'Breakfast, Snacks & Hot Drinks':16,'Cold Drinks':3,'Alcoholic Drinks':18,'Family, Groups & Event Packages':4};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);
@@ -169,8 +169,17 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.getByRole('button',{name:'Meats',exact:true}).click();
   const sideNames=await page.locator('.menu-card[data-category="Sides"] h2').allTextContents();
   assert.equal(sideNames.at(-1),'Any Side Plate (Large)');
-  const currentPhone=await page.evaluate(()=>JSON.parse(document.querySelector('#site-content').textContent).contact.phoneDisplay);
-  assert.ok((await page.locator('.menu-card').filter({hasText:'Custom Group & Event Offers'}).innerText()).includes(currentPhone));
+  await page.getByRole('button',{name:'Family, Groups & Event Packages',exact:true}).click();
+  for(const [name,price] of [['Platter for 4','3,200'],['Platter for 6','4,800'],['Whole Mbuzi','25,000']]) {
+    const card=page.locator('.menu-card:visible').filter({has:page.getByRole('heading',{name,exact:true})});
+    assert.equal(await card.count(),1,name);
+    assert.ok((await card.innerText()).includes('KSh '+price));
+  }
+  const catering=page.locator('.menu-card-info:visible').filter({hasText:'Your event. Your style. Your venue.'});
+  assert.equal(await catering.count(),1);
+  assert.equal(await catering.locator('.quantity').count(),0);
+  assert.equal(await catering.getByRole('link',{name:'Contact us to plan your event'}).count(),1);
+  await page.getByRole('button',{name:'Meats',exact:true}).click();
   await page.getByRole('button',{name:'Add one Beef · 1 kg',exact:true}).click({clickCount:2});
   await page.getByRole('button',{name:'Sides',exact:true}).click();
   await page.getByRole('button',{name:'Add one Fries · plate',exact:true}).click();

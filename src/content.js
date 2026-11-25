@@ -560,25 +560,47 @@ export const content = {
         "tag": ""
     },
     {
+        "id": "family-platter-4",
+        "name": "Platter for 4",
+        "category": "Family, Groups & Event Packages",
+        "image": "venue",
+        "tag": "",
+        "price": 3200,
+        "description": "Half chicken, ½ kg beef, 2 eggs, 2 portions of roast potatoes, vegetables and salad.",
+        "group": "Family Platters"
+    },
+    {
+        "id": "family-platter-6",
+        "name": "Platter for 6",
+        "category": "Family, Groups & Event Packages",
+        "image": "venue",
+        "tag": "",
+        "price": 4800,
+        "description": "Whole chicken, ½ kg beef, 3 eggs, 2 portions of roast potatoes, 3 chapatis, vegetables and salad.",
+        "group": "Family Platters"
+    },
+    {
         "id": "mbuzi",
-        "name": "Full Mbuzi · up to 20 people",
-        "category": "Groups & Events",
+        "name": "Whole Mbuzi",
+        "category": "Family, Groups & Event Packages",
         "price": 25000,
         "image": "venue",
-        "description": "",
-        "tag": ""
+        "description": "Fully prepared and served. All inclusive, excluding side dishes.",
+        "tag": "",
+        "group": "Group Packages"
     },
     {
         "id": "customgroup",
-        "name": "Custom Group & Event Offers",
-        "category": "Groups & Events",
+        "name": "Your event. Your style. Your venue.",
+        "category": "Family, Groups & Event Packages",
         "price": null,
-        "priceLabel": "Plan an inquiry",
+        "priceLabel": "Contact us to plan your event",
         "orderable": false,
         "href": "/reserve/",
         "image": "venue",
-        "description": "We tailor offers to each group’s preferences and needs, so prices vary. Plan an inquiry for a personalised quote or call +254183299583.",
-        "tag": ""
+        "description": "Traditional to ultra-modern setups, with catering for every occasion and up to 1,000 guests. At Jotham Gardens or a venue of your choice.",
+        "tag": "",
+        "group": "Event Catering"
     }
 ],
   rooms: [

@@ -78,7 +78,7 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.equal(content.menu.filter(m => m.category === 'Vegetarian').length, 4);
         for (const item of ['Freshly Made Coffee','Chai with Milk (Mixed Tea)','Fresh Seasonal Juice','Moscow Mule','Gin and Tonic','Rum and Coke','Dawa Gold','Jotham’s Long Island','Whiskey Sour','Beer','Any Side Plate (Large)']) assert.ok(html.includes(item), item);
         for (const group of ['Wines','Mzinga','375 ml']) assert.equal(html.split('>'+group+'</h3>').length-1,1);
-        const expected = {'matoke':400,'special-githeri':400,'rice-minji':350,'mukimo-vegetable-stew':350,'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktail-moscow-mule':650,'cocktail-gin-tonic':650,'cocktail-rum-coke':650,'cocktail-dawa-gold':650,'cocktail-jothams-long-island':650,'cocktail-whiskey-sour':650,'beer':300};
+        const expected = {'family-platter-4':3200,'family-platter-6':4800,'mbuzi':25000,'matoke':400,'special-githeri':400,'rice-minji':350,'mukimo-vegetable-stew':350,'fish':750,'fries':200,'caprice':1400,'four-cousins':1500,'captain-morgan':1500,'gilbeys-full':2000,'kenya-cane':1200,'jameson':4000,'johnnie-red':2900,'johnnie-black':4000,'viceroy':1800,'black-white-375':900,'gilbeys-375':900,'cocktail-moscow-mule':650,'cocktail-gin-tonic':650,'cocktail-rum-coke':650,'cocktail-dawa-gold':650,'cocktail-jothams-long-island':650,'cocktail-whiskey-sour':650,'beer':300};
         for (const [id, price] of Object.entries(expected)) {
           const item = content.menu.find(m => m.id === id);
           assert.equal(item?.price, price, id);
@@ -90,7 +90,16 @@ test('real build resolves every page link and asset for project hosting and loca
         }
         assert.doesNotMatch(html, /Whisky, Gin &amp; Vodka|Glass KSh 350|Single KSh 250|Any bottle is KSh 4,500|Ask what’s available/);
         assert.doesNotMatch(html, /Wine Shots|Whisky Shots|Gin Shots|Vodka Shots/);
-        assert.ok(html.includes(`call ${content.contact.phoneDisplay}`));
+        assert.ok(html.includes('data-menu-filter="Family, Groups &amp; Event Packages"'));
+        assert.ok(!html.includes('data-menu-filter="Groups &amp; Events"'));
+        for (const group of ['Family Platters','Group Packages','Event Catering']) assert.equal(html.split('>'+group+'</h3>').length-1,1,group);
+        const catering = content.menu.find(m=>m.id==='customgroup');
+        assert.equal(catering.orderable,false);
+        assert.equal(catering.price,null);
+        assert.equal(catering.href,'/reserve/');
+        assert.ok(html.includes('Contact us to plan your event'));
+        assert.ok(html.includes('up to 1,000 guests'));
+        assert.ok(html.includes('a venue of your choice'));
         assert.match(html, /coffee, tea and milk for breakfast are sourced from local farmers/i);
       }
       if (key === 'facilities') {
