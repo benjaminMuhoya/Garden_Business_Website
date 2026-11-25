@@ -130,10 +130,10 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   await page.waitForURL('**/menu/');
   console.log('PASS: focused homepage copy, mobile hero flow, Options navigation and keyboard dismissal.');
 
-  assert.equal(await page.locator('.menu-card').count(),40);
-  assert.equal(await page.locator('.menu-card:visible').count(),40);
+  assert.equal(await page.locator('.menu-card').count(),54);
+  assert.equal(await page.locator('.menu-card:visible').count(),54);
   assert.equal(await page.locator('[data-menu-photo]:visible').getAttribute('data-menu-photo'),'All');
-  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':4,'Groups & Events':2};
+  const categoryCounts={Meats:11,Sides:4,Breakfast:5,Snacks:5,'Hot Drinks':6,'Cold Drinks':3,'Alcoholic Drinks':18,'Groups & Events':2};
   for(const [category,count] of Object.entries(categoryCounts)){
     await page.getByRole('button',{name:category,exact:true}).click();
     assert.equal(await page.locator('.menu-card:visible').count(),count,category);
@@ -152,7 +152,11 @@ const base=(process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/, '
   assert.equal(await page.locator('.menu-card-info .quantity').count(),0);
   assert.match(await page.locator('.menu-card').filter({hasText:'Freshly Made Coffee'}).innerText(),/KSh 200/);
   assert.match(await page.locator('.menu-card').filter({hasText:'Chai with Milk'}).innerText(),/KSh 150/);
-  assert.match(await page.locator('.menu-card').filter({hasText:'Cocktails'}).innerText(),/KSh 650/);
+  for (const name of ['Moscow Mule','Gin and Tonic','Rum and Coke','Dawa Gold — House Signature','Jotham’s Long Island','Whiskey Sour']) {
+    const card=page.locator('.menu-card').filter({has:page.getByRole('heading',{name,exact:true})});
+    assert.equal(await card.count(),1,name);
+    assert.match(await card.innerText(),/KSh 650/);
+  }
   assert.match(await page.locator('.menu-card').filter({hasText:'Beer'}).innerText(),/KSh 300/);
   const sideNames=await page.locator('.menu-card[data-category="Sides"] h2').allTextContents();
   assert.equal(sideNames.at(-1),'Any Side Plate (Large)');
