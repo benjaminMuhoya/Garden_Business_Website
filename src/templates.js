@@ -111,7 +111,7 @@ function eventDetail(event) {
     <section class="form-panel event-booking" aria-labelledby="rsvp-title">
       <h2 id="rsvp-title">RSVP</h2>
       <form id="event-rsvp" method="post" data-event-id="${event.id}" hidden>
-        <p>Complete every field. We receive many calls, so put your requests in Notes.</p>
+        <p>Please complete all fields so we can get the details right for you. We receive many requests, so sharing your preferences in <strong>Notes</strong> helps us prepare for your visit and keep your confirmation call brief.</p>
         <div class="form-grid">
           <label>Name<input name="name" autocomplete="name" maxlength="100" required></label>
           <label>Phone Number<input name="phone" type="tel" autocomplete="tel" minlength="7" maxlength="30" required></label>
