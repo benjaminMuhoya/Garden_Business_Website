@@ -64,8 +64,9 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.doesNotMatch(html, />All events<|10% off family and group platters/);
         assert.match(html, /<p class="event-description">Live Band,/);
         assert.doesNotMatch(html, /mugithi/i);
-        assert.match(html, /Food buffet from 5:30 pm until you go home\. Limit of 2 mocktails per guest\./);
-        assert.match(html, /activities for the whole family, including kids and young adults\. Young adults can compete for prizes\./);
+        assert.match(html, /Food buffet from 5:30 pm until late into the night\. Limit of 2 mocktails per guest\./);
+        assert.match(html, /activities for the whole family, including kids and young adults\. Limited spots\.<\/p>/);
+        assert.match(html, /<p>Kids’ tickets include all-day bouncing castle access\. Young adults can compete for prizes\.<\/p>/);
         const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td>\s*<\/tr>/g)];
         assert.deepEqual(rows.map(row => row.slice(1)), [
           ['Kids under 10', '800', '1,300'],
