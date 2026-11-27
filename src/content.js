@@ -12,7 +12,7 @@ export const content = {
       name: 'NYE @ Jotham Gardens',
       date: '2026-12-31',
       image: { src: 'nye-flyer', width: 1522, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
-      description: 'Live Mugithi, fireworks, a food and mocktail buffet, and activities for kids and young adults. Limited spots.',
+      description: 'Live Mugithi, fireworks, kids’ activities, and competitive games for young adults with prizes to win. Limited spots.',
       prices: {
         tiers: ['earlyBird', 'gate'],
         groups: [
@@ -22,6 +22,7 @@ export const content = {
         ]
       },
       ticketNotes: [
+        'Food buffet from 2 pm to 9:30 pm. Limit of 2 mocktails per guest.',
         'Kids’ tickets include all-day bouncing castle access.',
         'You can enter without a package. The buffet and activities require a paid package.'
       ]
@@ -30,9 +31,7 @@ export const content = {
       id: 'jamhuri-day',
       name: 'Jamhuri Day',
       date: '2026-12-12',
-      image: null,
-      description: '',
-      prices: { earlyBird: null, late: null, gate: null }
+      menuOffer: { percentOff: 10, groups: ['Family Platters', 'Group Packages'] }
     }
   ],
   facilities: [

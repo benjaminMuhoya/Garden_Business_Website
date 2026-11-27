@@ -12,7 +12,7 @@ for (const group of [content.menu, content.rooms, content.events]) {
 const rates = [...content.menu.filter(x => x.orderable !== false).map(x => x.price), ...content.rooms.flatMap(x => [x.single, x.double]), ...Object.values(content.meals)];
 if (rates.some(rate => !Number.isFinite(rate) || rate < 0)) throw new Error('Invalid sample price');
 if (content.menu.some(item => item.orderable === false && (!item.priceLabel || item.price !== null))) throw new Error('Invalid informational menu item');
-for (const {id, prices} of content.events) {
+for (const {id, prices} of content.events.filter(event => !event.menuOffer)) {
   const rows = prices.groups ?? [prices];
   const tiers = eventTicketTiers(prices);
   if (!rows.length) throw new Error(`Missing ticket groups for ${id}`);

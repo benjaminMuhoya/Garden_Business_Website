@@ -63,10 +63,26 @@ function events() {
   </div>`;
 }
 
-function eventDetail(event) {
+function eventMenuOffer({percentOff, groups}) {
+  const menuPrice = price => `KSh ${price.toLocaleString('en-KE')}`;
+  return `<section class="event-offer" aria-labelledby="offer-title">
+    <h2 id="offer-title">${percentOff}% off family and group platters</h2>
+    ${groups.map(group => {
+      const items = c.menu.filter(item => item.group === group && item.orderable !== false && Number.isFinite(item.price));
+      if (!items.length) throw new Error(`No priced menu items for event offer group: ${group}`);
+      return `<h3>${esc(group)}</h3><ul role="list">${items.map(item => `<li>
+        <div class="event-offer-item"><strong>${esc(item.name)}</strong>
+          <p class="event-offer-prices"><span class="sr-only">Regular price </span><del>${menuPrice(item.price)}</del>
+            <span class="sr-only">Offer price </span><strong>${menuPrice(Math.round(item.price * (100 - percentOff)) / 100)}</strong></p>
+        </div>
+        ${item.description ? `<p>${esc(item.description)}</p>` : ''}
+      </li>`).join('')}</ul>`;
+    }).join('')}
+  </section>`;
+}
+
+function eventTickets(event) {
   const tiers = eventTicketTiers(event.prices);
-  const flyer = event.image;
-  const flyerPath = flyer && `/assets/${assetFile(flyer.src)}`;
   const tickets = event.prices.groups
     ? `<table class="event-price-table">
         <caption>Per person (KES)</caption>
@@ -75,17 +91,23 @@ function eventDetail(event) {
           ${tiers.map(([, key]) => `<td>${group[key].toLocaleString('en-KE')}</td>`).join('')}</tr>`).join('')}</tbody>
       </table>`
     : `<dl>${tiers.map(([label, key]) => `<div><dt>${label}</dt><dd>${event.prices[key] === null ? 'Price to come' : esc(cash(event.prices[key]))}</dd></div>`).join('')}</dl>`;
-  const introduction = `<div class="page-intro"><a class="events-back" href="/events/">All events</a><h1>${esc(event.name)}</h1>
-      <time class="lead" datetime="${esc(event.date)}">${esc(eventDateLabel(event.date))}</time>
-    </div>`;
-  const description = `<p class="event-description">${esc(event.description || 'Event details coming soon.')}</p>`;
-  const details = `<section class="event-tickets" aria-labelledby="tickets-title">
+  return `<section class="event-tickets" aria-labelledby="tickets-title">
       <h2 id="tickets-title">Tickets</h2>
       ${tickets}
       ${(event.ticketNotes ?? []).map(ticketNote => `<p>${esc(ticketNote)}</p>`).join('')}
       ${tiers.some(([, key]) => key === 'late') ? '<p>Late pricing starts five days before the event.</p>' : ''}
       <p>Early booking gives us time to source supplies and tailor your visit. Last-minute sourcing costs more.</p>
-    </section>
+    </section>`;
+}
+
+function eventDetail(event) {
+  const flyer = event.image;
+  const flyerPath = flyer && `/assets/${assetFile(flyer.src)}`;
+  const introduction = `<div class="page-intro"><h1>${esc(event.name)}</h1>
+    <time class="lead" datetime="${esc(event.date)}">${esc(eventDateLabel(event.date))}</time>
+  </div>`;
+  const description = `<p class="event-description">${esc(event.description || 'Event details coming soon.')}</p>`;
+  const details = `${event.menuOffer ? eventMenuOffer(event.menuOffer) : eventTickets(event)}
     <section class="form-panel event-booking" aria-labelledby="rsvp-title">
       <h2 id="rsvp-title">RSVP</h2>
       <form id="event-rsvp" method="post" data-event-id="${event.id}" hidden>
@@ -103,8 +125,9 @@ function eventDetail(event) {
     </section>`;
   if (!flyer) {
     return `<div class="wrap events-content">
-      ${introduction}<div class="event-photo event-photo-placeholder">Event photo coming soon</div>
-      ${description}${details}
+      ${introduction}
+      ${event.menuOffer ? '' : `<div class="event-photo event-photo-placeholder">Event photo coming soon</div>${description}`}
+      ${details}
     </div>`;
   }
   return `<div class="wrap events-content event-invitation">

@@ -39,10 +39,13 @@ async function run() {
     const form = page.locator('#event-rsvp');
     await form.waitFor();
     assert.equal(await page.locator('time').getAttribute('datetime'), '2026-12-12');
-    assert.deepEqual(await page.locator('dt').allTextContents(), ['Early Bird', 'Late Ticket', 'At the Gate']);
-    assert.deepEqual(await page.locator('dd').allTextContents(), Array(3).fill('Price to come'));
-    assert.match(await page.locator('main').innerText(), /Event photo coming soon\s+Event details coming soon\./);
-    assert.match(await page.locator('main').innerText(), /Late pricing starts five days before the event\./);
+    const offer = page.getByRole('region', { name: '10% off family and group platters' });
+    assert.deepEqual(await offer.getByRole('heading', { level: 3 }).allTextContents(), ['Family Platters', 'Group Packages']);
+    assert.deepEqual(await offer.locator('.event-offer-item > strong').allTextContents(), ['Platter for 4', 'Platter for 6', 'Whole Mbuzi']);
+    assert.deepEqual(await offer.locator('del').allTextContents(), ['KSh 3,200', 'KSh 4,800', 'KSh 25,000']);
+    assert.deepEqual(await offer.locator('.event-offer-prices strong').allTextContents(), ['KSh 2,880', 'KSh 4,320', 'KSh 22,500']);
+    assert.ok(await offer.locator('del').first().evaluate(price => getComputedStyle(price).textDecorationLine === 'line-through'));
+    assert.doesNotMatch(await page.locator('main').innerText(), /Tickets|Price to come|All events/);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     assert.equal(await form.locator('input[required], textarea[required]').count(), 4);
     await form.getByLabel('Name', { exact: true }).fill('Test Guest');
@@ -73,7 +76,7 @@ async function run() {
       _captcha: 'false'
     });
 
-    await page.getByRole('link', { name: 'All events' }).click();
+    await page.goto(base + '/events/');
     await upcoming.getByRole('link', { name: 'RSVP for Jamhuri Day' }).waitFor();
     await page.clock.fastForward('01:00:01');
     assert.deepEqual(await names(upcoming), ['NYE @ Jotham Gardens']);
@@ -85,7 +88,7 @@ async function run() {
     await form.evaluate(element => element.dispatchEvent(new Event('submit', { cancelable: true })));
     assert.equal(submissions.length, 2);
 
-    await page.getByRole('link', { name: 'All events' }).click();
+    await page.goto(base + '/events/');
     await upcoming.getByRole('link', { name: 'RSVP for NYE @ Jotham Gardens' }).click();
     assert.equal(page.url(), base + nyePath);
     await form.waitFor();
@@ -102,7 +105,9 @@ async function run() {
     );
     assert.ok(await page.getByText('Kids’ tickets include all-day bouncing castle access.').isVisible());
     assert.ok(await page.getByText('You can enter without a package. The buffet and activities require a paid package.').isVisible());
-    assert.doesNotMatch(await page.locator('main').innerText(), /Late Ticket|Late pricing/);
+    assert.ok(await page.getByText('Food buffet from 2 pm to 9:30 pm. Limit of 2 mocktails per guest.').isVisible());
+    assert.match(await page.locator('.event-description').innerText(), /competitive games for young adults with prizes to win/);
+    assert.doesNotMatch(await page.locator('main').innerText(), /Late Ticket|Late pricing|All events/);
     const flyerLink = page.getByRole('link', { name: 'View full-size event flyer' });
     const flyer = flyerLink.getByRole('img', { name: 'New Year’s Eve at Jotham Gardens flyer' });
     assert.equal(await flyerLink.getAttribute('href'), await flyer.getAttribute('src'));
@@ -155,13 +160,13 @@ async function run() {
     await form.evaluate(element => element.dispatchEvent(new Event('submit', { cancelable: true })));
     await page.getByText('RSVPs are closed.').waitFor();
     assert.equal(submissions.length, 3);
-    await page.getByRole('link', { name: 'All events' }).click();
+    await page.goto(base + '/events/');
     await past.waitFor();
     assert.deepEqual(await names(past), ['NYE @ Jotham Gardens', 'Jamhuri Day']);
     assert.equal(await upcoming.count(), 0);
     assert.equal(await past.locator('a[href]').count(), 0);
     assert.deepEqual(errors, []);
-    console.log('PASS: Events navigation, NYE flyer and prices, mobile layout, Jamhuri placeholders, RSVP delivery and Nairobi date rollover.');
+    console.log('PASS: Events navigation, NYE details and prices, flyer layout, Jamhuri discount, RSVP delivery and Nairobi date rollover.');
   } finally {
     await browser.close();
   }

@@ -61,11 +61,24 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /<caption>Per person \(KES\)<\/caption>/);
         assert.match(html, /<th scope="col">Guest<\/th><th scope="col">Early Bird<\/th><th scope="col">At the Gate<\/th>/);
         assert.doesNotMatch(html, /Late Ticket|Late pricing/);
+        assert.doesNotMatch(html, />All events<|10% off family and group platters/);
+        assert.match(html, /Food buffet from 2 pm to 9:30 pm\. Limit of 2 mocktails per guest\./);
+        assert.match(html, /competitive games for young adults with prizes to win/);
         const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td>\s*<\/tr>/g)];
         assert.deepEqual(rows.map(row => row.slice(1)), [
           ['Kids under 10', '800', '1,300'],
           ['Young adults', '1,500', '2,000'],
           ['Adults', '3,000', '3,500']
+        ]);
+      }
+      if (key === 'events/jamhuri-day') {
+        const main = html.split('<main id="main">')[1].split('</main>')[0];
+        assert.match(main, />10% off family and group platters<\/h2>/);
+        assert.doesNotMatch(main, />All events<|>Tickets<|Price to come|Event photo coming soon|Event Catering/);
+        assert.deepEqual([...main.matchAll(/<del>([^<]+)<\/del>\s*<span class="sr-only">Offer price <\/span><strong>([^<]+)<\/strong>/g)].map(match => match.slice(1)), [
+          ['KSh 3,200', 'KSh 2,880'],
+          ['KSh 4,800', 'KSh 4,320'],
+          ['KSh 25,000', 'KSh 22,500']
         ]);
       }
       if (['reserve','menu','accommodation'].includes(key)) {

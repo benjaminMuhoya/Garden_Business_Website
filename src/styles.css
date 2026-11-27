@@ -477,12 +477,6 @@ nav a:hover:after,nav a[aria-current]:after {
   flex-shrink:0;
   font-size:.875rem
 }
-.events-back {
-  display:inline-block;
-  margin-bottom:14px;
-  text-decoration:underline;
-  text-underline-offset:3px
-}
 .events-content time {
   display:block;
   margin-top:12px
@@ -511,10 +505,6 @@ nav a:hover:after,nav a[aria-current]:after {
   background:var(--event-midnight);
   border-top:3px solid var(--event-gold);
   color:#fff
-}
-.event-invitation .events-back {
-  color:var(--event-gold);
-  font-size:.875rem
 }
 .event-invitation .page-intro h1 {
   font-size:clamp(2.25rem,5vw,4.25rem);
@@ -582,6 +572,32 @@ nav a:hover:after,nav a[aria-current]:after {
 }
 .event-price-table td {
   font-variant-numeric:tabular-nums
+}
+.event-offer h3 {
+  margin:24px 0 12px
+}
+.event-offer li {
+  padding:14px 0;
+  border-bottom:1px solid var(--line)
+}
+.event-offer-item {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:4px 16px
+}
+.event-offer-item+p {
+  margin:4px 0 0
+}
+.event-offer-prices {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:0;
+  font-variant-numeric:tabular-nums
+}
+.event-offer-prices del {
+  color:var(--muted)
 }
 .event-booking {
   border:1px solid var(--line);
