@@ -59,11 +59,13 @@ test('real build resolves every page link and asset for project hosting and loca
       if (key === 'events/nye-at-jotham-gardens') {
         assert.ok(html.includes(`src="${base}assets/nye-flyer.jpg"`));
         assert.match(html, /<caption>Per person \(KES\)<\/caption>/);
-        const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td>/g)];
+        assert.match(html, /<th scope="col">Guest<\/th><th scope="col">Early Bird<\/th><th scope="col">At the Gate<\/th>/);
+        assert.doesNotMatch(html, /Late Ticket|Late pricing/);
+        const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td>\s*<\/tr>/g)];
         assert.deepEqual(rows.map(row => row.slice(1)), [
-          ['Kids under 10', '800', '1,300', '1,800'],
-          ['Young adults', '1,500', '2,000', '2,500'],
-          ['Adults', '3,000', '3,500', '4,000']
+          ['Kids under 10', '800', '1,300'],
+          ['Young adults', '1,500', '2,000'],
+          ['Adults', '3,000', '3,500']
         ]);
       }
       if (['reserve','menu','accommodation'].includes(key)) {

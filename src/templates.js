@@ -1,6 +1,6 @@
 import {content as c} from './content.js';
 import {money} from './domain.js';
-import {eventDateLabel, gardenToday} from './events.js';
+import {eventDateLabel, eventTicketTiers, gardenToday} from './events.js';
 const cash = n => money(n,c.currency);
 const esc = s => String(s).replace(/[&<>"']/g, v => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[v]));
 const nav = [['reserve','Reserve Venue'],['events','Events'],['facilities','Facilities Available'],['menu','Menu'],['accommodation','Accommodation'],['team','Meet the Host'],['gallery','Photo Gallery']];
@@ -64,7 +64,7 @@ function events() {
 }
 
 function eventDetail(event) {
-  const tiers = [['Early Bird', 'earlyBird'], ['Late Ticket', 'late'], ['At the Gate', 'gate']];
+  const tiers = eventTicketTiers(event.prices);
   const flyer = event.image;
   const flyerPath = flyer && `/assets/${assetFile(flyer.src)}`;
   const tickets = event.prices.groups
@@ -75,19 +75,15 @@ function eventDetail(event) {
           ${tiers.map(([, key]) => `<td>${group[key].toLocaleString('en-KE')}</td>`).join('')}</tr>`).join('')}</tbody>
       </table>`
     : `<dl>${tiers.map(([label, key]) => `<div><dt>${label}</dt><dd>${event.prices[key] === null ? 'Price to come' : esc(cash(event.prices[key]))}</dd></div>`).join('')}</dl>`;
-  return `<div class="wrap events-content">
-    <div class="page-intro"><a class="events-back" href="/events/">All events</a><h1>${esc(event.name)}</h1>
+  const introduction = `<div class="page-intro"><a class="events-back" href="/events/">All events</a><h1>${esc(event.name)}</h1>
       <time class="lead" datetime="${esc(event.date)}">${esc(eventDateLabel(event.date))}</time>
-    </div>
-    ${flyer ? `<a class="event-flyer" href="${flyerPath}" aria-label="View full-size event flyer">
-      <img src="${flyerPath}" alt="${esc(flyer.alt)}" width="${flyer.width}" height="${flyer.height}" fetchpriority="high">
-    </a>` : '<div class="event-photo event-photo-placeholder">Event photo coming soon</div>'}
-    <p>${esc(event.description || 'Event details coming soon.')}</p>
-    <section class="event-tickets" aria-labelledby="tickets-title">
+    </div>`;
+  const description = `<p class="event-description">${esc(event.description || 'Event details coming soon.')}</p>`;
+  const details = `<section class="event-tickets" aria-labelledby="tickets-title">
       <h2 id="tickets-title">Tickets</h2>
       ${tickets}
       ${(event.ticketNotes ?? []).map(ticketNote => `<p>${esc(ticketNote)}</p>`).join('')}
-      <p>Late pricing starts five days before the event.</p>
+      ${tiers.some(([, key]) => key === 'late') ? '<p>Late pricing starts five days before the event.</p>' : ''}
       <p>Early booking gives us time to source supplies and tailor your visit. Last-minute sourcing costs more.</p>
     </section>
     <section class="form-panel event-booking" aria-labelledby="rsvp-title">
@@ -104,7 +100,20 @@ function eventDetail(event) {
       </form>
       <p id="event-rsvp-closed" hidden>RSVPs are closed.</p>
       <p id="event-rsvp-confirmation" tabindex="-1" hidden>We’ll call to finalize your booking.</p>
-    </section>
+    </section>`;
+  if (!flyer) {
+    return `<div class="wrap events-content">
+      ${introduction}<div class="event-photo event-photo-placeholder">Event photo coming soon</div>
+      ${description}${details}
+    </div>`;
+  }
+  return `<div class="wrap events-content event-invitation">
+    ${introduction}
+    ${description}
+    <a class="event-flyer" href="${flyerPath}" aria-label="View full-size event flyer">
+      <img src="${flyerPath}" alt="${esc(flyer.alt)}" width="${flyer.width}" height="${flyer.height}" fetchpriority="high">
+    </a>
+    <div class="event-details">${details}</div>
   </div>`;
 }
 

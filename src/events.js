@@ -2,6 +2,11 @@ const gardenDate = new Intl.DateTimeFormat('sv-SE', {
   timeZone: 'Africa/Nairobi', year: 'numeric', month: '2-digit', day: '2-digit'
 });
 const eventDateFormat = new Intl.DateTimeFormat('en-KE', { dateStyle: 'long', timeZone: 'UTC' });
+const ticketTiers = [['Early Bird', 'earlyBird'], ['Late Ticket', 'late'], ['At the Gate', 'gate']];
+
+export function eventTicketTiers(prices) {
+  return prices.tiers ? ticketTiers.filter(([, key]) => prices.tiers.includes(key)) : ticketTiers;
+}
 
 export function gardenToday() {
   return gardenDate.format(new Date());

@@ -14,10 +14,11 @@ export const content = {
       image: { src: 'nye-flyer', width: 1522, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
       description: 'Live Mugithi, fireworks, a food and mocktail buffet, and activities for kids and young adults. Limited spots.',
       prices: {
+        tiers: ['earlyBird', 'gate'],
         groups: [
-          { label: 'Kids under 10', earlyBird: 800, late: 1300, gate: 1800 },
-          { label: 'Young adults', earlyBird: 1500, late: 2000, gate: 2500 },
-          { label: 'Adults', earlyBird: 3000, late: 3500, gate: 4000 }
+          { label: 'Kids under 10', earlyBird: 800, gate: 1300 },
+          { label: 'Young adults', earlyBird: 1500, gate: 2000 },
+          { label: 'Adults', earlyBird: 3000, gate: 3500 }
         ]
       },
       ticketNotes: [

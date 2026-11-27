@@ -90,22 +90,28 @@ async function run() {
     await form.waitFor();
     assert.equal(await page.locator('time').getAttribute('datetime'), '2026-12-31');
     const prices = page.getByRole('table', { name: 'Per person (KES)' });
+    assert.deepEqual(await prices.getByRole('columnheader').allTextContents(), ['Guest', 'Early Bird', 'At the Gate']);
     assert.deepEqual(
       await prices.locator('tbody tr').evaluateAll(rows => rows.map(row => [...row.cells].map(cell => cell.textContent.trim()))),
       [
-        ['Kids under 10', '800', '1,300', '1,800'],
-        ['Young adults', '1,500', '2,000', '2,500'],
-        ['Adults', '3,000', '3,500', '4,000']
+        ['Kids under 10', '800', '1,300'],
+        ['Young adults', '1,500', '2,000'],
+        ['Adults', '3,000', '3,500']
       ]
     );
     assert.ok(await page.getByText('Kids’ tickets include all-day bouncing castle access.').isVisible());
     assert.ok(await page.getByText('You can enter without a package. The buffet and activities require a paid package.').isVisible());
+    assert.doesNotMatch(await page.locator('main').innerText(), /Late Ticket|Late pricing/);
     const flyerLink = page.getByRole('link', { name: 'View full-size event flyer' });
     const flyer = flyerLink.getByRole('img', { name: 'New Year’s Eve at Jotham Gardens flyer' });
     assert.equal(await flyerLink.getAttribute('href'), await flyer.getAttribute('src'));
     await flyer.evaluate(img => img.decode());
-    for (const width of [320, 390, 1440]) {
-      await page.setViewportSize({ width, height: 844 });
+    for (const viewport of [
+      { width: 320, height: 844 }, { width: 390, height: 844 },
+      { width: 820, height: 768 }, { width: 1440, height: 844 }, { width: 1024, height: 360 }
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
       const dimensions = await flyer.evaluate(img => {
         const { width, height } = img.getBoundingClientRect();
         return { width, height, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight };
@@ -113,11 +119,41 @@ async function run() {
       assert.deepEqual([dimensions.naturalWidth, dimensions.naturalHeight], [1522, 2280]);
       assert.ok(Math.abs(dimensions.width / dimensions.height - 1522 / 2280) < 0.001, 'full flyer stays in proportion');
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      const poster = await flyer.boundingBox();
+      if (viewport.width < 800) {
+        const intro = await page.locator('.event-description').boundingBox();
+        assert.ok(poster.y >= intro.y + intro.height && poster.y + poster.height <= (await prices.boundingBox()).y);
+        assert.ok(poster.width <= 192 && await flyerLink.evaluate(link => getComputedStyle(link).position === 'static'));
+        continue;
+      }
+      const title = await page.locator('.page-intro').boundingBox();
+      assert.ok(poster.x >= title.x + title.width && poster.width <= 300);
+      for (const target of [prices, form]) {
+        await target.evaluate(element => {
+          const top = element.getBoundingClientRect().top + window.scrollY - 110;
+          window.scrollTo({ top, behavior: 'instant' });
+        });
+        const pinned = await flyer.boundingBox();
+        assert.ok(Math.abs(pinned.y - 24) < 2, 'flyer remains pinned beside the section');
+        assert.ok(pinned.y + pinned.height <= viewport.height, 'pinned flyer fits in the viewport');
+      }
     }
+    await form.getByLabel('Name', { exact: true }).fill('NYE Test Guest');
+    await form.getByLabel('Phone Number').fill('+254 700 000 000');
+    await form.getByLabel('Group Size').fill('3');
+    await form.getByLabel('Notes').fill('NYE test request');
+    await form.getByRole('button', { name: 'Send RSVP' }).click();
+    await page.getByText('We’ll call to finalize your booking.').waitFor();
+    assert.equal(submissions.length, 3);
+    assert.equal(submissions[2].Event, 'NYE @ Jotham Gardens');
+    assert.equal(submissions[2]['Event date'], '2026-12-31');
+    assert.equal(submissions[2]['Group size'], 3);
+    await page.reload();
+    await form.waitFor();
     await page.clock.setFixedTime(new Date('2026-12-31T21:00:00Z'));
     await form.evaluate(element => element.dispatchEvent(new Event('submit', { cancelable: true })));
     await page.getByText('RSVPs are closed.').waitFor();
-    assert.equal(submissions.length, 2);
+    assert.equal(submissions.length, 3);
     await page.getByRole('link', { name: 'All events' }).click();
     await past.waitFor();
     assert.deepEqual(await names(past), ['NYE @ Jotham Gardens', 'Jamhuri Day']);

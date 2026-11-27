@@ -499,16 +499,47 @@ nav a:hover:after,nav a[aria-current]:after {
   color:var(--muted);
   border:1px dashed var(--line)
 }
+.event-invitation {
+  --event-midnight:#191a36;
+  --event-gold:#e6bf7d;
+  max-width:1080px;
+  padding-top:clamp(1.75rem,4vw,3.5rem)
+}
+.event-invitation .page-intro {
+  padding:clamp(1.25rem,3vw,2.25rem);
+  margin-bottom:1rem;
+  background:var(--event-midnight);
+  border-top:3px solid var(--event-gold);
+  color:#fff
+}
+.event-invitation .events-back {
+  color:var(--event-gold);
+  font-size:.875rem
+}
+.event-invitation .page-intro h1 {
+  font-size:clamp(2.25rem,5vw,4.25rem);
+  text-wrap:balance
+}
+.event-invitation time {
+  color:#f6e9d4
+}
+.event-invitation .event-description {
+  margin:0 0 1.25rem
+}
 .event-flyer {
   display:block;
-  width:min(100%,32rem);
-  margin:0 auto 20px
+  width:min(100%,12rem);
+  margin:0 auto 1.5rem
 }
 .event-flyer img {
-  height:auto
+  height:auto;
+  object-fit:contain
 }
 .event-tickets {
   margin-top:32px
+}
+.event-invitation .event-tickets {
+  margin-top:0
 }
 .event-tickets dl {
   display:grid;
@@ -556,11 +587,48 @@ nav a:hover:after,nav a[aria-current]:after {
   border:1px solid var(--line);
   margin-top:32px
 }
+.event-invitation .event-price-table thead th,
+.event-invitation .event-booking {
+  border-color:var(--event-gold)
+}
+.event-invitation .event-booking .button {
+  background:var(--event-midnight)
+}
+.event-invitation .event-booking .button:hover {
+  background:#303256
+}
 .event-booking form label,.event-booking form input,.event-booking form textarea,.event-booking .button {
   font-size:.875rem
 }
 .event-booking p:last-child {
   margin-bottom:0
+}
+@media(min-width:800px) {
+  .event-invitation {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(13rem,18.75rem);
+    grid-template-rows:auto auto 1fr;
+    column-gap:clamp(1.5rem,5vw,4rem)
+  }
+  .event-invitation .page-intro, .event-invitation .event-description, .event-details {
+    grid-column:1
+  }
+  .event-invitation .event-flyer {
+    grid-column:2;
+    grid-row:1/-1;
+    align-self:start;
+    justify-self:end;
+    position:sticky;
+    top:1.5rem;
+    width:fit-content;
+    max-width:100%;
+    margin:0
+  }
+  .event-invitation .event-flyer img {
+    width:auto;
+    max-width:100%;
+    max-height:calc(100dvh - 3rem)
+  }
 }
 @media(max-width:540px) {
   .event-tickets dl {

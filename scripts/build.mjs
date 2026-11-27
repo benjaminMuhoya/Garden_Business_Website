@@ -2,6 +2,7 @@ import {mkdir, cp, writeFile, rm, stat, readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {renderPage, pageKeys} from '../src/templates.js';
 import {content} from '../src/content.js';
+import {eventTicketTiers} from '../src/events.js';
 import {normalizeBasePath, applyBasePath} from './hosting.mjs';
 const basePath = normalizeBasePath(process.env.BASE_PATH);
 for (const group of [content.menu, content.rooms, content.events]) {
@@ -13,10 +14,12 @@ if (rates.some(rate => !Number.isFinite(rate) || rate < 0)) throw new Error('Inv
 if (content.menu.some(item => item.orderable === false && (!item.priceLabel || item.price !== null))) throw new Error('Invalid informational menu item');
 for (const {id, prices} of content.events) {
   const rows = prices.groups ?? [prices];
+  const tiers = eventTicketTiers(prices);
   if (!rows.length) throw new Error(`Missing ticket groups for ${id}`);
+  if (!tiers.length || (prices.tiers && tiers.length !== prices.tiers.length)) throw new Error(`Invalid ticket tiers for ${id}`);
   for (const row of rows) {
     if (prices.groups && !row.label?.trim()) throw new Error(`Missing ticket group label for ${id}`);
-    for (const tier of ['earlyBird', 'late', 'gate']) {
+    for (const [, tier] of tiers) {
       const price = row[tier];
       if (price === null && !prices.groups) continue;
       if (!Number.isFinite(price) || price < 0) throw new Error(`Invalid event price for ${id}: ${tier}`);
