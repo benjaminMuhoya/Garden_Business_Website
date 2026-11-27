@@ -11,8 +11,8 @@ export const content = {
       id: 'nye-at-jotham-gardens',
       name: 'NYE @ Jotham Gardens',
       date: '2026-12-31',
-      image: { src: 'nye-flyer', width: 1522, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
-      description: 'Live Mugithi, fireworks, kids’ activities, and competitive games for young adults with prizes to win. Limited spots.',
+      image: { src: 'nye-flyer', width: 1519, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
+      description: 'Live Band, fireworks, kids’ activities, and competitive games for young adults with prizes to win. Limited spots.',
       prices: {
         tiers: ['earlyBird', 'gate'],
         groups: [

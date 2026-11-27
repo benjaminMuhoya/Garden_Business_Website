@@ -62,6 +62,8 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /<th scope="col">Guest<\/th><th scope="col">Early Bird<\/th><th scope="col">At the Gate<\/th>/);
         assert.doesNotMatch(html, /Late Ticket|Late pricing/);
         assert.doesNotMatch(html, />All events<|10% off family and group platters/);
+        assert.match(html, /<p class="event-description">Live Band,/);
+        assert.doesNotMatch(html, /mugithi/i);
         assert.match(html, /Food buffet from 2 pm to 9:30 pm\. Limit of 2 mocktails per guest\./);
         assert.match(html, /competitive games for young adults with prizes to win/);
         const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td>\s*<\/tr>/g)];

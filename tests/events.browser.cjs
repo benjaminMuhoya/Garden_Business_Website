@@ -122,8 +122,8 @@ async function run() {
         const { width, height } = img.getBoundingClientRect();
         return { width, height, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight };
       });
-      assert.deepEqual([dimensions.naturalWidth, dimensions.naturalHeight], [1522, 2280]);
-      assert.ok(Math.abs(dimensions.width / dimensions.height - 1522 / 2280) < 0.001, 'full flyer stays in proportion');
+      assert.deepEqual([dimensions.naturalWidth, dimensions.naturalHeight], [1519, 2280]);
+      assert.ok(Math.abs(dimensions.width / dimensions.height - 1519 / 2280) < 0.001, 'full flyer stays in proportion');
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       const poster = await flyer.boundingBox();
       if (viewport.width < 800) {
