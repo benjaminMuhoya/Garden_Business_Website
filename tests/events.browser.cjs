@@ -105,8 +105,8 @@ async function run() {
     );
     assert.ok(await page.getByText('Kids’ tickets include all-day bouncing castle access.').isVisible());
     assert.ok(await page.getByText('You can enter without a package. The buffet and activities require a paid package.').isVisible());
-    assert.ok(await page.getByText('Food buffet from 2 pm to 9:30 pm. Limit of 2 mocktails per guest.').isVisible());
-    assert.match(await page.locator('.event-description').innerText(), /competitive games for young adults with prizes to win/);
+    assert.ok(await page.getByText('Food buffet from 5:30 pm until you go home. Limit of 2 mocktails per guest.').isVisible());
+    assert.match(await page.locator('.event-description').innerText(), /activities for the whole family, including kids and young adults\. Young adults can compete for prizes\./);
     assert.doesNotMatch(await page.locator('main').innerText(), /Late Ticket|Late pricing|All events/);
     const flyerLink = page.getByRole('link', { name: 'View full-size event flyer' });
     const flyer = flyerLink.getByRole('img', { name: 'New Year’s Eve at Jotham Gardens flyer' });
@@ -122,8 +122,8 @@ async function run() {
         const { width, height } = img.getBoundingClientRect();
         return { width, height, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight };
       });
-      assert.deepEqual([dimensions.naturalWidth, dimensions.naturalHeight], [1519, 2280]);
-      assert.ok(Math.abs(dimensions.width / dimensions.height - 1519 / 2280) < 0.001, 'full flyer stays in proportion');
+      assert.deepEqual([dimensions.naturalWidth, dimensions.naturalHeight], [1517, 2280]);
+      assert.ok(Math.abs(dimensions.width / dimensions.height - 1517 / 2280) < 0.001, 'full flyer stays in proportion');
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       const poster = await flyer.boundingBox();
       if (viewport.width < 800) {

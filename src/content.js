@@ -11,8 +11,8 @@ export const content = {
       id: 'nye-at-jotham-gardens',
       name: 'NYE @ Jotham Gardens',
       date: '2026-12-31',
-      image: { src: 'nye-flyer', width: 1519, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
-      description: 'Live Band, fireworks, kids’ activities, and competitive games for young adults with prizes to win. Limited spots.',
+      image: { src: 'nye-flyer', width: 1517, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
+      description: 'Live Band, fireworks, and activities for the whole family, including kids and young adults. Young adults can compete for prizes. Limited spots.',
       prices: {
         tiers: ['earlyBird', 'gate'],
         groups: [
@@ -22,7 +22,7 @@ export const content = {
         ]
       },
       ticketNotes: [
-        'Food buffet from 2 pm to 9:30 pm. Limit of 2 mocktails per guest.',
+        'Food buffet from 5:30 pm until you go home. Limit of 2 mocktails per guest.',
         'Kids’ tickets include all-day bouncing castle access.',
         'You can enter without a package. The buffet and activities require a paid package.'
       ]
