@@ -24,6 +24,7 @@ async function run() {
     const upcoming = page.getByRole('region', { name: 'Upcoming events' });
     const past = page.getByRole('region', { name: 'Past events' });
     const names = group => group.locator('li span').allTextContents();
+    await upcoming.getByRole('link', { name: 'RSVP for NYE @ Jotham Gardens' }).waitFor();
     assert.deepEqual(await names(upcoming), ['NYE @ Jotham Gardens', 'Jamhuri Day']);
     assert.equal(await past.count(), 0);
     assert.equal(await upcoming.getByRole('link').count(), 2);
