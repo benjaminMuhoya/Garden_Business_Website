@@ -1,8 +1,11 @@
 import {content as c} from './content.js';
 import {money} from './domain.js';
+import {eventDateLabel, gardenToday} from './events.js';
 const cash = n => money(n,c.currency);
 const esc = s => String(s).replace(/[&<>"']/g, v => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[v]));
-const nav = [['reserve','Reserve Venue'],['facilities','Facilities Available'],['menu','Menu'],['accommodation','Accommodation'],['team','Meet the Host'],['gallery','Photo Gallery']];
+const nav = [['reserve','Reserve Venue'],['events','Events'],['facilities','Facilities Available'],['menu','Menu'],['accommodation','Accommodation'],['team','Meet the Host'],['gallery','Photo Gallery']];
+const eventPageKey = event => `events/${event.id}`;
+const eventPages = new Map(c.events.map(event => [eventPageKey(event), event]));
 const flower = `<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 38c-11-3-17-12-13-21 1-3 4-5 7-5 0-6 12-6 12 0 8 0 12 8 8 15-3 6-8 9-14 11Z"/><path d="M24 36c-8-5-12-13-7-17 4-3 9 1 7 5-2-4 3-8 7-5 5 4 1 12-7 17Zm0 1v8M24 41c-6 0-10-3-11-7 6 0 9 3 11 7Z"/></svg>`;
 const button = (href, text, type='') => `<a class="button ${type}" href="${href}">${text}</a>`;
 const assetFile = key => ({'Children gallery':'Children gallery.JPG',Jane_host:'Jane_host.png','facility-ground-floor':'facility-ground-floor.png','rooms-at-garden':'rooms-at-garden.png'}[key] || `${key}.jpg`);
@@ -43,6 +46,73 @@ function gallery() {
   <div class="gallery-belts">${belts}</div>
   <dialog id="lightbox" aria-label="Enlarged gallery photo"><button type="button" class="close-lightbox" aria-label="Close image">×</button><img id="lightbox-image" alt=""></dialog>`;
 }
-const pages={home, reserve, facilities, menu, accommodation, team, gallery};
-export function renderPage(key, appFile='app.js'){const title=key==='home'?c.brand:nav.find(([id])=>id===key)[1];return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><meta name="description" content="${esc(c.brand)} — gardens, dining and gatherings. ${esc(c.motto)}"><meta name="theme-color" content="#233f32"><title>${esc(title)}${key==='home'?' | '+esc(c.motto):' | '+esc(c.brand)}</title><link rel="icon" href="/assets/rose.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"></head><body class="page-${key}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="brand" href="/" aria-label="${esc(c.brand)} home">${flower}<span>JOTHAM<small>G A R D E N S</small></span></a><button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Options <span aria-hidden="true">☰</span></button><nav id="site-nav" aria-label="Main navigation">${nav.map(([id,label])=>`<a href="/${id}/" ${id===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav></div></header><main id="main">${pages[key]()}</main><footer><div class="wrap footer-main"><a class="brand" href="/">${flower}<span>JOTHAM<small>G A R D E N S</small></span></a>${contact()}</div><div class="wrap footer-bottom"><span>© 2026 Jotham Garden and Restaurant</span></div></footer><div id="announcement" role="status" class="sr-only"></div><script type="application/json" id="site-content">${JSON.stringify(c).replace(/</g,'\\u003c')}</script><script type="module" src="/${appFile}"></script></body></html>`;}
-export const pageKeys=Object.keys(pages);
+function events() {
+  const today = gardenToday();
+  const sorted = [...c.events].sort((a, b) => b.date.localeCompare(a.date));
+  const row = event => `<li class="event-row" data-event-date="${esc(event.date)}">
+    <span>${esc(event.name)}</span>
+    <a class="button outline" href="/${eventPageKey(event)}/" aria-label="RSVP for ${esc(event.name)}" hidden>RSVP</a>
+  </li>`;
+  const group = (id, title, entries) => `<section data-event-group="${id}" aria-labelledby="${id}-events-title"${entries.length ? '' : ' hidden'}>
+    <h2 id="${id}-events-title">${title}</h2><ul role="list">${entries.map(row).join('')}</ul>
+  </section>`;
+  return `<div class="wrap events-content">
+    <div class="page-intro"><h1>Events</h1></div>
+    ${group('upcoming', 'Upcoming events', sorted.filter(event => event.date >= today))}
+    ${group('past', 'Past events', sorted.filter(event => event.date < today))}
+  </div>`;
+}
+
+function eventDetail(event) {
+  const tiers = [['Early Bird', 'earlyBird'], ['Late Ticket', 'late'], ['At the Gate', 'gate']];
+  const flyer = event.image;
+  const flyerPath = flyer && `/assets/${assetFile(flyer.src)}`;
+  const tickets = event.prices.groups
+    ? `<table class="event-price-table">
+        <caption>Per person (KES)</caption>
+        <thead><tr><th scope="col">Guest</th>${tiers.map(([label]) => `<th scope="col">${label}</th>`).join('')}</tr></thead>
+        <tbody>${event.prices.groups.map(group => `<tr><th scope="row">${esc(group.label)}</th>
+          ${tiers.map(([, key]) => `<td>${group[key].toLocaleString('en-KE')}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>`
+    : `<dl>${tiers.map(([label, key]) => `<div><dt>${label}</dt><dd>${event.prices[key] === null ? 'Price to come' : esc(cash(event.prices[key]))}</dd></div>`).join('')}</dl>`;
+  return `<div class="wrap events-content">
+    <div class="page-intro"><a class="events-back" href="/events/">All events</a><h1>${esc(event.name)}</h1>
+      <time class="lead" datetime="${esc(event.date)}">${esc(eventDateLabel(event.date))}</time>
+    </div>
+    ${flyer ? `<a class="event-flyer" href="${flyerPath}" aria-label="View full-size event flyer">
+      <img src="${flyerPath}" alt="${esc(flyer.alt)}" width="${flyer.width}" height="${flyer.height}" fetchpriority="high">
+    </a>` : '<div class="event-photo event-photo-placeholder">Event photo coming soon</div>'}
+    <p>${esc(event.description || 'Event details coming soon.')}</p>
+    <section class="event-tickets" aria-labelledby="tickets-title">
+      <h2 id="tickets-title">Tickets</h2>
+      ${tickets}
+      ${(event.ticketNotes ?? []).map(ticketNote => `<p>${esc(ticketNote)}</p>`).join('')}
+      <p>Late pricing starts five days before the event.</p>
+      <p>Early booking gives us time to source supplies and tailor your visit. Last-minute sourcing costs more.</p>
+    </section>
+    <section class="form-panel event-booking" aria-labelledby="rsvp-title">
+      <h2 id="rsvp-title">RSVP</h2>
+      <form id="event-rsvp" method="post" data-event-id="${event.id}" hidden>
+        <p>Complete every field. We receive many calls, so put your requests in Notes.</p>
+        <div class="form-grid">
+          <label>Name<input name="name" autocomplete="name" maxlength="100" required></label>
+          <label>Phone Number<input name="phone" type="tel" autocomplete="tel" minlength="7" maxlength="30" required></label>
+        </div>
+        <label>Group Size<input name="groupSize" type="number" min="1" step="1" required></label>
+        <label>Notes<textarea name="notes" rows="3" maxlength="1500" required></textarea></label>
+        <button type="submit" class="button">Send RSVP</button>
+      </form>
+      <p id="event-rsvp-closed" hidden>RSVPs are closed.</p>
+      <p id="event-rsvp-confirmation" tabindex="-1" hidden>We’ll call to finalize your booking.</p>
+    </section>
+  </div>`;
+}
+
+const pages={home, reserve, facilities, menu, accommodation, team, gallery, events};
+export function renderPage(key, appFile='app.js') {
+  const event = eventPages.get(key);
+  const title = event?.name ?? (key === 'home' ? c.brand : nav.find(([id]) => id === key)[1]);
+  const bodyClass = event ? 'page-event' : `page-${key}`;
+  const main = event ? eventDetail(event) : pages[key]();
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><meta name="description" content="${esc(c.brand)} — gardens, dining and gatherings. ${esc(c.motto)}"><meta name="theme-color" content="#233f32"><title>${esc(title)}${key==='home'?' | '+esc(c.motto):' | '+esc(c.brand)}</title><link rel="icon" href="/assets/rose.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css"></head><body class="${bodyClass}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="brand" href="/" aria-label="${esc(c.brand)} home">${flower}<span>JOTHAM<small>G A R D E N S</small></span></a><button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Options <span aria-hidden="true">☰</span></button><nav id="site-nav" aria-label="Main navigation">${nav.map(([id,label])=>`<a href="/${id}/" ${id===key?'aria-current="page"':event && id==='events'?'aria-current="location"':''}>${label}</a>`).join('')}</nav></div></header><main id="main">${main}</main><footer><div class="wrap footer-main"><a class="brand" href="/">${flower}<span>JOTHAM<small>G A R D E N S</small></span></a>${contact()}</div><div class="wrap footer-bottom"><span>© 2026 Jotham Garden and Restaurant</span></div></footer><div id="announcement" role="status" class="sr-only"></div><script type="application/json" id="site-content">${JSON.stringify(c).replace(/</g,'\\u003c')}</script><script type="module" src="/${appFile}"></script></body></html>`;}
+export const pageKeys=[...Object.keys(pages), ...eventPages.keys()];

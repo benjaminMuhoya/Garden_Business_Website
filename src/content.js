@@ -6,6 +6,34 @@ export const content = {
   currency: 'KES',
   origin: 'It began with a simple idea: the best moments happen when we slow down to appreciate not only our surroundings, but also the people around us. Rooted in a love of nature, joyful gatherings, good food and unforgettable moments, Jotham Gardens is a place to meet, connect and share beautiful moments close to nature.',
   venue: { capacity: 1000, occasions: ['Impromptu gatherings', 'Conferences and meetings', 'Graduations and weddings', 'Live performances', 'Wine tastings', 'Team-building activities', 'Getaways with friends'] },
+  events: [
+    {
+      id: 'nye-at-jotham-gardens',
+      name: 'NYE @ Jotham Gardens',
+      date: '2026-12-31',
+      image: { src: 'nye-flyer', width: 1522, height: 2280, alt: 'New Year’s Eve at Jotham Gardens flyer' },
+      description: 'Live Mugithi, fireworks, a food and mocktail buffet, and activities for kids and young adults. Limited spots.',
+      prices: {
+        groups: [
+          { label: 'Kids under 10', earlyBird: 800, late: 1300, gate: 1800 },
+          { label: 'Young adults', earlyBird: 1500, late: 2000, gate: 2500 },
+          { label: 'Adults', earlyBird: 3000, late: 3500, gate: 4000 }
+        ]
+      },
+      ticketNotes: [
+        'Kids’ tickets include all-day bouncing castle access.',
+        'You can enter without a package. The buffet and activities require a paid package.'
+      ]
+    },
+    {
+      id: 'jamhuri-day',
+      name: 'Jamhuri Day',
+      date: '2026-12-12',
+      image: null,
+      description: '',
+      prices: { earlyBird: null, late: null, gate: null }
+    }
+  ],
   facilities: [
     { name: 'Garden Lawn', image: 'facility-garden-lawn', description: 'A flexible outdoor space for ceremonies, receptions, performances and tented events.' },
     { name: 'First-Floor Conference Room', image: 'facility-first-floor', description: 'A quiet indoor space for meetings, conferences and private gatherings.' },

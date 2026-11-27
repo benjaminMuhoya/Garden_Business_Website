@@ -439,6 +439,152 @@ nav a:hover:after,nav a[aria-current]:after {
 .page-intro h1 {
   max-width:900px
 }
+.events-content {
+  max-width:760px;
+  padding-bottom:clamp(60px,9vw,100px);
+  font-size:1rem
+}
+.events-content h1 {
+  margin-bottom:0;
+  font-size:clamp(2.75rem,6.5vw,4.75rem)
+}
+.events-content h2 {
+  font-size:clamp(1.8rem,4vw,2.25rem);
+  margin-bottom:16px
+}
+.events-content [data-event-group]:not([hidden]) + [data-event-group]:not([hidden]) {
+  margin-top:32px
+}
+.events-content ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  border-top:1px solid var(--line)
+}
+.event-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  min-height:64px;
+  padding:10px 0;
+  border-bottom:1px solid var(--line)
+}
+.event-row span {
+  font:clamp(1.2rem,3vw,1.6rem)/1.25 var(--serif)
+}
+.event-row .button {
+  flex-shrink:0;
+  font-size:.875rem
+}
+.events-back {
+  display:inline-block;
+  margin-bottom:14px;
+  text-decoration:underline;
+  text-underline-offset:3px
+}
+.events-content time {
+  display:block;
+  margin-top:12px
+}
+.event-photo {
+  width:100%;
+  aspect-ratio:16/9;
+  margin-bottom:20px
+}
+.event-photo-placeholder {
+  display:grid;
+  place-items:center;
+  background:#f1f4ee;
+  color:var(--muted);
+  border:1px dashed var(--line)
+}
+.event-flyer {
+  display:block;
+  width:min(100%,32rem);
+  margin:0 auto 20px
+}
+.event-flyer img {
+  height:auto
+}
+.event-tickets {
+  margin-top:32px
+}
+.event-tickets dl {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  margin:0 0 16px;
+  gap:12px
+}
+.event-tickets dl div {
+  padding:12px 16px;
+  border:1px solid var(--line)
+}
+.event-tickets dt {
+  font-weight:600
+}
+.event-tickets dd {
+  color:var(--muted);
+  margin:2px 0 0
+}
+.event-tickets p {
+  margin-bottom:8px
+}
+.event-price-table {
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:16px;
+  font-size:clamp(.875rem,2.7vw,1rem)
+}
+.event-price-table caption {
+  text-align:left;
+  color:var(--muted);
+  padding-bottom:8px
+}
+.event-price-table th,.event-price-table td {
+  border-bottom:1px solid var(--line);
+  padding:10px 4px;
+  text-align:right
+}
+.event-price-table th:first-child {
+  text-align:left
+}
+.event-price-table td {
+  font-variant-numeric:tabular-nums
+}
+.event-booking {
+  border:1px solid var(--line);
+  margin-top:32px
+}
+.event-booking form label,.event-booking form input,.event-booking form textarea,.event-booking .button {
+  font-size:.875rem
+}
+.event-booking p:last-child {
+  margin-bottom:0
+}
+@media(max-width:540px) {
+  .event-tickets dl {
+    grid-template-columns:1fr;
+    gap:0;
+    border-top:1px solid var(--line)
+  }
+  .event-tickets dl div {
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+    padding:10px 0;
+    border:0;
+    border-bottom:1px solid var(--line)
+  }
+  .event-tickets dd {
+    margin:0
+  }
+  .events-content .event-booking .form-grid {
+    grid-template-columns:1fr;
+    gap:0
+  }
+}
 .wide-photo {
   height:480px;
   position:relative;

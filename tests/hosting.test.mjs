@@ -56,6 +56,16 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /Up to 1,000/);
         assert.match(html, /Let’s plan your event/);
       }
+      if (key === 'events/nye-at-jotham-gardens') {
+        assert.ok(html.includes(`src="${base}assets/nye-flyer.jpg"`));
+        assert.match(html, /<caption>Per person \(KES\)<\/caption>/);
+        const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td>/g)];
+        assert.deepEqual(rows.map(row => row.slice(1)), [
+          ['Kids under 10', '800', '1,300', '1,800'],
+          ['Young adults', '1,500', '2,000', '2,500'],
+          ['Adults', '3,000', '3,500', '4,000']
+        ]);
+      }
       if (['reserve','menu','accommodation'].includes(key)) {
         assert.match(html, /name="phone"[^>]*required/);
         assert.match(html, /name="email"[^>]*type="email"/);

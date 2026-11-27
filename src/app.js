@@ -1,4 +1,5 @@
 import {money, sanitizeCart, cartSummary, localToday, stayQuote} from './domain.js';
+import {gardenToday} from './events.js';
 const content = JSON.parse(document.querySelector('#site-content').textContent);
 const cash = value => money(value, content.currency);
 const $ = selector => document.querySelector(selector);
@@ -52,12 +53,12 @@ async function submitRequest(form, kind, details, receipt) {
   try {
     const response=await fetch(formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
-    if(!response.ok || result.success===false) throw new Error(result.message || 'Submission failed');
+    if(!response.ok || result.success===false || result.success==='false') throw new Error(result.message || 'Submission failed');
     if(sendCopy) {
       try {await sendCustomerCopy(customerEmail,customerName,kind,receipt);}
       catch {showDraft(receipt,filename,'failed');return false;}
     }
-    showDraft(receipt,filename,sendCopy?'sent':'none');
+    if(receipt) showDraft(receipt,filename,sendCopy?'sent':'none');
     return true;
   } catch {
     const error=document.createElement('p');error.className='submission-error';error.setAttribute('role','alert');
@@ -82,6 +83,83 @@ $('#download-draft')?.addEventListener('click',()=>{
   link.href=url; link.download=downloadName; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $$('form').forEach(form=>form.addEventListener('input',hideDraft));
+
+const eventRows = $$('.event-row').map(row => {
+  const link = row.querySelector('a');
+  return { row, link, href: link.getAttribute('href') };
+});
+const rsvpForm = $('#event-rsvp');
+if (eventRows.length || rsvpForm) {
+  const upcoming = $('[data-event-group="upcoming"]');
+  const past = $('[data-event-group="past"]');
+  const event = content.events.find(item => item.id === rsvpForm?.dataset.eventId);
+  const closedMessage = $('#event-rsvp-closed');
+  const confirmation = $('#event-rsvp-confirmation');
+  let renderedDate;
+
+  function updateEvents(today = gardenToday()) {
+    if (today === renderedDate) return;
+    renderedDate = today;
+    if (upcoming && past) {
+      const upcomingList = upcoming.querySelector('ul');
+      const pastList = past.querySelector('ul');
+      for (const { row, link, href } of eventRows) {
+        const closed = row.dataset.eventDate < today;
+        if (closed) link.removeAttribute('href');
+        else link.setAttribute('href', href);
+        link.hidden = closed;
+        (closed ? pastList : upcomingList).append(row);
+      }
+      upcoming.hidden = !upcomingList.childElementCount;
+      past.hidden = !pastList.childElementCount;
+    }
+    if (event) {
+      const closed = event.date < today;
+      rsvpForm.hidden = closed || !confirmation.hidden;
+      closedMessage.hidden = !closed || !confirmation.hidden;
+    }
+  }
+
+  updateEvents();
+  setInterval(updateEvents, 30_000);
+  window.addEventListener('pageshow', () => updateEvents());
+  upcoming?.addEventListener('click', click => {
+    const row = click.target.closest('a')?.closest('.event-row');
+    if (!row || row.dataset.eventDate >= gardenToday()) return;
+    click.preventDefault();
+    updateEvents();
+  });
+
+  if (event) {
+    rsvpForm.addEventListener('input', input => input.target.setCustomValidity(''));
+    rsvpForm.addEventListener('submit', async submission => {
+      submission.preventDefault();
+      updateEvents();
+      if (rsvpForm.hidden || rsvpForm.querySelector('button').disabled) return;
+      const {name, phone, groupSize, notes} = rsvpForm.elements;
+      name.setCustomValidity(name.value.trim() ? '' : 'Enter your name.');
+      phone.setCustomValidity(phone.value.trim().length >= 7 ? '' : 'Enter your phone number.');
+      groupSize.setCustomValidity(Number.isSafeInteger(groupSize.valueAsNumber) ? '' : 'Enter a whole group size.');
+      notes.setCustomValidity(notes.value.trim() ? '' : 'Add notes, or enter “None”.');
+      if (!rsvpForm.reportValidity()) return;
+      const sent = await submitRequest(rsvpForm, 'event RSVP', {
+        Event: event.name,
+        'Event date': event.date,
+        Name: name.value.trim(),
+        Phone: phone.value.trim(),
+        'Group size': groupSize.valueAsNumber,
+        Notes: notes.value.trim()
+      });
+      if (sent) {
+        rsvpForm.hidden = true;
+        closedMessage.hidden = true;
+        confirmation.hidden = false;
+        confirmation.focus();
+      }
+    });
+  }
+}
+
 $('#reservation-form')?.addEventListener('submit',async event=>{
   event.preventDefault();
   const data=Object.fromEntries(new FormData(event.currentTarget));
