@@ -23,7 +23,7 @@ export const content = {
       },
       ticketNotes: [
         'Food buffet from 5:30 pm until late into the night. Limit of 2 mocktails per guest.',
-        'Kids’ tickets include all-day bouncing castle access. Young adults can compete for prizes.',
+        'Kids’ tickets include all-day bouncing castle access. Young adults, come ready to play! Compete for prizes in puzzles, hand-eye coordination games, and more.',
         'You can enter without a package. The buffet and activities require a paid package.'
       ]
     },

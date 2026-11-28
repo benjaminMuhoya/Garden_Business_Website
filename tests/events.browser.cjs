@@ -116,12 +116,12 @@ async function run() {
       ]
     );
     const ticketDetails = page.getByRole('region', { name: 'Tickets' });
-    assert.ok(await ticketDetails.getByText('Kids’ tickets include all-day bouncing castle access. Young adults can compete for prizes.', { exact: true }).isVisible());
+    assert.ok(await ticketDetails.getByText('Kids’ tickets include all-day bouncing castle access. Young adults, come ready to play! Compete for prizes in puzzles, hand-eye coordination games, and more.', { exact: true }).isVisible());
     assert.ok(await page.getByText('You can enter without a package. The buffet and activities require a paid package.').isVisible());
     assert.ok(await ticketDetails.getByText('Food buffet from 5:30 pm until late into the night. Limit of 2 mocktails per guest.', { exact: true }).isVisible());
     const introText = await page.locator('.event-description').innerText();
     assert.match(introText, /activities for the whole family, including kids and young adults\./);
-    assert.doesNotMatch(introText, /compete for prizes/);
+    assert.doesNotMatch(introText, /compete for prizes/i);
     assert.doesNotMatch(await page.locator('main').innerText(), /Late Ticket|Late pricing|All events/);
     const flyerLink = page.getByRole('link', { name: 'View full-size event flyer' });
     const flyer = flyerLink.getByRole('img', { name: 'New Year’s Eve at Jotham Gardens flyer' });
