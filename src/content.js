@@ -16,9 +16,9 @@ export const content = {
       prices: {
         tiers: ['earlyBird', 'gate'],
         groups: [
-          { label: 'Kids under 10', earlyBird: 800, gate: 1300 },
-          { label: 'Young adults', earlyBird: 1500, gate: 2000 },
-          { label: 'Adults', earlyBird: 3000, gate: 3500 }
+          { label: 'Kids under 10', earlyBird: 500, gate: 600 },
+          { label: 'Young adults', earlyBird: 1000, gate: 1200 },
+          { label: 'Adults', earlyBird: 1500, gate: 1800 }
         ]
       },
       ticketNotes: [

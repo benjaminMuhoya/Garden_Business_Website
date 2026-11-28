@@ -5,6 +5,16 @@ const base = (process.env.PREVIEW_URL || 'http://127.0.0.1:4173').replace(/\/$/,
 const jamhuriPath = '/events/jamhuri-day/';
 const nyePath = '/events/nye-at-jotham-gardens/';
 
+async function checkNotesGuidance(form) {
+  const notes = form.getByLabel('Notes', { exact: true });
+  const guidance = form.locator('#notes-guidance');
+  assert.ok(await guidance.isVisible());
+  assert.match(await guidance.innerText(), /sharing your preferences in Notes helps us prepare for your visit/);
+  assert.equal(await notes.getAttribute('aria-describedby'), 'notes-guidance');
+  assert.equal(await notes.evaluate(input => input.closest('label').previousElementSibling.id), 'notes-guidance');
+  return notes;
+}
+
 async function run() {
   const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH });
   try {
@@ -38,6 +48,7 @@ async function run() {
     assert.equal(page.url(), base + jamhuriPath);
     const form = page.locator('#event-rsvp');
     await form.waitFor();
+    await checkNotesGuidance(form);
     assert.equal(await page.locator('time').getAttribute('datetime'), '2026-12-12');
     const offer = page.getByRole('region', { name: '10% off family and group platters' });
     assert.deepEqual(await offer.getByRole('heading', { level: 3 }).allTextContents(), ['Family Platters', 'Group Packages']);
@@ -92,15 +103,16 @@ async function run() {
     await upcoming.getByRole('link', { name: 'RSVP for NYE @ Jotham Gardens' }).click();
     assert.equal(page.url(), base + nyePath);
     await form.waitFor();
+    await checkNotesGuidance(form);
     assert.equal(await page.locator('time').getAttribute('datetime'), '2026-12-31');
     const prices = page.getByRole('table', { name: 'Per person (KES)' });
-    assert.deepEqual(await prices.getByRole('columnheader').allTextContents(), ['Guest', 'Early Bird', 'At the Gate']);
+    assert.deepEqual(await prices.getByRole('columnheader').allTextContents(), ['Guest', 'Early Bird', 'At the Venue']);
     assert.deepEqual(
       await prices.locator('tbody tr').evaluateAll(rows => rows.map(row => [...row.cells].map(cell => cell.textContent.trim()))),
       [
-        ['Kids under 10', '800', '1,300'],
-        ['Young adults', '1,500', '2,000'],
-        ['Adults', '3,000', '3,500']
+        ['Kids under 10', '500', '600'],
+        ['Young adults', '1,000', '1,200'],
+        ['Adults', '1,500', '1,800']
       ]
     );
     const ticketDetails = page.getByRole('region', { name: 'Tickets' });
@@ -168,8 +180,32 @@ async function run() {
     assert.deepEqual(await names(past), ['NYE @ Jotham Gardens', 'Jamhuri Day']);
     assert.equal(await upcoming.count(), 0);
     assert.equal(await past.locator('a[href]').count(), 0);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    for (const [path, formId, requestType, prepare] of [
+      ['/reserve/', '#reservation-form', 'Event inquiry', async form => {
+        await form.locator('[name="date"]').fill('2030-06-10');
+      }],
+      ['/menu/', '#order-form', 'Food order', async () => {
+        await page.locator('[data-qty="1"]:visible').first().click();
+      }]
+    ]) {
+      await page.goto(base + path);
+      const orderForm = page.locator(formId);
+      const notes = await checkNotesGuidance(orderForm);
+      assert.equal(await notes.getAttribute('required'), null);
+      await orderForm.locator('[name="name"]').fill('Test Guest');
+      await orderForm.locator('[name="phone"]').fill('+254 700 000 000');
+      await notes.fill('Test preference');
+      await prepare(orderForm);
+      await orderForm.locator('[type="submit"]').click();
+      await page.locator('#draft-result').waitFor();
+      assert.equal(submissions.at(-1)._subject, `New Jotham Gardens ${requestType}`);
+      assert.equal(submissions.at(-1).Notes, 'Test preference');
+    }
+    assert.equal(submissions.length, 5);
     assert.deepEqual(errors, []);
-    console.log('PASS: Events navigation, NYE details and prices, flyer layout, Jamhuri discount, RSVP delivery and Nairobi date rollover.');
+    console.log('PASS: Notes guidance and form submissions for events, reservations, and food orders, plus NYE prices, flyer layout, and event cutoff.');
   } finally {
     await browser.close();
   }

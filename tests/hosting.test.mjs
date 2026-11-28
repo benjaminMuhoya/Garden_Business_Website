@@ -40,6 +40,11 @@ test('real build resolves every page link and asset for project hosting and loca
       assert.equal(html.split(`href="${content.contact.mapUrl}"`).length - 1, contactCount);
       assert.doesNotMatch(html, /bauzbenjamin@gmail\.com/);
       assert.doesNotMatch(html, /0724767617/);
+      if (['reserve', 'menu', 'events/jamhuri-day', 'events/nye-at-jotham-gardens'].includes(key)) {
+        assert.equal(html.split('id="notes-guidance"').length - 1, 1, key);
+        assert.match(html, /<p id="notes-guidance">Please complete all fields[^<]+<strong>Notes<\/strong>[^<]+<\/p>\s*<label>Notes<textarea name="notes" aria-describedby="notes-guidance"/);
+        if (key === 'reserve' || key === 'menu') assert.doesNotMatch(html, /<textarea name="notes"[^>]*required/);
+      }
       if (key === 'home') {
         assert.doesNotMatch(html, /Discover the spaces, the people and the intricate details that bring our garden to life\.|>Slow moments<|A glimpse of life in the gardens/);
         assert.ok(html.includes(`<a class="experience-link" href="${base}reserve/"><span class="experience-title">Reserve Venue</span></a>`));
@@ -59,7 +64,7 @@ test('real build resolves every page link and asset for project hosting and loca
       if (key === 'events/nye-at-jotham-gardens') {
         assert.ok(html.includes(`src="${base}assets/nye-flyer.jpg"`));
         assert.match(html, /<caption>Per person \(KES\)<\/caption>/);
-        assert.match(html, /<th scope="col">Guest<\/th><th scope="col">Early Bird<\/th><th scope="col">At the Gate<\/th>/);
+        assert.match(html, /<th scope="col">Guest<\/th><th scope="col">Early Bird<\/th><th scope="col">At the Venue<\/th>/);
         assert.doesNotMatch(html, /Late Ticket|Late pricing/);
         assert.doesNotMatch(html, />All events<|10% off family and group platters/);
         assert.match(html, /<p class="event-description">Live Band,/);
@@ -69,9 +74,9 @@ test('real build resolves every page link and asset for project hosting and loca
         assert.match(html, /<p>Kids’ tickets include all-day bouncing castle access\. Young adults can compete for prizes\.<\/p>/);
         const rows = [...html.matchAll(/<th scope="row">([^<]+)<\/th>\s*<td>([^<]+)<\/td><td>([^<]+)<\/td>\s*<\/tr>/g)];
         assert.deepEqual(rows.map(row => row.slice(1)), [
-          ['Kids under 10', '800', '1,300'],
-          ['Young adults', '1,500', '2,000'],
-          ['Adults', '3,000', '3,500']
+          ['Kids under 10', '500', '600'],
+          ['Young adults', '1,000', '1,200'],
+          ['Adults', '1,500', '1,800']
         ]);
       }
       if (key === 'events/jamhuri-day') {
